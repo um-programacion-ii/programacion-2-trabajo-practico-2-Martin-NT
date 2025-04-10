@@ -1,4 +1,4 @@
-package model;
+package classes;
 
 public abstract class RecursoDigital {
     private final String id;

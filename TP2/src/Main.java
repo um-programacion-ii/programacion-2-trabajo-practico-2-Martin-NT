@@ -1,4 +1,4 @@
-import model.Usuario;
+import classes.Usuario;
 
 public class Main {
     public static void main(String[] args) {
