@@ -60,7 +60,7 @@ public abstract class RecursoBase implements RecursoDigital {
     // Metodo toString() que será sobrescrito en las clases hijas
     @Override
     public String toString() {
-        return "📚 Recurso ID: " + id + "\n" +
+        return " - Recurso ID: " + id + "\n" +
                 " - Título: " + titulo + "\n" +
                 " - Autor: " + autor + "\n" +
                 " - Fecha de Publicación: " + fechaPublicacion + "\n" +

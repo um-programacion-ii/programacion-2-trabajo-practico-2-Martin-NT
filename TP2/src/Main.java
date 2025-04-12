@@ -1,40 +1,71 @@
-import classes.Usuario;
+import classes.*;
+import interfaces.*;
 
 public class Main {
     public static void main(String[] args) {
-        // Crear algunos usuarios de prueba
-        Usuario u1 = new Usuario("U001", "Martina Rizzotti", "martirizzotti@example.com");
-        Usuario u2 = new Usuario("U002", "Valentina Rosales", "valerosales@example.com");
+        // Crear usuarios de prueba
+        Usuario[] usuarios = {
+                new Usuario("U001", "Martina Rizzotti", "martirizzotti@example.com"),
+                new Usuario("U002", "Valentina Rosales", "valerosales@example.com")
+        };
 
-        // Crear instancia de la clase Consola, que mostrará el menú e interactuará con el usuario
+        // Crear recursos de prueba
+        RecursoDigital[] recursos = {
+                new Libro("L001", "Harry Potter", "J.K. Rowling", "2001-09-11", "Disponible", 256, "Fantasía", "Salamandra"),
+                new Revista("R001", "National Geographic", "Varios", "2025-04-10", "Disponible", 12, "Semanal", "Naturaleza", "NG Media"),
+                new Audiolibro("A001", "El Principito", "Antoine de Saint-Exupéry", "1943-04-06", "Disponible", 92, "Dangello Medina", "Español")
+        };
+
         Consola consola = new Consola();
+        int opcionPrincipal;
 
-        int opcion;
         do {
-            // Mostrar el menú principal de opciones
             consola.mostrarMenuPrincipal();
-            // Leer la opción elegida por el usuario desde la consola
-            opcion = consola.leerOpcion();
+            opcionPrincipal = consola.leerOpcion();
 
-            // Procesar la opción seleccionada utilizando una estructura switch
-            switch (opcion) {
+            switch (opcionPrincipal) {
                 case 1:
-                    System.out.println("\n📋 Lista de usuarios:");
-                    System.out.println("--> Usuarios creados de prueba");
-                    System.out.println(u1);
-                    System.out.println(u2);
+                    int opcionUsuarios;
+                    do {
+                        consola.mostrarMenuUsuarios();
+                        opcionUsuarios = consola.leerOpcion();
+                        switch (opcionUsuarios) {
+                            case 1:
+                                Consola.mostrarUsuarios(usuarios);
+                                break;
+                            case 2:
+                                break;
+                            default:
+                                System.out.println("⚠️ Opción inválida.");
+                        }
+                    } while (opcionUsuarios != 2);
                     break;
+
                 case 2:
-                    System.out.println("\n📚 Aún no hay recursos disponibles.");
-                    System.out.println("\nNota: No se puede crear una instancia de model.RecursoDigital directamente porque es abstracta.");
-                    System.out.println("Se usará como clase base más adelante.");
+                    int opcionRecursos;
+                    do {
+                        consola.mostrarMenuRecursos();
+                        opcionRecursos = consola.leerOpcion();
+                        switch (opcionRecursos) {
+                            case 1:
+                                Consola.mostrarRecursos(recursos);
+                                break;
+                            case 2:
+                                break;
+                            default:
+                                System.out.println("⚠️ Opción inválida.");
+                        }
+                    } while (opcionRecursos != 2);
                     break;
+
                 case 3:
                     System.out.println("👋 Saliendo del sistema. ¡Hasta luego!");
                     break;
                 default:
-                    System.out.println("⚠️ Opción no válida. Intente nuevamente.");
+                    System.out.println("⚠️ Opción inválida.");
             }
-        } while (opcion != 3); // Repite mientras no se elija salir
+        } while (opcionPrincipal != 3);
     }
 }
+
+// Nota: Se aprendio a usar Scanner con ChatGPT
