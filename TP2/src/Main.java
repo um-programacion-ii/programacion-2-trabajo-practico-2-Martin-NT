@@ -66,11 +66,28 @@ public class Main {
                                 Consola.mostrarRecursos(recursos);
                                 break;
                             case 2:
+                                Consola.mostrarLibros(recursos);
+                                break;
+                            case 3:
+                                Consola.mostrarAudiolibros(recursos);
+                                break;
+                            case 4:
+                                Consola.mostrarRevistas(recursos);
+                                break;
+                            case 5:
+                                System.out.println("⚠️ Funcionalidad de préstamo aún no implementada.");
+                                break;
+                            case 6:
+                                System.out.println("⚠️ Funcionalidad de renovación aún no implementada.");
+                                break;
+                            case 7:
+                                // Salir al menú principal
                                 break;
                             default:
                                 System.out.println("⚠️ Opción inválida.");
                         }
-                    } while (opcionRecursos != 2);
+
+                    } while (opcionRecursos != 7);
                     break;
 
                 case 3:

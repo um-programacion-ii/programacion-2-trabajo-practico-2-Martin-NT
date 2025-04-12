@@ -29,7 +29,12 @@ public class Consola {
     public void mostrarMenuRecursos() {
         System.out.println("\n===== MENÚ RECURSOS =====");
         System.out.println("1. Ver todos los recursos");
-        System.out.println("2. Volver al menú principal");
+        System.out.println("2. Ver Libros");
+        System.out.println("3. Ver Audiolibros");
+        System.out.println("4. Ver Revistas");
+        System.out.println("5. Prestar recurso (no implementado)");
+        System.out.println("6. Renovar recurso (no implementado)");
+        System.out.println("7. Volver al menú principal");
         System.out.print("--> Seleccione una opción: ");
     }
 
@@ -44,7 +49,7 @@ public class Consola {
     public static void mostrarUsuarios(Usuario[] usuarios) {
         System.out.println("\n📋 Lista de usuarios:");
         for (Usuario u : usuarios) {
-            System.out.println(u);
+            System.out.println("\n" + u);
         }
     }
 
@@ -54,6 +59,34 @@ public class Consola {
             System.out.println("\n" + r);
         }
     }
+
+    public static void mostrarLibros(RecursoDigital[] recursos) {
+        System.out.println("\n📖 Libros disponibles:");
+        for (RecursoDigital r : recursos) {
+            if (r instanceof Libro) {
+                System.out.println("\n" + r);
+            }
+        }
+    }
+
+    public static void mostrarAudiolibros(RecursoDigital[] recursos) {
+        System.out.println("\n🎧 Audiolibros disponibles:");
+        for (RecursoDigital r : recursos) {
+            if (r instanceof Audiolibro) {
+                System.out.println("\n" + r);
+            }
+        }
+    }
+
+    public static void mostrarRevistas(RecursoDigital[] recursos) {
+        System.out.println("\n📰 Revistas disponibles:");
+        for (RecursoDigital r : recursos) {
+            if (r instanceof Revista) {
+                System.out.println("\n" + r);
+            }
+        }
+    }
+
 }
 
 // Nota: Se aprendio a usar Scanner con ChatGPT
