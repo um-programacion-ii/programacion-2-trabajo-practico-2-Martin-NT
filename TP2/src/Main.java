@@ -1,5 +1,8 @@
 import classes.*;
 import interfaces.*;
+import services.*;
+
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 
@@ -30,6 +33,20 @@ public class Main {
                         LocalDateTime.now().plusDays(7), 92, "Dangello Medina", "Español")
         };
 
+        // Crear instancias de los servicios de notificación
+        ServicioNotificaciones servicioEmail = new ServicioNotificacionesEmail();
+        ServicioNotificaciones servicioSMS = new ServicioNotificacionesSMS();
+
+        System.out.println("\n=== PRUEBAS DE NOTIFICACIONES ===");
+        // Enviar una notificación por correo electrónico
+        System.out.println("\n- Prueba del servicio email");
+        System.out.println("--> Enviando notificación por correo electrónico:");
+        servicioEmail.enviarNotificacion("--> ¡Tienes un nuevo mensaje!", usuarios[0]);
+
+        // Enviar una notificación por SMS (en este caso estamos simulando el correo como SMS)
+        System.out.println("\n- Prueba del servicio SMS");
+        System.out.println("--> Enviando notificación por SMS:");
+        servicioSMS.enviarNotificacion("--> ¡Tienes un nuevo mensaje!", usuarios[1]);
 
         Consola consola = new Consola();
         int opcionPrincipal;
