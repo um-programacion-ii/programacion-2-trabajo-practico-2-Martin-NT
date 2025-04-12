@@ -1,20 +1,25 @@
 package classes;
+import interfaces.Prestable;
 import interfaces.RecursoDigital;
+import java.time.LocalDateTime;
+import java.time.LocalDate;
 
-public abstract class RecursoBase implements RecursoDigital {
+public abstract class RecursoBase implements RecursoDigital, Prestable {
     private final String id;
     private String titulo;
     private String autor;
-    private String fechaPublicacion;
-    private String estado;
+    private LocalDate fechaPublicacion;
+    private EstadoRecurso estado;
+    private LocalDateTime fechaDevolucion;
 
     // Constructor
-    public RecursoBase(String id, String titulo, String autor, String fechaPublicacion, String estado) {
+    public RecursoBase(String id, String titulo, String autor, LocalDate fechaPublicacion, EstadoRecurso estado, LocalDateTime fechaDevolucion) {
         this.id = id;
         this.titulo = titulo;
         this.autor = autor;
         this.fechaPublicacion = fechaPublicacion;
         this.estado = estado;
+        this.fechaDevolucion = fechaDevolucion;
     }
 
     //Getters
@@ -31,12 +36,16 @@ public abstract class RecursoBase implements RecursoDigital {
         return autor;
     }
     @Override
-    public String getFechaPublicacion() {
+    public LocalDate getFechaPublicacion() {
         return fechaPublicacion;
     }
     @Override
-    public String getEstado() {
+    public EstadoRecurso getEstado() {
         return estado;
+    }
+    @Override
+    public LocalDateTime getFechaDevolucion() {
+        return fechaDevolucion;
     }
 
     //Setters
@@ -48,13 +57,15 @@ public abstract class RecursoBase implements RecursoDigital {
     public void setAutor(String autor) {
         this.autor = autor;
     }
-    @Override
-    public void setFechaPublicacion(String fechaPublicacion) {
+    public void setFechaPublicacion(LocalDate fechaPublicacion) {
         this.fechaPublicacion = fechaPublicacion;
     }
     @Override
-    public void setEstado(String estado) {
+    public void setEstado(EstadoRecurso estado) {
         this.estado = estado;
+    }
+    public void setFechaDevolucion(LocalDateTime fechaDevolucion) {
+        this.fechaDevolucion = fechaDevolucion;
     }
 
     // Metodo toString() que será sobrescrito en las clases hijas
@@ -65,5 +76,18 @@ public abstract class RecursoBase implements RecursoDigital {
                 " - Autor: " + autor + "\n" +
                 " - Fecha de Publicación: " + fechaPublicacion + "\n" +
                 " - Estado: " + estado + "\n";
+    }
+
+    // Definición del Enum EstadoRecurso dentro de la misma clase
+    public enum EstadoRecurso {
+        DISPONIBLE,
+        PRESTADO,
+        VENCIDO,
+        RESERVADO
+    }
+
+    @Override
+    public void actualizarEstado(EstadoRecurso estado) {
+        this.estado = estado;
     }
 }
