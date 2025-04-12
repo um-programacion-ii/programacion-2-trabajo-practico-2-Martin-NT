@@ -1,16 +1,18 @@
 package classes;
-import interfaces.RecursoDigital;
+import interfaces.Prestable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-public class Revista extends RecursoBase implements RecursoDigital {
+public class Revista extends RecursoBase implements Prestable {
     private int numeroEdicion;
     private String periodicidad;
     private String seccionPrincipal;
     private String editorial;
 
     //Constructor
-    public Revista(String id, String titulo, String autor, String fechaPublicacion, String estado,
+    public Revista(String id, String titulo, String autor, LocalDate fechaPublicacion, EstadoRecurso estado, LocalDateTime fechaDevolucion,
                    int numeroEdicion, String periodicidad, String seccionPrincipal, String editorial) {
-        super(id, titulo, autor, fechaPublicacion, estado);
+        super(id, titulo, autor, fechaPublicacion, estado, fechaDevolucion);
         this.numeroEdicion = numeroEdicion;
         this.periodicidad = periodicidad;
         this.seccionPrincipal = seccionPrincipal;
@@ -52,5 +54,24 @@ public class Revista extends RecursoBase implements RecursoDigital {
                 " - Periodicidad: " + periodicidad + "\n" +
                 " - Sección Principal: " + seccionPrincipal + "\n" +
                 " - Editorial: " + editorial + "\n";
+    }
+
+    // Implementación del metodo estaDisponible() desde Prestable
+    @Override
+    public boolean estaDisponible() {
+        // La revista está disponible si su estado es DISPONIBLE
+        return getEstado() == EstadoRecurso.DISPONIBLE;
+    }
+
+    // Implementación del metodo prestar() desde Prestable
+    @Override
+    public void prestar(Usuario usuario) {
+        if (estaDisponible()) {
+            // Si la revista está disponible, se cambia el estado a PRESTADO
+            setEstado(EstadoRecurso.PRESTADO);
+            System.out.println("La revista '" + getTitulo() + "' ha sido prestado a " + usuario.getNombre());
+        } else {
+            System.out.println("La revista '" + getTitulo() + "' no está disponible para préstamo.");
+        }
     }
 }
