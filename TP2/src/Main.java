@@ -11,8 +11,8 @@ public class Main {
     public static void main(String[] args) {
         // Crear usuarios de prueba
         Usuario[] usuarios = {
-                new Usuario("U001", "Martina Rizzotti", "martirizzotti@example.com"),
-                new Usuario("U002", "Valentina Rosales", "valerosales@example.com")
+                new Usuario("U001", "Martina Rizzotti", "martirizzotti@example.com", "martincho15", "2613245789"),
+                new Usuario("U002", "Valentina Rosales", "valerosales@example.com", "sanroman44", "2634257895")
         };
 
         // Crear recursos de prueba

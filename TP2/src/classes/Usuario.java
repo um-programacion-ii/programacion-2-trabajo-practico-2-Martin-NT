@@ -4,12 +4,16 @@ public class Usuario {
     private final String id;
     private String nombre;
     private String email;
+    private String password;
+    private String telefono;
 
     //Constructor
-    public Usuario(String id, String nombre, String email) {
+    public Usuario(String id, String nombre, String email, String password, String telefono) {
         this.id = id;
         this.nombre = nombre;
         this.email = email;
+        this.password = password;
+        this.telefono = telefono;
     }
 
     //Getters
@@ -22,13 +26,25 @@ public class Usuario {
     public String getEmail() {
         return email;
     }
+    public String getPassword() {
+        return password;
+    }
+    public String getTelefono() {
+        return telefono;
+    }
 
-    // Setters (permiten modificar nombre y email, no el id)
+    // Setters
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
     public void setEmail(String email) {
         this.email = email;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
     // Metodo para representar al usuario como string
@@ -36,7 +52,8 @@ public class Usuario {
     public String toString() {
         return "📘 Usuario ID: " + id + "\n" +
                 " - Nombre: " + nombre + "\n" +
-                " - Email: " + email;
+                " - Email: " + email + "\n" +
+                " - Telefono: " + telefono;
     }
 
 }

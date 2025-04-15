@@ -8,18 +8,9 @@ import interfaces.ServicioNotificaciones;
  */
 public class ServicioNotificacionesEmail implements ServicioNotificaciones {
 
-    //Implementación del metodo para enviar una notificación por email
-    @Override
-    public void notificar(String destinatario, String mensaje) {
-        //Simulo el envio del correo
-        System.out.println("Enviando correo a: " + destinatario);
-        System.out.println("Contenido del mensaje: " + mensaje);
-    }
-
-    //Implementación del metodo para enviar una notificación por correo a un usuario
     @Override
     public void enviarNotificacion(String mensaje, Usuario usuario) {
-        // Usamos el correo electrónico del usuario
-        notificar(usuario.getEmail(), mensaje);
+        System.out.println("Enviando correo a: " + usuario.getNombre() + " al correo: " + usuario.getEmail());
+        System.out.println("Contenido del mensaje: " + mensaje);
     }
 }
