@@ -24,4 +24,41 @@ public class GestorRecursos {
         return recursos;
     }
 
+    // Busca recursos cuyo título contenga el texto indicado (ignora mayúsculas/minúsculas).
+    public List<RecursoDigital> buscarPorTitulo(String titulo) {
+
+        // Creamos una lista vacía donde vamos a guardar los recursos que coincidan con la búsqueda
+        List<RecursoDigital> resultado = new ArrayList<>();
+
+        // Recorremos todos los recursos que tenemos guardados
+        for (RecursoDigital recurso : recursos) {
+            // Obtenemos el título del recurso y lo pasamos a minúsculas para que la búsqueda no sea sensible a mayúsculas/minúsculas
+            String tituloRecurso = recurso.getTitulo().toLowerCase();
+
+            // También convertimos el texto que el usuario está buscando a minúsculas
+            String tituloBuscado = titulo.toLowerCase();
+
+            // Verificamos si el título del recurso contiene el texto buscado
+            if (tituloRecurso.contains(tituloBuscado)) {
+                // Si coincide, lo agregamos a la lista de resultados
+                resultado.add(recurso);
+            }
+        }
+        // Devolvemos la lista con todos los recursos que coincidieron
+        return resultado;
+    }
+
+    // Muestra todos los recursos en consola.
+    public void mostrarRecursos() {
+        if (recursos.isEmpty()) {
+            System.out.println("No hay recursos disponibles.");
+        } else {
+            System.out.println("Listado de Recursos:");
+            for (RecursoDigital recurso : recursos) {
+                System.out.println("- " + recurso.getTitulo());
+            }
+        }
+    }
+
+
 }
