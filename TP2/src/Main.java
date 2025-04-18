@@ -1,5 +1,8 @@
 import classes.*;
 import interfaces.*;
+import java.time.LocalDateTime;
+import java.time.LocalDate;
+
 
 public class Main {
     public static void main(String[] args) {
@@ -11,10 +14,22 @@ public class Main {
 
         // Crear recursos de prueba
         RecursoDigital[] recursos = {
-                new Libro("L001", "Harry Potter", "J.K. Rowling", "2001-09-11", "Disponible", 256, "Fantasía", "Salamandra"),
-                new Revista("R001", "National Geographic", "Varios", "2025-04-10", "Disponible", 12, "Semanal", "Naturaleza", "NG Media"),
-                new Audiolibro("A001", "El Principito", "Antoine de Saint-Exupéry", "1943-04-06", "Disponible", 92, "Dangello Medina", "Español")
+                // Libro de ejemplo
+                new Libro("L001", "Harry Potter y la piedra filosofal", "J.K. Rowling",
+                        LocalDate.of(1997, 6, 26), RecursoBase.EstadoRecurso.DISPONIBLE,
+                        LocalDateTime.now().plusDays(10), 256, "Fantasía", "Salamandra"),
+
+                // Revista de ejemplo
+                new Revista("R001", "National Geographic", "Varios",
+                        LocalDate.of(2025, 4, 10), RecursoBase.EstadoRecurso.DISPONIBLE,
+                        LocalDateTime.now().plusDays(7), 100, "Mensual", "Ciencia y naturaleza", "National Geographic Society"),
+
+                // Audiolibro de ejemplo
+                new Audiolibro("A001", "El Principito", "Antoine de Saint-Exupéry",
+                        LocalDate.of(1943, 4, 6), RecursoBase.EstadoRecurso.DISPONIBLE,
+                        LocalDateTime.now().plusDays(7), 92, "Dangello Medina", "Español")
         };
+
 
         Consola consola = new Consola();
         int opcionPrincipal;
@@ -51,11 +66,28 @@ public class Main {
                                 Consola.mostrarRecursos(recursos);
                                 break;
                             case 2:
+                                Consola.mostrarLibros(recursos);
+                                break;
+                            case 3:
+                                Consola.mostrarAudiolibros(recursos);
+                                break;
+                            case 4:
+                                Consola.mostrarRevistas(recursos);
+                                break;
+                            case 5:
+                                System.out.println("⚠️ Funcionalidad de préstamo aún no implementada.");
+                                break;
+                            case 6:
+                                System.out.println("⚠️ Funcionalidad de renovación aún no implementada.");
+                                break;
+                            case 7:
+                                // Salir al menú principal
                                 break;
                             default:
                                 System.out.println("⚠️ Opción inválida.");
                         }
-                    } while (opcionRecursos != 2);
+
+                    } while (opcionRecursos != 7);
                     break;
 
                 case 3:

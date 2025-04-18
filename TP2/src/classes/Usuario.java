@@ -34,7 +34,7 @@ public class Usuario {
     // Metodo para representar al usuario como string
     @Override
     public String toString() {
-        return "📘 model.Usuario: " + id + "\n" +
+        return "📘 Usuario ID: " + id + "\n" +
                 " - Nombre: " + nombre + "\n" +
                 " - Email: " + email;
     }
