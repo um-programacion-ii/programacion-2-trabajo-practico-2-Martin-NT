@@ -1,9 +1,8 @@
 import java.util.Scanner;
+import java.util.List;
 import classes.*;
 import interfaces.*;
-/**
- * Clase encargada exclusivamente de la interacción con el usuario.
- */
+
 public class Consola {
     private final Scanner scanner;
 
@@ -53,14 +52,14 @@ public class Consola {
         }
     }
 
-    public static void mostrarRecursos(RecursoDigital[] recursos) {
+    public static void mostrarRecursos(List<RecursoDigital> recursos) {
         System.out.println("\n📚 Recursos disponibles:");
         for (RecursoDigital r : recursos) {
             System.out.println("\n" + r);
         }
     }
 
-    public static void mostrarLibros(RecursoDigital[] recursos) {
+    public static void mostrarLibros(List<RecursoDigital> recursos) {
         System.out.println("\n📖 Libros disponibles:");
         for (RecursoDigital r : recursos) {
             if (r instanceof Libro) {
@@ -69,7 +68,7 @@ public class Consola {
         }
     }
 
-    public static void mostrarAudiolibros(RecursoDigital[] recursos) {
+    public static void mostrarAudiolibros(List<RecursoDigital> recursos) {
         System.out.println("\n🎧 Audiolibros disponibles:");
         for (RecursoDigital r : recursos) {
             if (r instanceof Audiolibro) {
@@ -78,7 +77,7 @@ public class Consola {
         }
     }
 
-    public static void mostrarRevistas(RecursoDigital[] recursos) {
+    public static void mostrarRevistas(List<RecursoDigital> recursos) {
         System.out.println("\n📰 Revistas disponibles:");
         for (RecursoDigital r : recursos) {
             if (r instanceof Revista) {
@@ -86,7 +85,4 @@ public class Consola {
             }
         }
     }
-
 }
-
-// Nota: Se aprendio a usar Scanner con ChatGPT

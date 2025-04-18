@@ -14,14 +14,19 @@ public class GestorRecursos {
         this.recursos = new ArrayList<>();
     }
 
+    // Getter: Devuelve la lista completa de recursos
+    public List<RecursoDigital> getRecursos() {
+        return recursos;
+    }
+
     // Agrega un recurso a la lista
     public void agregarRecurso(RecursoDigital recurso) {
         recursos.add(recurso);
     }
 
-    // Getter: Devuelve la lista completa de recursos
-    public List<RecursoDigital> getRecursos() {
-        return recursos;
+    // Elimina un recurso por su ID
+    public void eliminarRecurso(String id) {
+        recursos.removeIf(recurso -> recurso.getId().equals(id));
     }
 
     // Busca recursos cuyo título contenga el texto indicado (ignora mayúsculas/minúsculas).
@@ -30,7 +35,6 @@ public class GestorRecursos {
         // Creamos una lista vacía donde vamos a guardar los recursos que coincidan con la búsqueda
         List<RecursoDigital> resultado = new ArrayList<>();
 
-        // Recorremos todos los recursos que tenemos guardados
         for (RecursoDigital recurso : recursos) {
             // Obtenemos el título del recurso y lo pasamos a minúsculas para que la búsqueda no sea sensible a mayúsculas/minúsculas
             String tituloRecurso = recurso.getTitulo().toLowerCase();
@@ -47,18 +51,5 @@ public class GestorRecursos {
         // Devolvemos la lista con todos los recursos que coincidieron
         return resultado;
     }
-
-    // Muestra todos los recursos en consola.
-    public void mostrarRecursos() {
-        if (recursos.isEmpty()) {
-            System.out.println("No hay recursos disponibles.");
-        } else {
-            System.out.println("Listado de Recursos:");
-            for (RecursoDigital recurso : recursos) {
-                System.out.println("- " + recurso.getTitulo());
-            }
-        }
-    }
-
 
 }

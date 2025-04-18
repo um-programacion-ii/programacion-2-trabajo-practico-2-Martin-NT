@@ -1,11 +1,8 @@
 import classes.*;
 import interfaces.*;
 import services.*;
-
-import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
-
 
 public class Main {
     public static void main(String[] args) {
@@ -15,37 +12,31 @@ public class Main {
                 new Usuario("U002", "Valentina Rosales", "valerosales@example.com", "sanroman44", "2634257895")
         };
 
-        // Crear recursos de prueba
-        RecursoDigital[] recursos = {
-                // Libro de ejemplo
-                new Libro("L001", "Harry Potter y la piedra filosofal", "J.K. Rowling",
-                        LocalDate.of(1997, 6, 26), RecursoBase.EstadoRecurso.DISPONIBLE,
-                        LocalDateTime.now().plusDays(10), 256, "Fantasía", "Salamandra"),
+        // Crear instancia de gestor y agregar recursos
+        GestorRecursos gestor = new GestorRecursos();
 
-                // Revista de ejemplo
-                new Revista("R001", "National Geographic", "Varios",
-                        LocalDate.of(2025, 4, 10), RecursoBase.EstadoRecurso.DISPONIBLE,
-                        LocalDateTime.now().plusDays(7), 100, "Mensual", "Ciencia y naturaleza", "National Geographic Society"),
+        // Agregar recursos al gesto?
+        gestor.agregarRecurso(new Libro("L001", "Harry Potter y la piedra filosofal", "J.K. Rowling",
+                LocalDate.of(1997, 6, 26), RecursoBase.EstadoRecurso.DISPONIBLE,
+                LocalDateTime.now().plusDays(10), 256, "Fantasía", "Salamandra"));
 
-                // Audiolibro de ejemplo
-                new Audiolibro("A001", "El Principito", "Antoine de Saint-Exupéry",
-                        LocalDate.of(1943, 4, 6), RecursoBase.EstadoRecurso.DISPONIBLE,
-                        LocalDateTime.now().plusDays(7), 92, "Dangello Medina", "Español")
-        };
+        gestor.agregarRecurso(new Revista("R001", "National Geographic", "Varios",
+                LocalDate.of(2025, 4, 10), RecursoBase.EstadoRecurso.DISPONIBLE,
+                LocalDateTime.now().plusDays(7), 100, "Mensual", "Ciencia y naturaleza", "National Geographic Society"));
 
-        // Crear instancias de los servicios de notificación
+        gestor.agregarRecurso(new Audiolibro("A001", "El Principito", "Antoine de Saint-Exupéry",
+                LocalDate.of(1943, 4, 6), RecursoBase.EstadoRecurso.DISPONIBLE,
+                LocalDateTime.now().plusDays(7), 92, "Dangello Medina", "Español"));
+
+        // Servicios de notificación
         ServicioNotificaciones servicioEmail = new ServicioNotificacionesEmail();
         ServicioNotificaciones servicioSMS = new ServicioNotificacionesSMS();
 
         System.out.println("\n=== PRUEBAS DE NOTIFICACIONES ===");
-        // Enviar una notificación por correo electrónico
         System.out.println("\n- Prueba del servicio email");
-        System.out.println("--> Enviando notificación por correo electrónico:");
         servicioEmail.enviarNotificacion("--> ¡Tienes un nuevo mensaje!", usuarios[0]);
 
-        // Enviar una notificación por SMS (en este caso estamos simulando el correo como SMS)
         System.out.println("\n- Prueba del servicio SMS");
-        System.out.println("--> Enviando notificación por SMS:");
         servicioSMS.enviarNotificacion("--> ¡Tienes un nuevo mensaje!", usuarios[1]);
 
         Consola consola = new Consola();
@@ -80,16 +71,16 @@ public class Main {
                         opcionRecursos = consola.leerOpcion();
                         switch (opcionRecursos) {
                             case 1:
-                                Consola.mostrarRecursos(recursos);
+                                Consola.mostrarRecursos(gestor.getRecursos());
                                 break;
                             case 2:
-                                Consola.mostrarLibros(recursos);
+                                Consola.mostrarLibros(gestor.getRecursos());
                                 break;
                             case 3:
-                                Consola.mostrarAudiolibros(recursos);
+                                Consola.mostrarAudiolibros(gestor.getRecursos());
                                 break;
                             case 4:
-                                Consola.mostrarRevistas(recursos);
+                                Consola.mostrarRevistas(gestor.getRecursos());
                                 break;
                             case 5:
                                 System.out.println("⚠️ Funcionalidad de préstamo aún no implementada.");
@@ -98,7 +89,6 @@ public class Main {
                                 System.out.println("⚠️ Funcionalidad de renovación aún no implementada.");
                                 break;
                             case 7:
-                                // Salir al menú principal
                                 break;
                             default:
                                 System.out.println("⚠️ Opción inválida.");
@@ -116,5 +106,6 @@ public class Main {
         } while (opcionPrincipal != 3);
     }
 }
+
 
 // Nota: Se aprendio a usar Scanner con ChatGPT
