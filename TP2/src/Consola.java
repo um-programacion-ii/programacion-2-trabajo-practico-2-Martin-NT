@@ -1,5 +1,6 @@
 import java.util.Scanner;
 import java.util.List;
+import java.util.Map;
 import classes.*;
 import interfaces.*;
 
@@ -21,7 +22,8 @@ public class Consola {
     public void mostrarMenuUsuarios() {
         System.out.println("\n===== MENÚ USUARIOS =====");
         System.out.println("1. Ver usuarios");
-        System.out.println("2. Volver al menú principal");
+        System.out.println("2. Buscar usuario por ID");
+        System.out.println("3. Volver al menú principal");
         System.out.print("--> Seleccione una opción: ");
     }
 
@@ -31,9 +33,10 @@ public class Consola {
         System.out.println("2. Ver Libros");
         System.out.println("3. Ver Audiolibros");
         System.out.println("4. Ver Revistas");
-        System.out.println("5. Prestar recurso (no implementado)");
-        System.out.println("6. Renovar recurso (no implementado)");
-        System.out.println("7. Volver al menú principal");
+        System.out.println("5. Buscar recurso por título");
+        System.out.println("6. Prestar recurso (no implementado)");
+        System.out.println("7. Renovar recurso (no implementado)");
+        System.out.println("8. Volver al menú principal");
         System.out.print("--> Seleccione una opción: ");
     }
 
@@ -45,9 +48,13 @@ public class Consola {
         }
     }
 
-    public static void mostrarUsuarios(Usuario[] usuarios) {
+    public String leerTexto() {
+        return scanner.nextLine();
+    }
+
+    public static void mostrarUsuarios(Map<String, Usuario> usuarios) {
         System.out.println("\n📋 Lista de usuarios:");
-        for (Usuario u : usuarios) {
+        for (Usuario u : usuarios.values()) {
             System.out.println("\n" + u);
         }
     }

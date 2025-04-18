@@ -3,19 +3,17 @@ import interfaces.*;
 import services.*;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        // Crear usuarios de prueba
-        Usuario[] usuarios = {
-                new Usuario("U001", "Martina Rizzotti", "martirizzotti@example.com", "martincho15", "2613245789"),
-                new Usuario("U002", "Valentina Rosales", "valerosales@example.com", "sanroman44", "2634257895")
-        };
+        // Crear gestor de usuarios y agregar usuarios de prueba
+        GestorUsuarios gestorUsuarios = new GestorUsuarios();
+        gestorUsuarios.agregarUsuario(new Usuario("U001", "Martina Rizzotti", "martirizzotti@example.com", "martincho15", "2613245789"));
+        gestorUsuarios.agregarUsuario(new Usuario("U002", "Valentina Rosales", "valerosales@example.com", "sanroman44", "2634257895"));
 
-        // Crear instancia de gestor y agregar recursos
+        // Crear gestor de recursos y agregar recursos
         GestorRecursos gestor = new GestorRecursos();
-
-        // Agregar recursos al gesto?
         gestor.agregarRecurso(new Libro("L001", "Harry Potter y la piedra filosofal", "J.K. Rowling",
                 LocalDate.of(1997, 6, 26), RecursoBase.EstadoRecurso.DISPONIBLE,
                 LocalDateTime.now().plusDays(10), 256, "Fantasía", "Salamandra"));
@@ -34,10 +32,10 @@ public class Main {
 
         System.out.println("\n=== PRUEBAS DE NOTIFICACIONES ===");
         System.out.println("\n- Prueba del servicio email");
-        servicioEmail.enviarNotificacion("--> ¡Tienes un nuevo mensaje!", usuarios[0]);
+        servicioEmail.enviarNotificacion("--> ¡Tienes un nuevo mensaje!", gestorUsuarios.obtenerUsuarioPorId("U001"));
 
         System.out.println("\n- Prueba del servicio SMS");
-        servicioSMS.enviarNotificacion("--> ¡Tienes un nuevo mensaje!", usuarios[1]);
+        servicioSMS.enviarNotificacion("--> ¡Tienes un nuevo mensaje!", gestorUsuarios.obtenerUsuarioPorId("U002"));
 
         Consola consola = new Consola();
         int opcionPrincipal;
@@ -54,14 +52,24 @@ public class Main {
                         opcionUsuarios = consola.leerOpcion();
                         switch (opcionUsuarios) {
                             case 1:
-                                Consola.mostrarUsuarios(usuarios);
+                                Consola.mostrarUsuarios(gestorUsuarios.getUsuarios());
                                 break;
                             case 2:
+                                System.out.print("🔎 Ingrese el ID del usuario a buscar: ");
+                                String idBuscado = consola.leerTexto();
+                                Usuario usuarioEncontrado = gestorUsuarios.obtenerUsuarioPorId(idBuscado);
+                                if (usuarioEncontrado != null) {
+                                    System.out.println("✅ Usuario encontrado:\n" + usuarioEncontrado);
+                                } else {
+                                    System.out.println("❌ Usuario no encontrado.");
+                                }
+                                break;
+                            case 3:
                                 break;
                             default:
                                 System.out.println("⚠️ Opción inválida.");
                         }
-                    } while (opcionUsuarios != 2);
+                    } while (opcionUsuarios != 3);
                     break;
 
                 case 2:
@@ -83,18 +91,24 @@ public class Main {
                                 Consola.mostrarRevistas(gestor.getRecursos());
                                 break;
                             case 5:
-                                System.out.println("⚠️ Funcionalidad de préstamo aún no implementada.");
+                                System.out.print("🔎 Ingrese parte del título a buscar: ");
+                                String tituloBuscado = consola.leerTexto();
+                                List<RecursoDigital> encontrados = gestor.buscarPorTitulo(tituloBuscado);
+                                Consola.mostrarRecursos(encontrados);
                                 break;
                             case 6:
-                                System.out.println("⚠️ Funcionalidad de renovación aún no implementada.");
+                                System.out.println("⚠️ Funcionalidad de préstamo aún no implementada.");
                                 break;
                             case 7:
+                                System.out.println("⚠️ Funcionalidad de renovación aún no implementada.");
+                                break;
+                            case 8:
                                 break;
                             default:
                                 System.out.println("⚠️ Opción inválida.");
                         }
 
-                    } while (opcionRecursos != 7);
+                    } while (opcionRecursos != 8);
                     break;
 
                 case 3:
@@ -106,6 +120,3 @@ public class Main {
         } while (opcionPrincipal != 3);
     }
 }
-
-
-// Nota: Se aprendio a usar Scanner con ChatGPT
