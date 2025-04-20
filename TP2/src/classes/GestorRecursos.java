@@ -1,11 +1,14 @@
 package classes;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import interfaces.RecursoDigital;
+import Enum.CategoriaRecurso;
 /**
  * Clase responsable de gestionar los recursos digitales.
  */
 public class GestorRecursos {
+
     // Lista para almacenar los recursos digitales
     private List<RecursoDigital> recursos = new ArrayList<>();
 
@@ -19,14 +22,22 @@ public class GestorRecursos {
         return recursos;
     }
 
-    // Agrega un recurso a la lista
+    // Metodo que agrega un recurso a la lista
     public void agregarRecurso(RecursoDigital recurso) {
         recursos.add(recurso);
     }
 
-    // Elimina un recurso por su ID
+    // Metodo que elimina un recurso por su ID
     public void eliminarRecurso(String id) {
         recursos.removeIf(recurso -> recurso.getId().equals(id));
+    }
+
+    // Metodo para mostrar las categorias disponibles al usuario
+    public void mostrarCategoriasDisponibles() {
+        System.out.println("\n📝 Categorías de recursos disponibles:");
+        for (CategoriaRecurso categoria : CategoriaRecurso.values()) {
+            System.out.println("- " + categoria);
+        }
     }
 
     // Busca recursos cuyo título contenga el texto indicado (ignora mayúsculas/minúsculas).

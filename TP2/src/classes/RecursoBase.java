@@ -1,6 +1,8 @@
 package classes;
 import interfaces.Prestable;
 import interfaces.RecursoDigital;
+import Enum.EstadoRecurso;
+import Enum.CategoriaRecurso;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 
@@ -11,15 +13,19 @@ public abstract class RecursoBase implements RecursoDigital, Prestable {
     private LocalDate fechaPublicacion;
     private EstadoRecurso estado;
     private LocalDateTime fechaDevolucion;
+    private CategoriaRecurso categoria;
 
     // Constructor
-    public RecursoBase(String id, String titulo, String autor, LocalDate fechaPublicacion, EstadoRecurso estado, LocalDateTime fechaDevolucion) {
+    public RecursoBase(String id, String titulo, String autor,
+                       LocalDate fechaPublicacion, EstadoRecurso estado,
+                       LocalDateTime fechaDevolucion, CategoriaRecurso categoria) {
         this.id = id;
         this.titulo = titulo;
         this.autor = autor;
         this.fechaPublicacion = fechaPublicacion;
         this.estado = estado;
         this.fechaDevolucion = fechaDevolucion;
+        this.categoria = categoria;
     }
 
     //Getters
@@ -47,6 +53,10 @@ public abstract class RecursoBase implements RecursoDigital, Prestable {
     public LocalDateTime getFechaDevolucion() {
         return fechaDevolucion;
     }
+    @Override
+    public CategoriaRecurso getCategoria() {
+        return categoria;
+    }
 
     //Setters
     @Override
@@ -67,23 +77,20 @@ public abstract class RecursoBase implements RecursoDigital, Prestable {
     public void setFechaDevolucion(LocalDateTime fechaDevolucion) {
         this.fechaDevolucion = fechaDevolucion;
     }
+    @Override
+    public void setCategoria(CategoriaRecurso categoria) {
+        this.categoria = categoria;
+    }
 
     // Metodo toString() que será sobrescrito en las clases hijas
     @Override
     public String toString() {
         return " - Recurso ID: " + id + "\n" +
+                "- Categoría: " + categoria + "\n" +
                 " - Título: " + titulo + "\n" +
                 " - Autor: " + autor + "\n" +
                 " - Fecha de Publicación: " + fechaPublicacion + "\n" +
                 " - Estado: " + estado + "\n";
-    }
-
-    // Definición del Enum EstadoRecurso dentro de la misma clase
-    public enum EstadoRecurso {
-        DISPONIBLE,
-        PRESTADO,
-        VENCIDO,
-        RESERVADO
     }
 
     @Override

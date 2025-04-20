@@ -29,14 +29,15 @@ public class Consola {
 
     public void mostrarMenuRecursos() {
         System.out.println("\n===== MENÚ RECURSOS =====");
-        System.out.println("1. Ver todos los recursos");
-        System.out.println("2. Ver Libros");
-        System.out.println("3. Ver Audiolibros");
-        System.out.println("4. Ver Revistas");
-        System.out.println("5. Buscar recurso por título");
-        System.out.println("6. Prestar recurso (no implementado)");
-        System.out.println("7. Renovar recurso (no implementado)");
-        System.out.println("8. Volver al menú principal");
+        System.out.println("1. Mostrar categorías disponibles");
+        System.out.println("2. Ver todos los recursos (Se modificara)");
+        System.out.println("3. Ver Libros (Se modificara)");
+        System.out.println("4. Ver Audiolibros (Se modificara)");
+        System.out.println("5. Ver Revistas (Se modificara)");
+        System.out.println("6. Buscar recurso por título (Se modificara)");
+        System.out.println("7. Prestar recurso (no implementado)");
+        System.out.println("8. Renovar recurso (no implementado)");
+        System.out.println("9. Volver al menú principal");
         System.out.print("--> Seleccione una opción: ");
     }
 
@@ -52,6 +53,7 @@ public class Consola {
         return scanner.nextLine();
     }
 
+    // Se implementará en los Gestores correspondientes
     public static void mostrarUsuarios(Map<String, Usuario> usuarios) {
         System.out.println("\n📋 Lista de usuarios:");
         for (Usuario u : usuarios.values()) {

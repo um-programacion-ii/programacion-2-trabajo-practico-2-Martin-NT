@@ -1,5 +1,7 @@
 package classes;
 import interfaces.Prestable;
+import Enum.EstadoRecurso;
+import Enum.CategoriaRecurso;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -10,9 +12,11 @@ public class Revista extends RecursoBase implements Prestable {
     private String editorial;
 
     //Constructor
-    public Revista(String id, String titulo, String autor, LocalDate fechaPublicacion, EstadoRecurso estado, LocalDateTime fechaDevolucion,
-                   int numeroEdicion, String periodicidad, String seccionPrincipal, String editorial) {
-        super(id, titulo, autor, fechaPublicacion, estado, fechaDevolucion);
+    public Revista(String id, String titulo, String autor, LocalDate fechaPublicacion,
+                   EstadoRecurso estado, LocalDateTime fechaDevolucion, CategoriaRecurso categoria,
+                   int numeroEdicion, String periodicidad, String seccionPrincipal,
+                   String editorial) {
+        super(id, titulo, autor, fechaPublicacion, estado, fechaDevolucion, categoria);
         this.numeroEdicion = numeroEdicion;
         this.periodicidad = periodicidad;
         this.seccionPrincipal = seccionPrincipal;

@@ -1,5 +1,6 @@
 package interfaces;
-import classes.RecursoBase.EstadoRecurso;
+import Enum.EstadoRecurso;
+import Enum.CategoriaRecurso;
 import java.time.LocalDate;
 /**
    Interfaz que define el contrato para todos los recursos digitales.
@@ -16,6 +17,7 @@ public interface RecursoDigital {
     String getAutor();
     LocalDate getFechaPublicacion();
     EstadoRecurso getEstado();
+    CategoriaRecurso getCategoria();
     void actualizarEstado(EstadoRecurso estado);
 
     //Setters - Métodos para modificar información del recurso
@@ -23,6 +25,7 @@ public interface RecursoDigital {
     void setAutor(String autor);
     void setFechaPublicacion(LocalDate fechaPublicacion);
     void setEstado(EstadoRecurso estado);
+    void setCategoria(CategoriaRecurso categoria);
 
     // Metodo común para mostrar información
     String toString();

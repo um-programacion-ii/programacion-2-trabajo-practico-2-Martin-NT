@@ -1,6 +1,8 @@
 package classes;
 import interfaces.Prestable;
 import interfaces.Renovable;
+import Enum.EstadoRecurso;
+import Enum.CategoriaRecurso;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -11,8 +13,10 @@ public class Libro extends RecursoBase implements Prestable, Renovable {
     private String editorial;
 
     //Constructor
-    public Libro(String id, String titulo, String autor, LocalDate fechaPublicacion, EstadoRecurso estado, LocalDateTime fechaDevolucion, int paginas, String genero, String editorial) {
-        super(id, titulo, autor, fechaPublicacion, estado, fechaDevolucion);
+    public Libro(String id, String titulo, String autor, LocalDate fechaPublicacion,
+                 EstadoRecurso estado, LocalDateTime fechaDevolucion,
+                 CategoriaRecurso categoria, int paginas, String genero, String editorial) {
+        super(id, titulo, autor, fechaPublicacion, estado, fechaDevolucion, categoria);
         this.paginas = paginas;
         this.genero = genero;
         this.editorial = editorial;
