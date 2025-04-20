@@ -4,7 +4,6 @@ import services.*;
 import Enum.*;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -14,18 +13,18 @@ public class Main {
         gestorUsuarios.agregarUsuario(new Usuario("U002", "Valentina Rosales", "valerosales@example.com", "sanroman44", "2634257895"));
 
         // Crear gestor de recursos y agregar recursos
-        GestorRecursos gestor = new GestorRecursos();
-        gestor.agregarRecurso(new Libro("L001", "Harry Potter y la piedra filosofal", "J.K. Rowling",
+        GestorRecursos gestorRecursos = new GestorRecursos();
+        gestorRecursos.agregarRecurso(new Libro("L001", "Harry Potter y la piedra filosofal", "J.K. Rowling",
                 LocalDate.of(1997, 6, 26), EstadoRecurso.DISPONIBLE,
-                LocalDateTime.now().plusDays(10), CategoriaRecurso.LIBRO,256, "Fantasía", "Salamandra"));
+                LocalDateTime.now().plusDays(10), CategoriaRecurso.LIBRO, 256, "Fantasía", "Salamandra"));
 
-        gestor.agregarRecurso(new Revista("R001", "National Geographic", "Varios",
+        gestorRecursos.agregarRecurso(new Revista("R001", "National Geographic", "Varios",
                 LocalDate.of(2025, 4, 10), EstadoRecurso.DISPONIBLE,
                 LocalDateTime.now().plusDays(7), CategoriaRecurso.REVISTA, 100, "Mensual", "Ciencia y naturaleza", "National Geographic Society"));
 
-        gestor.agregarRecurso(new Audiolibro("A001", "El Principito", "Antoine de Saint-Exupéry",
+        gestorRecursos.agregarRecurso(new Audiolibro("A001", "El Principito", "Antoine de Saint-Exupéry",
                 LocalDate.of(1943, 4, 6), EstadoRecurso.DISPONIBLE,
-                LocalDateTime.now().plusDays(7), CategoriaRecurso.AUDIOLIBRO,92, "Dangello Medina", "Español"));
+                LocalDateTime.now().plusDays(7), CategoriaRecurso.AUDIOLIBRO, 92, "Dangello Medina", "Español"));
 
         // Servicios de notificación
         ServicioNotificaciones servicioEmail = new ServicioNotificacionesEmail();
@@ -80,43 +79,116 @@ public class Main {
                         opcionRecursos = consola.leerOpcion();
                         switch (opcionRecursos) {
                             case 1:
-                                gestor.mostrarCategoriasDisponibles();
+                                gestorRecursos.mostrarRecursos();
                                 break;
-                            case 2:
-                                Consola.mostrarRecursos(gestor.getRecursos());
+
+                            case 2: // MOSTRAR POR CATEGORÍA
+                                gestorRecursos.mostrarCategoriasDisponibles();
+                                int opcionFiltro;
+                                do {
+                                    consola.mostrarMenuFiltradoPorCategoria();
+                                    opcionFiltro = consola.leerOpcion();
+                                    switch (opcionFiltro) {
+                                        case 1:
+                                            gestorRecursos.filtrarLibros();
+                                            break;
+                                        case 2:
+                                            gestorRecursos.filtrarAudiolibros();
+                                            break;
+                                        case 3:
+                                            gestorRecursos.filtrarRevistas();
+                                            break;
+                                        case 4:
+                                            System.out.println("↩️ Volviendo al Menú de Recursos...");
+                                            break;
+                                        default:
+                                            System.out.println("⚠️ Opción inválida.");
+                                    }
+                                } while (opcionFiltro != 4);
                                 break;
-                            case 3:
-                                Consola.mostrarLibros(gestor.getRecursos());
+
+                            case 3: // BUSCAR
+                                int opcionBusqueda;
+                                do {
+                                    consola.mostrarMenuBusqueda();
+                                    opcionBusqueda = consola.leerOpcion();
+                                    switch (opcionBusqueda) {
+                                        case 1:
+                                            System.out.print("--> 🔎 Ingrese el título a buscar: ");
+                                            String titulo = consola.leerTexto();
+                                            gestorRecursos.buscarPorTitulo(titulo);
+                                            break;
+                                        case 2:
+                                            System.out.print("--> 🔎 Ingrese categoría (LIBRO, REVISTA, AUDIOLIBRO): ");
+                                            String cat = consola.leerTexto().toUpperCase();
+                                            try {
+                                                CategoriaRecurso categoria = CategoriaRecurso.valueOf(cat);
+                                                gestorRecursos.buscarPorCategoria(categoria);
+                                            } catch (IllegalArgumentException e) {
+                                                System.out.println("⚠️ Categoría no válida.");
+                                            }
+                                            break;
+                                        case 3:
+                                            System.out.println("↩️ Volviendo al Menú de Recursos...");
+                                            break;
+                                        default:
+                                            System.out.println("⚠️ Opción inválida.");
+                                    }
+                                } while (opcionBusqueda != 3);
                                 break;
-                            case 4:
-                                Consola.mostrarAudiolibros(gestor.getRecursos());
+
+                            case 4: // ORDENAR
+                                int opcionOrden;
+                                do {
+                                    consola.mostrarMenuOrdenar();
+                                    opcionOrden = consola.leerOpcion();
+                                    switch (opcionOrden) {
+                                        case 1:
+                                            gestorRecursos.ordenarYMostrarPorTitulo();
+                                            break;
+                                        case 2:
+                                            gestorRecursos.ordenarYMostrarPorFecha();
+                                            break;
+                                        case 3:
+                                            System.out.println("↩️ Volviendo al Menú de Recursos...");
+                                            break;
+                                        default:
+                                            System.out.println("⚠️ Opción inválida.");
+                                    }
+                                } while (opcionOrden != 3);
                                 break;
-                            case 5:
-                                Consola.mostrarRevistas(gestor.getRecursos());
+
+                            case 5: // CREAR
+                                consola.mostrarMenuCrearRecurso();
+                                int tipoRecurso = consola.leerOpcion();
+                                if (tipoRecurso >= 1 && tipoRecurso <= 3) {
+                                    consola.crearRecurso(tipoRecurso, gestorRecursos);
+                                } else if (tipoRecurso == 4) {
+                                    System.out.println("↩️ Volviendo al menú de recursos...");
+                                } else {
+                                    System.out.println("❌ Opción no válida.");
+                                }
                                 break;
+
+
                             case 6:
-                                System.out.print("🔎 Ingrese parte del título a buscar: ");
-                                String tituloBuscado = consola.leerTexto();
-                                List<RecursoDigital> encontrados = gestor.buscarPorTitulo(tituloBuscado);
-                                Consola.mostrarRecursos(encontrados);
+                                System.out.println("⚠️ Funcionalidad de eliminar recurso aún no implementada.");
                                 break;
+
                             case 7:
-                                System.out.println("⚠️ Funcionalidad de préstamo aún no implementada.");
+                                System.out.println("↩️ Volviendo al Menú Principal...");
                                 break;
-                            case 8:
-                                System.out.println("⚠️ Funcionalidad de renovación aún no implementada.");
-                                break;
-                            case 9:
-                                break;
+
                             default:
                                 System.out.println("⚠️ Opción inválida.");
                         }
-                    } while (opcionRecursos != 9);
+                    } while (opcionRecursos != 7);
                     break;
 
                 case 3:
-                    System.out.println("👋 Saliendo del sistema. ¡Hasta luego!");
+                    System.out.println("Saliendo del programa...");
                     break;
+
                 default:
                     System.out.println("⚠️ Opción inválida.");
             }
