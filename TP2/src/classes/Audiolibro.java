@@ -1,7 +1,8 @@
 package classes;
 import interfaces.Prestable;
 import interfaces.Renovable;
-
+import Enum.EstadoRecurso;
+import Enum.CategoriaRecurso;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -11,8 +12,11 @@ public class Audiolibro extends RecursoBase implements Prestable, Renovable {
     private String idioma;
 
     //Constructor
-    public Audiolibro(String id, String titulo, String autor, LocalDate fechaPublicacion, EstadoRecurso estado, LocalDateTime fechaDevolucion, int duracionMinutos, String narrador, String idioma) {
-        super(id, titulo, autor, fechaPublicacion, estado, fechaDevolucion);
+    public Audiolibro(String id, String titulo, String autor, LocalDate fechaPublicacion,
+                      EstadoRecurso estado, LocalDateTime fechaDevolucion,
+                      CategoriaRecurso categoria, int duracionMinutos, String narrador,
+                      String idioma) {
+        super(id, titulo, autor, fechaPublicacion, estado, fechaDevolucion, categoria);
         this.duracionMinutos = duracionMinutos;
         this.narrador = narrador;
         this.idioma = idioma;
