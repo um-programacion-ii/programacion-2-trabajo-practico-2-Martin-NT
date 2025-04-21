@@ -4,8 +4,8 @@ import java.util.Scanner;
 import Excepciones.RecursoNoDisponibleException;
 import Excepciones.UsuarioNoEncontradoException;
 import classes.*;
-import interfaces.*;
-import Enum.*;
+import Interfaces.*;
+import Enums.*;
 
 public class Consola {
     private final Scanner scanner;
@@ -18,8 +18,9 @@ public class Consola {
         System.out.println("\n===== MENÚ PRINCIPAL =====");
         System.out.println("1. Usuarios");
         System.out.println("2. Recursos");
-        System.out.println("3. Pruebas");
-        System.out.println("4. Salir");
+        System.out.println("3. Préstamos");
+        System.out.println("4. Pruebas");
+        System.out.println("5. Salir");
         System.out.print("--> Seleccione una opción: ");
     }
 
@@ -247,6 +248,16 @@ public class Consola {
             System.out.println(e.getMessage()); // Mensaje amigable
         }
     }
+
+    public void mostrarMenuPrestamos() {
+        System.out.println("\n===== MENÚ DE PRÉSTAMOS =====");
+        System.out.println("1. Realizar préstamo");
+        System.out.println("2. Ver préstamos activos");
+        System.out.println("3. Devolver recurso");
+        System.out.println("4. Volver al menú principal");
+        System.out.print("--> Seleccione una opción: ");
+    }
+
 
     public int leerOpcion() {
         try {

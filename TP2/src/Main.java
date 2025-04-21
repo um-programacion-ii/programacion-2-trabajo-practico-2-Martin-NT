@@ -1,10 +1,10 @@
 import Excepciones.RecursoNoDisponibleException;
 import Excepciones.UsuarioNoEncontradoException;
 import classes.*;
-import interfaces.*;
-import services.*;
-import Enum.*;
-import java.time.LocalDateTime;
+import Interfaces.*;
+import Services.*;
+import Enums.*;
+
 import java.time.LocalDate;
 
 public class Main {
@@ -13,6 +13,8 @@ public class Main {
         GestorUsuarios gestorUsuarios = new GestorUsuarios();
         // Crear gestor de recursos
         GestorRecursos gestorRecursos = new GestorRecursos();
+        // Crear gestor de prestamos
+        GestorPrestamos gestorPrestamos = new GestorPrestamos();
 
         // Crear Usuarios
         Usuario usuario1 = new Usuario("U001", "Martina", "Rizzotti", "martirizzotti@example.com", "martincho15", "2613245789");
@@ -40,6 +42,10 @@ public class Main {
         gestorRecursos.agregarRecurso(libro1);
         gestorRecursos.agregarRecurso(revista1);
         gestorRecursos.agregarRecurso(audiolibro1);
+
+        // Crear instancias de los servicios de notificación
+        ServicioNotificaciones servicioEmail = new ServicioNotificacionesEmail();
+        ServicioNotificaciones servicioSMS = new ServicioNotificacionesSMS();
 
         // Crear Prestamos
         LocalDate fechaPrestamo = LocalDate.now();
@@ -310,47 +316,85 @@ public class Main {
                     } while (opcionRecursos != 7);
                     break;
 
-                case 3: // PREUBAS
-                    System.out.println("\n==== PRUEBAS DE NOTIFICACIONES ====");
-                    // Prueba 1: Creación del Prestamo
-                    System.out.println("\n=== PRUEBA 1: Creación de préstamo ===");
-                    System.out.println(prestamo1);
+                case 3:  // Menú de Préstamos
+                    int opcionPrestamo;
+                    do {
+                        consola.mostrarMenuPrestamos();  // Mostrar el menú de préstamos
+                        opcionPrestamo = consola.leerOpcion();  // Leer la opción seleccionada
 
-                    // Prueba 2: Realizar préstamo
-                    System.out.println("\n=== PRUEBA 2: Realizar préstamo ===");
-                    try {
-                        prestamo1.realizarPrestamo();
-                    } catch (RecursoNoDisponibleException e) {
-                        System.out.println(e.getMessage());
-                    }
-                    System.out.println("\n" + libro1);
+                        switch (opcionPrestamo) {
+                            case 1: // Realizar un préstamo
+                                // Solicitar los datos para el préstamo
+                                System.out.print("--> Ingrese el ID del usuario que realizará el préstamo: ");
+                                String idUsuario = consola.leerTexto();
+                                Usuario usuarioPrestamo = null;
+                                try {
+                                    usuarioPrestamo = gestorUsuarios.obtenerUsuarioPorId(idUsuario);  // Esto puede lanzar la excepción UsuarioNoEncontradoException
+                                } catch (UsuarioNoEncontradoException e) {
+                                    System.out.println("❌ " + e.getMessage());
+                                    break;  // Salir del case 1 si el usuario no se encuentra
+                                }
 
-                    // Prueba 3: Validar que no se puede realizar un préstamo si el recurso ya está prestado
-                    System.out.println("\n=== PRUEBA 3: Intentar prestar un recurso ya prestado ===");
-                    Prestamo prestamo2 = new Prestamo(usuario1, libro1, fechaPrestamo, fechaDevolucion, activo); // Intentar nuevo préstamo con el mismo libro
-                    try {
-                        prestamo2.realizarPrestamo();
-                    } catch (RecursoNoDisponibleException e) {
-                        System.out.println(e.getMessage());  // Debe lanzar error porque el libro ya está prestado
-                    }
+                                if (usuarioPrestamo == null) {
+                                    System.out.println("❌ Usuario no encontrado.");
+                                    break;  // Salir del case 1 si el usuario no se encuentra
+                                }
 
-                    // PRUEBA 4: Devolver el recurso
-                    System.out.println("\n=== PRUEBA 4: Devolver el recurso ===");
-                    prestamo1.devolverRecurso();
-                    System.out.println("\n" + libro1);  // Verificar que el estado del libro cambió a DISPONIBLE
+                                System.out.print("--> Ingrese el ID del recurso que desea prestar: ");
+                                String idRecurso = consola.leerTexto();
+                                RecursoDigital recursoPrestamo = null;
+                                try {
+                                    recursoPrestamo = gestorRecursos.obtenerRecursoPorId(idRecurso);  // Esto también puede lanzar una excepción
+                                } catch (RecursoNoDisponibleException e) {
+                                    System.out.println("❌ " + e.getMessage());
+                                    break;  // Salir del case 1 si el recurso no se encuentra
+                                }
 
-                    // PRUEBA 5: Verificar la fecha de devolución
-                    System.out.println("\n=== PRUEBA 5: Verificar fecha de devolución ===");
-                    System.out.println("\n--> Fecha de devolución prevista: " + prestamo1.getFechaDevolucion());
+                                if (recursoPrestamo == null) {
+                                    System.out.println("❌ Recurso no encontrado.");
+                                    break;  // Salir del case 1 si el recurso no se encuentra
+                                }
 
-                    // PRUEBA 6: Intentar devolver el recurso nuevamente (no debería permitir)
-                    System.out.println("\n=== PRUEBA 6: Intentar devolver un recurso ya devuelto ===");
-                    prestamo1.devolverRecurso();  // Debería decir que el recurso ya fue devuelto
+                                // Llamar al metodo realizarPrestamo del GestorPrestamos
+                                try {
+                                    gestorPrestamos.realizarPrestamo(usuarioPrestamo, recursoPrestamo);
+                                } catch (RecursoNoDisponibleException e) {
+                                    System.out.println("❌ " + e.getMessage());
+                                }
+                                break;
 
-                    // Servicios de notificación
-                    ServicioNotificaciones servicioEmail = new ServicioNotificacionesEmail();
-                    ServicioNotificaciones servicioSMS = new ServicioNotificacionesSMS();
+                            case 2: // Ver préstamos activos
+                                System.out.println("\n📋 Mostrando préstamos activos...");
+                                gestorPrestamos.mostrarPrestamosActivos();
+                                break;
 
+                            case 3: // Devolver recurso
+                                System.out.print("Ingrese el ID del usuario que devuelve el recurso: ");
+                                String idUsuarioDev = consola.leerTexto();
+
+                                // Intentamos obtener el usuario desde el gestor
+                                Usuario usuarioDev = null;
+                                try {
+                                    usuarioDev = gestorUsuarios.obtenerUsuarioPorId(idUsuarioDev);
+                                } catch (UsuarioNoEncontradoException e) {
+                                    // Si no se encuentra el usuario, mostramos el error y salimos del case
+                                    System.out.println("❌ " + e.getMessage());
+                                    break;
+                                }
+
+                            case 4:
+                                System.out.println("↩️ Volviendo al Menú Principal...");
+                                break;
+
+                            default:
+                                System.out.println("⚠️ Opción inválida.");
+
+                        }
+                    } while (opcionPrestamo != 4);  // Continuar mostrando el menú hasta que el usuario elija salir
+                    break;
+
+
+                case 4: // PRUEBAS
                     System.out.println("\n==== PRUEBAS DE NOTIFICACIONES ====");
                     try {
                         System.out.println("\n- Prueba del servicio email");
@@ -361,14 +405,15 @@ public class Main {
                     } catch (UsuarioNoEncontradoException e) {
                         System.out.println("❌ Error al enviar notificación: " + e.getMessage());
                     }
+                    break;
 
-                case 4:
+                case 5:
                     System.out.println("Saliendo del programa...");
                     break;
 
                 default:
                     System.out.println("⚠️ Opción inválida.");
             }
-        } while (opcionPrincipal != 4);
+        } while (opcionPrincipal != 5);
     }
 }

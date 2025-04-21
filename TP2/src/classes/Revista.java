@@ -1,10 +1,7 @@
 package classes;
-import Excepciones.RecursoNoDisponibleException;
-import interfaces.Prestable;
-import Enum.EstadoRecurso;
-import Enum.CategoriaRecurso;
+import Enums.EstadoRecurso;
+import Enums.CategoriaRecurso;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class Revista extends RecursoBase {
     private int numeroEdicion;

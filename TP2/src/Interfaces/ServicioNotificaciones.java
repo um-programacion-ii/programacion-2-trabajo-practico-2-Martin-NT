@@ -1,4 +1,4 @@
-package interfaces;
+package Interfaces;
 import classes.Usuario;
 /**
  * Interfaz que representa un servicio de notificaciones.

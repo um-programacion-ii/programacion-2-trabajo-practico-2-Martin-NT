@@ -5,8 +5,8 @@ import java.util.stream.Collectors;
 import Comparadores.ComparadorRecurso;
 import Excepciones.RecursoNoDisponibleException;
 import Excepciones.UsuarioNoEncontradoException;
-import interfaces.RecursoDigital;
-import Enum.CategoriaRecurso;
+import Interfaces.RecursoDigital;
+import Enums.CategoriaRecurso;
 /**
  * Clase responsable de gestionar los recursos digitales.
  */
@@ -38,6 +38,16 @@ public class GestorRecursos {
         if (!eliminado) {
             throw new RecursoNoDisponibleException("❌ No se encontró un recurso con el ID: " + id);
         }
+    }
+
+    // Metodo que devuelve un recurso por su ID
+    public RecursoDigital obtenerRecursoPorId(String id) throws RecursoNoDisponibleException {
+        for (RecursoDigital recurso : recursos) {
+            if (recurso.getId().equals(id)) {
+                return recurso;  // ✅ Retornar el recurso encontrado
+            }
+        }
+        throw new RecursoNoDisponibleException("❌ No se encontró un recurso con el ID: " + id);
     }
 
 

@@ -1,6 +1,6 @@
-package services;
+package Services;
 import classes.Usuario;
-import interfaces.ServicioNotificaciones;
+import Interfaces.ServicioNotificaciones;
 /**
  * Implementación concreta del ServicioNotificaciones para envío de emails.
  * Cumple con el principio DIP porque implementa una abstracción (la interfaz ServicioNotificaciones)
