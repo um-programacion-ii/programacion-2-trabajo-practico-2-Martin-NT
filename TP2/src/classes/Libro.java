@@ -1,4 +1,5 @@
 package classes;
+import Excepciones.RecursoNoDisponibleException;
 import interfaces.Prestable;
 import interfaces.Renovable;
 import Enum.EstadoRecurso;
@@ -61,13 +62,14 @@ public class Libro extends RecursoBase implements Prestable, Renovable {
 
     // Implementación del metodo prestar() desde Prestable
     @Override
-    public void prestar(Usuario usuario) {
+    public void prestar(Usuario usuario) throws RecursoNoDisponibleException {
         if (estaDisponible()) {
             // Si el libro está disponible, se cambia el estado a PRESTADO
             setEstado(EstadoRecurso.PRESTADO);
             System.out.println("El libro '" + getTitulo() + "' ha sido prestado a " + usuario.getNombre());
         } else {
-            System.out.println("El libro '" + getTitulo() + "' no está disponible para préstamo.");
+            // Si no está disponible, lanzamos la excepción
+            throw new RecursoNoDisponibleException("❌ El libro '" + getTitulo() + "' no está disponible para préstamo.");
         }
     }
 

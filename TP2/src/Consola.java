@@ -1,7 +1,8 @@
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Scanner;
-import java.util.Map;
+import Excepciones.RecursoNoDisponibleException;
+import Excepciones.UsuarioNoEncontradoException;
 import classes.*;
 import interfaces.*;
 import Enum.*;
@@ -191,11 +192,11 @@ public class Consola {
         System.out.print("🆔 Ingrese el ID del recurso a eliminar: ");
         String id = scanner.nextLine();
 
-        if (gestor.existeRecurso(id)) {
+        try {
             gestor.eliminarRecurso(id);
             System.out.println("✅ El recurso con ID " + id + " ha sido eliminado correctamente.");
-        } else {
-            System.out.println("❌ No se encontró un recurso con ese ID.");
+        } catch (RecursoNoDisponibleException e) {
+            System.out.println(e.getMessage()); // Mensaje personalizado desde la excepción
         }
     }
 
@@ -237,12 +238,21 @@ public class Consola {
         System.out.print("🆔 Ingrese el ID del usuario que desea eliminar: ");
         String id = scanner.nextLine();
 
-        if (gestor.existeUsuario(id)) {
+        try {
             gestor.eliminarUsuario(id);
-            System.out.println("✅ Usuario eliminado exitosamente.");
-        } else {
-            System.out.println("❌ No se encontró un usuario con ese ID.");
+            System.out.println("✅ Usuario eliminado correctamente.");
+        } catch (UsuarioNoEncontradoException e) {
+            System.out.println(e.getMessage()); // Mensaje amigable
         }
+        /**
+         if (gestor.existeUsuario(id)) {
+         gestor.eliminarUsuario(id);
+         System.out.println("✅ Usuario eliminado exitosamente.");
+         } else {
+         System.out.println("❌ No se encontró un usuario con ese ID.");
+         }
+         */
+
     }
 
     public int leerOpcion() {

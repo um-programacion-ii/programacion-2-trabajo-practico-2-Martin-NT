@@ -1,10 +1,11 @@
+import Excepciones.RecursoNoDisponibleException;
+import Excepciones.UsuarioNoEncontradoException;
 import classes.*;
 import interfaces.*;
 import services.*;
 import Enum.*;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
-import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
@@ -34,11 +35,16 @@ public class Main {
         ServicioNotificaciones servicioSMS = new ServicioNotificacionesSMS();
 
         System.out.println("\n=== PRUEBAS DE NOTIFICACIONES ===");
-        System.out.println("\n- Prueba del servicio email");
-        servicioEmail.enviarNotificacion("--> ¡Tienes un nuevo mensaje!", gestorUsuarios.obtenerUsuarioPorId("U001"));
+        try {
+            System.out.println("\n- Prueba del servicio email");
+            servicioEmail.enviarNotificacion("--> ¡Tienes un nuevo mensaje!", gestorUsuarios.obtenerUsuarioPorId("U001"));
 
-        System.out.println("\n- Prueba del servicio SMS");
-        servicioSMS.enviarNotificacion("--> ¡Tienes un nuevo mensaje!", gestorUsuarios.obtenerUsuarioPorId("U002"));
+            System.out.println("\n- Prueba del servicio SMS");
+            servicioSMS.enviarNotificacion("--> ¡Tienes un nuevo mensaje!", gestorUsuarios.obtenerUsuarioPorId("U002"));
+        } catch (UsuarioNoEncontradoException e) {
+            System.out.println("❌ Error al enviar notificación: " + e.getMessage());
+        }
+
 
         Consola consola = new Consola();
         int opcionPrincipal;
@@ -55,7 +61,11 @@ public class Main {
                         opcionUsuarios = consola.leerOpcion();
                         switch (opcionUsuarios) {
                             case 1: // Ver usuarios
-                                gestorUsuarios.mostrarUsuarios();
+                                try {
+                                    gestorUsuarios.mostrarUsuarios();
+                                } catch (UsuarioNoEncontradoException e) {
+                                    System.out.println(e.getMessage());
+                                }
                                 break;
                             case 2: // Buscar Usuarios
                                 int opcionBusquedaUsuarios;
@@ -66,18 +76,29 @@ public class Main {
                                         case 1:
                                             System.out.print("🔎 Ingrese el ID del usuario a buscar: ");
                                             String idBuscado = consola.leerTexto();
-                                            gestorUsuarios.buscarPorId(idBuscado);
+                                            try {
+                                                gestorUsuarios.buscarPorId(idBuscado);
+                                            } catch (UsuarioNoEncontradoException e) {
+                                                System.out.println(e.getMessage());
+                                            }
                                             break;
                                         case 2:
                                             System.out.print("🔎 Ingrese el nombre del usuario a buscar: ");
                                             String nombreBuscado = consola.leerTexto();
-                                            gestorUsuarios.buscarPorNombre(nombreBuscado);
+                                            try {
+                                                gestorUsuarios.buscarPorNombre(nombreBuscado);
+                                            } catch (UsuarioNoEncontradoException e) {
+                                                System.out.println(e.getMessage());
+                                            }
                                             break;
                                         case 3:
                                             System.out.print("🔎 Ingrese el apellido del usuario a buscar: ");
                                             String apellidoBuscado = consola.leerTexto();
-                                            gestorUsuarios.buscarPorApellido(apellidoBuscado);
-
+                                            try {
+                                                gestorUsuarios.buscarPorApellido(apellidoBuscado);
+                                            } catch (UsuarioNoEncontradoException e) {
+                                                System.out.println(e.getMessage());
+                                            }
                                             break;
                                         case 4:
                                             System.out.println("↩️ Volviendo al Menú de Usuarios...");
@@ -96,10 +117,18 @@ public class Main {
                                     opcionOrdenUsuario = consola.leerOpcion();
                                     switch (opcionOrdenUsuario) {
                                         case 1:
-                                            gestorUsuarios.ordenarPorNombre();
+                                            try {
+                                                gestorUsuarios.ordenarPorNombre();
+                                            } catch (UsuarioNoEncontradoException e) {
+                                                System.out.println(e.getMessage());
+                                            }
                                             break;
                                         case 2:
-                                            gestorUsuarios.ordenarPorApellido();
+                                            try {
+                                                gestorUsuarios.ordenarPorApellido();
+                                            } catch (UsuarioNoEncontradoException e) {
+                                                System.out.println(e.getMessage());
+                                            }
                                             break;
                                         case 3:
                                             System.out.println("↩️ Volviendo al Menú de Usuarios...");
@@ -135,7 +164,11 @@ public class Main {
                         opcionRecursos = consola.leerOpcion();
                         switch (opcionRecursos) {
                             case 1:
-                                gestorRecursos.mostrarRecursos();
+                                try {
+                                    gestorRecursos.mostrarRecursos();
+                                } catch (RecursoNoDisponibleException e) {
+                                    System.out.println(e.getMessage());
+                                }
                                 break;
 
                             case 2: // MOSTRAR POR CATEGORÍA
@@ -146,13 +179,25 @@ public class Main {
                                     opcionFiltro = consola.leerOpcion();
                                     switch (opcionFiltro) {
                                         case 1:
-                                            gestorRecursos.filtrarLibros();
+                                            try {
+                                                gestorRecursos.filtrarLibros();
+                                            } catch (RecursoNoDisponibleException e) {
+                                                System.out.println(e.getMessage());
+                                            }
                                             break;
                                         case 2:
-                                            gestorRecursos.filtrarAudiolibros();
+                                            try {
+                                                gestorRecursos.filtrarAudiolibros();
+                                            } catch (RecursoNoDisponibleException e) {
+                                                System.out.println(e.getMessage());
+                                            }
                                             break;
                                         case 3:
-                                            gestorRecursos.filtrarRevistas();
+                                            try {
+                                                gestorRecursos.filtrarRevistas();
+                                            } catch (RecursoNoDisponibleException e) {
+                                                System.out.println(e.getMessage());
+                                            }
                                             break;
                                         case 4:
                                             System.out.println("↩️ Volviendo al Menú de Recursos...");
@@ -172,7 +217,11 @@ public class Main {
                                         case 1:
                                             System.out.print("--> 🔎 Ingrese el título a buscar: ");
                                             String titulo = consola.leerTexto();
-                                            gestorRecursos.buscarPorTitulo(titulo);
+                                            try {
+                                                gestorRecursos.buscarPorTitulo(titulo);
+                                            } catch (RecursoNoDisponibleException e) {
+                                                System.out.println(e.getMessage());
+                                            }
                                             break;
                                         case 2:
                                             System.out.print("--> 🔎 Ingrese categoría (LIBRO, REVISTA, AUDIOLIBRO): ");
@@ -182,6 +231,8 @@ public class Main {
                                                 gestorRecursos.buscarPorCategoria(categoria);
                                             } catch (IllegalArgumentException e) {
                                                 System.out.println("⚠️ Categoría no válida.");
+                                            } catch (RecursoNoDisponibleException e) {
+                                                System.out.println(e.getMessage());
                                             }
                                             break;
                                         case 3:
@@ -200,10 +251,18 @@ public class Main {
                                     opcionOrden = consola.leerOpcion();
                                     switch (opcionOrden) {
                                         case 1:
-                                            gestorRecursos.ordenarYMostrarPorTitulo();
+                                            try {
+                                                gestorRecursos.ordenarYMostrarPorTitulo();
+                                            } catch (RecursoNoDisponibleException e) {
+                                                System.out.println(e.getMessage());
+                                            }
                                             break;
                                         case 2:
-                                            gestorRecursos.ordenarYMostrarPorFecha();
+                                            try {
+                                                gestorRecursos.ordenarYMostrarPorFecha();
+                                            } catch (RecursoNoDisponibleException e) {
+                                                System.out.println(e.getMessage());
+                                            }
                                             break;
                                         case 3:
                                             System.out.println("↩️ Volviendo al Menú de Recursos...");
