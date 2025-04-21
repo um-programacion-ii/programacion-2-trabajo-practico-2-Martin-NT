@@ -9,42 +9,43 @@ import java.time.LocalDate;
 
 public class Main {
     public static void main(String[] args) {
-        // Crear gestor de usuarios y agregar usuarios de prueba
+        // Crear gestor de usuarios
         GestorUsuarios gestorUsuarios = new GestorUsuarios();
-        gestorUsuarios.agregarUsuario(new Usuario("U001", "Martina", "Rizzotti","martirizzotti@example.com", "martincho15", "2613245789"));
-        gestorUsuarios.agregarUsuario(new Usuario("U002", "Valentina", "Rosales", "valerosales@example.com", "valero1911", "2634257895"));
-        gestorUsuarios.agregarUsuario(new Usuario("U003", "Facundo", "San Roman", "facundo@example.com", "sanroman44", "2634257895"));
-        gestorUsuarios.agregarUsuario(new Usuario("U004", "Valentino", "Rizzotti","valenrizzotti@example.com", "bianquita10", "2613467543"));
-
-        // Crear gestor de recursos y agregar recursos
+        // Crear gestor de recursos
         GestorRecursos gestorRecursos = new GestorRecursos();
-        gestorRecursos.agregarRecurso(new Libro("L001", "Harry Potter y la piedra filosofal", "J.K. Rowling",
-                LocalDate.of(1997, 6, 26), EstadoRecurso.DISPONIBLE,
-                LocalDateTime.now().plusDays(10), CategoriaRecurso.LIBRO, 256, "Fantasía", "Salamandra"));
 
-        gestorRecursos.agregarRecurso(new Revista("R001", "National Geographic", "Varios",
-                LocalDate.of(2025, 4, 10), EstadoRecurso.DISPONIBLE,
-                LocalDateTime.now().plusDays(7), CategoriaRecurso.REVISTA, 100, "Mensual", "Ciencia y naturaleza", "National Geographic Society"));
+        // Crear Usuarios
+        Usuario usuario1 = new Usuario("U001", "Martina", "Rizzotti", "martirizzotti@example.com", "martincho15", "2613245789");
+        Usuario usuario2 = new Usuario("U002", "Valentina", "Rosales", "valerosales@example.com", "valero1911", "2634257895");
+        Usuario usuario3 = new Usuario("U003", "Facundo", "San Roman", "facundo@example.com", "sanroman44", "2634257895");
+        Usuario usuario4 = new Usuario("U004", "Valentino", "Rizzotti", "valenrizzotti@example.com", "bianquita10", "2613467543");
 
-        gestorRecursos.agregarRecurso(new Audiolibro("A001", "El Principito", "Antoine de Saint-Exupéry",
-                LocalDate.of(1943, 4, 6), EstadoRecurso.DISPONIBLE,
-                LocalDateTime.now().plusDays(7), CategoriaRecurso.AUDIOLIBRO, 92, "Dangello Medina", "Español"));
+        // Crear recursos
+        Libro libro1 = new Libro("L001", "Harry Potter y la piedra filosofal", "J.K. Rowling",
+                LocalDate.of(1997, 6, 26), EstadoRecurso.DISPONIBLE, CategoriaRecurso.LIBRO, 256, "Fantasía", "Salamandra");
 
-        // Servicios de notificación
-        ServicioNotificaciones servicioEmail = new ServicioNotificacionesEmail();
-        ServicioNotificaciones servicioSMS = new ServicioNotificacionesSMS();
+        Revista revista1 = new Revista("R001", "National Geographic", "Varios",
+                LocalDate.of(2025, 4, 10), EstadoRecurso.DISPONIBLE, CategoriaRecurso.REVISTA, 100, "Mensual", "Ciencia y naturaleza", "National Geographic Society");
 
-        System.out.println("\n=== PRUEBAS DE NOTIFICACIONES ===");
-        try {
-            System.out.println("\n- Prueba del servicio email");
-            servicioEmail.enviarNotificacion("--> ¡Tienes un nuevo mensaje!", gestorUsuarios.obtenerUsuarioPorId("U001"));
+        Audiolibro audiolibro1 = new Audiolibro("A001", "El Principito", "Antoine de Saint-Exupéry",
+                LocalDate.of(1943, 4, 6), EstadoRecurso.DISPONIBLE, CategoriaRecurso.AUDIOLIBRO, 92, "Dangello Medina", "Español");
 
-            System.out.println("\n- Prueba del servicio SMS");
-            servicioSMS.enviarNotificacion("--> ¡Tienes un nuevo mensaje!", gestorUsuarios.obtenerUsuarioPorId("U002"));
-        } catch (UsuarioNoEncontradoException e) {
-            System.out.println("❌ Error al enviar notificación: " + e.getMessage());
-        }
+        // Agregar Usuarios al Gestor
+        gestorUsuarios.agregarUsuario(usuario1);
+        gestorUsuarios.agregarUsuario(usuario2);
+        gestorUsuarios.agregarUsuario(usuario3);
+        gestorUsuarios.agregarUsuario(usuario4);
 
+        // Agregar Recursos al Gestor
+        gestorRecursos.agregarRecurso(libro1);
+        gestorRecursos.agregarRecurso(revista1);
+        gestorRecursos.agregarRecurso(audiolibro1);
+
+        // Crear Prestamos
+        LocalDate fechaPrestamo = LocalDate.now();
+        LocalDate fechaDevolucion = fechaPrestamo.plusDays(14); // Suponiendo que el préstamo tiene una duración de 14 días
+        boolean activo = true;
+        Prestamo prestamo1 = new Prestamo(usuario1, libro1, fechaPrestamo, fechaDevolucion, activo);
 
         Consola consola = new Consola();
         int opcionPrincipal;
@@ -309,13 +310,65 @@ public class Main {
                     } while (opcionRecursos != 7);
                     break;
 
-                case 3:
+                case 3: // PREUBAS
+                    System.out.println("\n==== PRUEBAS DE NOTIFICACIONES ====");
+                    // Prueba 1: Creación del Prestamo
+                    System.out.println("\n=== PRUEBA 1: Creación de préstamo ===");
+                    System.out.println(prestamo1);
+
+                    // Prueba 2: Realizar préstamo
+                    System.out.println("\n=== PRUEBA 2: Realizar préstamo ===");
+                    try {
+                        prestamo1.realizarPrestamo();
+                    } catch (RecursoNoDisponibleException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    System.out.println("\n" + libro1);
+
+                    // Prueba 3: Validar que no se puede realizar un préstamo si el recurso ya está prestado
+                    System.out.println("\n=== PRUEBA 3: Intentar prestar un recurso ya prestado ===");
+                    Prestamo prestamo2 = new Prestamo(usuario1, libro1, fechaPrestamo, fechaDevolucion, activo); // Intentar nuevo préstamo con el mismo libro
+                    try {
+                        prestamo2.realizarPrestamo();
+                    } catch (RecursoNoDisponibleException e) {
+                        System.out.println(e.getMessage());  // Debe lanzar error porque el libro ya está prestado
+                    }
+
+                    // PRUEBA 4: Devolver el recurso
+                    System.out.println("\n=== PRUEBA 4: Devolver el recurso ===");
+                    prestamo1.devolverRecurso();
+                    System.out.println("\n" + libro1);  // Verificar que el estado del libro cambió a DISPONIBLE
+
+                    // PRUEBA 5: Verificar la fecha de devolución
+                    System.out.println("\n=== PRUEBA 5: Verificar fecha de devolución ===");
+                    System.out.println("\n--> Fecha de devolución prevista: " + prestamo1.getFechaDevolucion());
+
+                    // PRUEBA 6: Intentar devolver el recurso nuevamente (no debería permitir)
+                    System.out.println("\n=== PRUEBA 6: Intentar devolver un recurso ya devuelto ===");
+                    prestamo1.devolverRecurso();  // Debería decir que el recurso ya fue devuelto
+
+                    // Servicios de notificación
+                    ServicioNotificaciones servicioEmail = new ServicioNotificacionesEmail();
+                    ServicioNotificaciones servicioSMS = new ServicioNotificacionesSMS();
+
+                    System.out.println("\n==== PRUEBAS DE NOTIFICACIONES ====");
+                    try {
+                        System.out.println("\n- Prueba del servicio email");
+                        servicioEmail.enviarNotificacion("--> ¡Tienes un nuevo mensaje!", gestorUsuarios.obtenerUsuarioPorId("U001"));
+
+                        System.out.println("\n- Prueba del servicio SMS");
+                        servicioSMS.enviarNotificacion("--> ¡Tienes un nuevo mensaje!", gestorUsuarios.obtenerUsuarioPorId("U002"));
+                    } catch (UsuarioNoEncontradoException e) {
+                        System.out.println("❌ Error al enviar notificación: " + e.getMessage());
+                    }
+
+                case 4:
                     System.out.println("Saliendo del programa...");
                     break;
 
                 default:
                     System.out.println("⚠️ Opción inválida.");
             }
-        } while (opcionPrincipal != 3);
+        } while (opcionPrincipal != 4);
     }
 }

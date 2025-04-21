@@ -7,17 +7,15 @@ import Enum.CategoriaRecurso;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class Audiolibro extends RecursoBase implements Prestable, Renovable {
+public class Audiolibro extends RecursoBase {
     private int duracionMinutos;
     private String narrador;
     private String idioma;
 
     //Constructor
     public Audiolibro(String id, String titulo, String autor, LocalDate fechaPublicacion,
-                      EstadoRecurso estado, LocalDateTime fechaDevolucion,
-                      CategoriaRecurso categoria, int duracionMinutos, String narrador,
-                      String idioma) {
-        super(id, titulo, autor, fechaPublicacion, estado, fechaDevolucion, categoria);
+                      EstadoRecurso estado, CategoriaRecurso categoria, int duracionMinutos, String narrador, String idioma) {
+        super(id, titulo, autor, fechaPublicacion, estado, categoria);
         this.duracionMinutos = duracionMinutos;
         this.narrador = narrador;
         this.idioma = idioma;
@@ -53,34 +51,4 @@ public class Audiolibro extends RecursoBase implements Prestable, Renovable {
                 " - Idioma: " + idioma + "\n";
     }
 
-    // Implementación del metodo estaDisponible() desde Prestable
-    @Override
-    public boolean estaDisponible() {
-        // El audiolibro está disponible si su estado es DISPONIBLE
-        return getEstado() == EstadoRecurso.DISPONIBLE;
-    }
-
-    // Implementación del metodo prestar() desde Prestable
-    @Override
-    public void prestar(Usuario usuario) throws RecursoNoDisponibleException {
-        if (estaDisponible()) {
-            // Si el audiolibro está disponible, se cambia el estado a PRESTADO
-            setEstado(EstadoRecurso.PRESTADO);
-            System.out.println("El audiolibro '" + getTitulo() + "' ha sido prestado a " + usuario.getNombre());
-        } else {
-            // Si no está disponible, lanzamos la excepción
-            throw new RecursoNoDisponibleException("❌ El audiolibro '" + getTitulo() + "' no está disponible para préstamo.");
-        }
-    }
-
-    // Implementación del metodo renovar() desde Renovable
-    @Override
-    public void renovar() {
-        if (getEstado() == EstadoRecurso.PRESTADO) {
-            setFechaDevolucion(getFechaDevolucion().plusDays(7)); // Renovación de la fecha de devolución
-            System.out.println("El audiolibro '" + getTitulo() + "' ha sido renovado. Nueva fecha de devolución: " + getFechaDevolucion());
-        } else {
-            System.out.println("El audiolibro no está prestado y no puede ser renovado.");
-        }
-    }
 }
