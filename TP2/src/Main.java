@@ -110,12 +110,12 @@ public class Main {
                                 } while (opcionOrdenUsuario != 3);
                                 break;
 
-                            case 4:
-                                System.out.println("⚠️ Funcionalidad de crear usuario aún no implementada.");
+                            case 4: // CREAR
+                                consola.crearUsuario(gestorUsuarios);
                                 break;
 
-                            case 5:
-                                System.out.println("⚠️ Funcionalidad de eliminar usuario aún no implementada.");
+                            case 5: // ELIMINAR
+                                consola.eliminarUsuario(gestorUsuarios);
                                 break;
 
                             case 6:
@@ -227,8 +227,8 @@ public class Main {
                                 break;
 
 
-                            case 6:
-                                System.out.println("⚠️ Funcionalidad de eliminar recurso aún no implementada.");
+                            case 6: // ELIMINAR
+                                consola.eliminarRecursoMenu(gestorRecursos);
                                 break;
 
                             case 7:

@@ -86,11 +86,11 @@ public abstract class RecursoBase implements RecursoDigital, Prestable {
     @Override
     public String toString() {
         return " - Recurso ID: " + id + "\n" +
-                "- Categoría: " + categoria + "\n" +
                 " - Título: " + titulo + "\n" +
                 " - Autor: " + autor + "\n" +
                 " - Fecha de Publicación: " + fechaPublicacion + "\n" +
-                " - Estado: " + estado + "\n";
+                " - Estado: " + estado + "\n" +
+                " - Categoria: " + categoria + "\n";
     }
 
     @Override

@@ -104,6 +104,11 @@ public class Consola {
         System.out.print("🆔 Ingrese el ID: ");
         String id = scanner.nextLine();
 
+        if (gestor.existeRecurso(id)) {
+            System.out.println("❌ Ya existe un recurso con ese ID. Intente con uno diferente.");
+            return;
+        }
+
         System.out.print("📖 Ingrese el título: ");
         String titulo = scanner.nextLine();
 
@@ -178,6 +183,65 @@ public class Consola {
         if (recurso != null) {
             gestor.agregarRecurso(recurso);
             System.out.println("✅ Recurso agregado exitosamente.");
+        }
+    }
+
+    public void eliminarRecursoMenu(GestorRecursos gestor) {
+        System.out.println("\n===== 🗑️ ELIMINAR RECURSO =====");
+        System.out.print("🆔 Ingrese el ID del recurso a eliminar: ");
+        String id = scanner.nextLine();
+
+        if (gestor.existeRecurso(id)) {
+            gestor.eliminarRecurso(id);
+            System.out.println("✅ El recurso con ID " + id + " ha sido eliminado correctamente.");
+        } else {
+            System.out.println("❌ No se encontró un recurso con ese ID.");
+        }
+    }
+
+    public void crearUsuario(GestorUsuarios gestor) {
+        System.out.println("\n===== ➕ CREAR NUEVO USUARIO =====");
+
+        System.out.print("🆔 Ingrese el ID del usuario: ");
+        String id = scanner.nextLine();
+
+        // Validar que no exista un usuario con el mismo ID
+        if (gestor.existeUsuario(id)) {
+            System.out.println("❌ Ya existe un usuario con ese ID.");
+            return;
+        }
+
+        System.out.print("👤 Ingrese el nombre: ");
+        String nombre = scanner.nextLine();
+
+        System.out.print("👤 Ingrese el apellido: ");
+        String apellido = scanner.nextLine();
+
+        System.out.print("📧 Ingrese el email: ");
+        String email = scanner.nextLine();
+
+        System.out.print("🔒 Ingrese la contraseña: ");
+        String password = scanner.nextLine();
+
+        System.out.print("📞 Ingrese el número de teléfono: ");
+        String telefono = scanner.nextLine();
+
+        Usuario nuevoUsuario = new Usuario(id, nombre, apellido, email, password, telefono);
+        gestor.agregarUsuario(nuevoUsuario);
+
+        System.out.println("✅ Usuario creado exitosamente.");
+    }
+
+    public void eliminarUsuario(GestorUsuarios gestor) {
+        System.out.println("\n===== 🗑️ ELIMINAR USUARIO =====");
+        System.out.print("🆔 Ingrese el ID del usuario que desea eliminar: ");
+        String id = scanner.nextLine();
+
+        if (gestor.existeUsuario(id)) {
+            gestor.eliminarUsuario(id);
+            System.out.println("✅ Usuario eliminado exitosamente.");
+        } else {
+            System.out.println("❌ No se encontró un usuario con ese ID.");
         }
     }
 
