@@ -48,9 +48,13 @@ public class GestorRecursos {
 
     // Metodo para mostrar todos los recursos
     public void mostrarRecursos() {
-        System.out.println("\n===== 📚 RECURSOS DISPONIBLES =====");
-        for (RecursoDigital recurso : recursos) {
-            System.out.println("\n" + recurso);
+        if (recursos.isEmpty()) {
+            System.out.println("\n⚠️ No hay recursos disponibles.");
+        } else {
+            System.out.println("\n===== 📚 RECURSOS DISPONIBLES =====");
+            for (RecursoDigital recurso : recursos) {
+                System.out.println("\n" + recurso);
+            }
         }
     }
 

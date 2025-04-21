@@ -3,14 +3,16 @@ package classes;
 public class Usuario {
     private final String id;
     private String nombre;
+    private String apellido;
     private String email;
     private String password;
     private String telefono;
 
     //Constructor
-    public Usuario(String id, String nombre, String email, String password, String telefono) {
+    public Usuario(String id, String nombre, String apellido, String email, String password, String telefono) {
         this.id = id;
         this.nombre = nombre;
+        this.apellido = apellido;
         this.email = email;
         this.password = password;
         this.telefono = telefono;
@@ -22,6 +24,9 @@ public class Usuario {
     }
     public String getNombre() {
         return nombre;
+    }
+    public String getApellido() {
+        return apellido;
     }
     public String getEmail() {
         return email;
@@ -36,6 +41,9 @@ public class Usuario {
     // Setters
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
     }
     public void setEmail(String email) {
         this.email = email;
@@ -52,6 +60,7 @@ public class Usuario {
     public String toString() {
         return "📘 Usuario ID: " + id + "\n" +
                 " - Nombre: " + nombre + "\n" +
+                " - Apellido: " + apellido + "\n" +
                 " - Email: " + email + "\n" +
                 " - Telefono: " + telefono;
     }

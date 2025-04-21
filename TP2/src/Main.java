@@ -4,13 +4,16 @@ import services.*;
 import Enum.*;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
         // Crear gestor de usuarios y agregar usuarios de prueba
         GestorUsuarios gestorUsuarios = new GestorUsuarios();
-        gestorUsuarios.agregarUsuario(new Usuario("U001", "Martina Rizzotti", "martirizzotti@example.com", "martincho15", "2613245789"));
-        gestorUsuarios.agregarUsuario(new Usuario("U002", "Valentina Rosales", "valerosales@example.com", "sanroman44", "2634257895"));
+        gestorUsuarios.agregarUsuario(new Usuario("U001", "Martina", "Rizzotti","martirizzotti@example.com", "martincho15", "2613245789"));
+        gestorUsuarios.agregarUsuario(new Usuario("U002", "Valentina", "Rosales", "valerosales@example.com", "valero1911", "2634257895"));
+        gestorUsuarios.agregarUsuario(new Usuario("U003", "Facundo", "San Roman", "facundo@example.com", "sanroman44", "2634257895"));
+        gestorUsuarios.agregarUsuario(new Usuario("U004", "Valentino", "Rizzotti","valenrizzotti@example.com", "bianquita10", "2613467543"));
 
         // Crear gestor de recursos y agregar recursos
         GestorRecursos gestorRecursos = new GestorRecursos();
@@ -51,25 +54,78 @@ public class Main {
                         consola.mostrarMenuUsuarios();
                         opcionUsuarios = consola.leerOpcion();
                         switch (opcionUsuarios) {
-                            case 1:
-                                Consola.mostrarUsuarios(gestorUsuarios.getUsuarios());
+                            case 1: // Ver usuarios
+                                gestorUsuarios.mostrarUsuarios();
                                 break;
-                            case 2:
-                                System.out.print("🔎 Ingrese el ID del usuario a buscar: ");
-                                String idBuscado = consola.leerTexto();
-                                Usuario usuarioEncontrado = gestorUsuarios.obtenerUsuarioPorId(idBuscado);
-                                if (usuarioEncontrado != null) {
-                                    System.out.println("✅ Usuario encontrado:\n" + usuarioEncontrado);
-                                } else {
-                                    System.out.println("❌ Usuario no encontrado.");
-                                }
+                            case 2: // Buscar Usuarios
+                                int opcionBusquedaUsuarios;
+                                do {
+                                    consola.mostrarMenuBusquedaUsuarios();
+                                    opcionBusquedaUsuarios = consola.leerOpcion();
+                                    switch (opcionBusquedaUsuarios) {
+                                        case 1:
+                                            System.out.print("🔎 Ingrese el ID del usuario a buscar: ");
+                                            String idBuscado = consola.leerTexto();
+                                            gestorUsuarios.buscarPorId(idBuscado);
+                                            break;
+                                        case 2:
+                                            System.out.print("🔎 Ingrese el nombre del usuario a buscar: ");
+                                            String nombreBuscado = consola.leerTexto();
+                                            gestorUsuarios.buscarPorNombre(nombreBuscado);
+                                            break;
+                                        case 3:
+                                            System.out.print("🔎 Ingrese el apellido del usuario a buscar: ");
+                                            String apellidoBuscado = consola.leerTexto();
+                                            gestorUsuarios.buscarPorApellido(apellidoBuscado);
+
+                                            break;
+                                        case 4:
+                                            System.out.println("↩️ Volviendo al Menú de Usuarios...");
+                                            break;
+                                        default:
+                                            System.out.println("⚠️ Opción inválida.");
+                                    }
+                                } while (opcionBusquedaUsuarios != 4);
                                 break;
-                            case 3:
+
+
+                            case 3: // ORDENAR
+                                int opcionOrdenUsuario;
+                                do {
+                                    consola.mostrarMenuOrdenarUsuarios();
+                                    opcionOrdenUsuario = consola.leerOpcion();
+                                    switch (opcionOrdenUsuario) {
+                                        case 1:
+                                            gestorUsuarios.ordenarPorNombre();
+                                            break;
+                                        case 2:
+                                            gestorUsuarios.ordenarPorApellido();
+                                            break;
+                                        case 3:
+                                            System.out.println("↩️ Volviendo al Menú de Usuarios...");
+                                            break;
+                                        default:
+                                            System.out.println("⚠️ Opción inválida.");
+                                    }
+                                } while (opcionOrdenUsuario != 3);
                                 break;
+
+                            case 4:
+                                System.out.println("⚠️ Funcionalidad de crear usuario aún no implementada.");
+                                break;
+
+                            case 5:
+                                System.out.println("⚠️ Funcionalidad de eliminar usuario aún no implementada.");
+                                break;
+
+                            case 6:
+                                System.out.println("↩️ Volviendo al Menú Principal...");
+                                break;
+
                             default:
                                 System.out.println("⚠️ Opción inválida.");
                         }
-                    } while (opcionUsuarios != 3);
+                    } while (opcionUsuarios != 6);
                     break;
 
                 case 2:
@@ -110,7 +166,7 @@ public class Main {
                             case 3: // BUSCAR
                                 int opcionBusqueda;
                                 do {
-                                    consola.mostrarMenuBusqueda();
+                                    consola.mostrarMenuBusquedaRecursos();
                                     opcionBusqueda = consola.leerOpcion();
                                     switch (opcionBusqueda) {
                                         case 1:
@@ -140,7 +196,7 @@ public class Main {
                             case 4: // ORDENAR
                                 int opcionOrden;
                                 do {
-                                    consola.mostrarMenuOrdenar();
+                                    consola.mostrarMenuOrdenarRecursos();
                                     opcionOrden = consola.leerOpcion();
                                     switch (opcionOrden) {
                                         case 1:

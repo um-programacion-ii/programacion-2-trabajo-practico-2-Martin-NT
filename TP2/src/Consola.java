@@ -23,10 +23,32 @@ public class Consola {
 
     public void mostrarMenuUsuarios() {
         System.out.println("\n===== MENÚ USUARIOS =====");
-        System.out.println("1. Ver usuarios");
-        System.out.println("2. Buscar usuario por ID");
-        System.out.println("3. Volver al menú principal");
+        System.out.println("1. Listar usuarios");
+        System.out.println("2. Buscar usuarios");
+        System.out.println("3. Ordenar usuarios");
+        System.out.println("4. Crear usuario");
+        System.out.println("5. Eliminar usuario");
+        System.out.println("6. Volver al menú principal");
         System.out.print("--> Seleccione una opción: ");
+    }
+
+    public void mostrarMenuBusquedaUsuarios() {
+        System.out.println("\n===== 🔍 MENÚ DE BÚSQUEDA DE USUARIOS =====");
+        System.out.println("1. Buscar por ID");
+        System.out.println("2. Buscar por Nombre");
+        System.out.println("3. Buscar por Apellido");
+        System.out.println("4. Volver al Menú de Usuarios");
+        System.out.print("--> Seleccione una opción: ");
+
+    }
+
+    public void mostrarMenuOrdenarUsuarios() {
+        System.out.println("\n===== 📊 ORDENAR USUARIOS =====");
+        System.out.println("1. Ordenar por Nombre (A-Z)");
+        System.out.println("2. Ordenar por Apellido (A-Z)");
+        System.out.println("3. Volver al Menú de Usuarios");
+        System.out.print("--> Seleccione una opción: ");
+
     }
 
     public void mostrarMenuRecursos() {
@@ -51,7 +73,7 @@ public class Consola {
 
     }
 
-    public void mostrarMenuBusqueda() {
+    public void mostrarMenuBusquedaRecursos() {
         System.out.println("\n===== 🔍 MENÚ DE BÚSQUEDA DE RECURSOS =====");
         System.out.println("1. Buscar por Título");
         System.out.println("2. Buscar por Categoría");
@@ -60,7 +82,7 @@ public class Consola {
 
     }
 
-    public void mostrarMenuOrdenar() {
+    public void mostrarMenuOrdenarRecursos() {
         System.out.println("\n===== 📊 ORDENAR RECURSOS =====");
         System.out.println("1. Ordenar por Título (A-Z)");
         System.out.println("2. Ordenar por Fecha de Publicación (Más recientes primero)");
@@ -169,14 +191,6 @@ public class Consola {
 
     public String leerTexto() {
         return scanner.nextLine();
-    }
-
-    // Se implementará en los Gestores correspondientes
-    public static void mostrarUsuarios(Map<String, Usuario> usuarios) {
-        System.out.println("\n📋 Lista de usuarios:");
-        for (Usuario u : usuarios.values()) {
-            System.out.println("\n" + u);
-        }
     }
 
 }
