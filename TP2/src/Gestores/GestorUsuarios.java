@@ -2,10 +2,8 @@ package Gestores;
 import Comparadores.ComparadorUsuario;
 import Excepciones.UsuarioNoEncontradoException;
 import Usuarios.Usuario;
-
 import java.util.*;
 import java.util.stream.Collectors;
-
 /**
  * Clase responsable de gestionar operaciones relacionadas con usuarios.
  */

@@ -9,7 +9,6 @@ import Enums.CategoriaRecurso;
 import Recursos.Audiolibro;
 import Recursos.Libro;
 import Recursos.Revista;
-
 /**
  * Clase responsable de gestionar los recursos digitales.
  */
@@ -52,7 +51,6 @@ public class GestorRecursos {
         }
         throw new RecursoNoDisponibleException("❌ No se encontró un recurso con el ID: " + id);
     }
-
 
     // Metodo que verifica si existe el id del recurso
     public boolean existeRecurso(String id) {
@@ -100,7 +98,6 @@ public class GestorRecursos {
         System.out.println("\n--> Recursos filtrados por Libros");
         mostrarRecursosFiltrados(libros); // Este metodo imprime los resultados
     }
-
 
     // Metodo para mostrar solo los audiolibros filtrados
     public void filtrarAudiolibros() throws RecursoNoDisponibleException {
@@ -164,5 +161,4 @@ public class GestorRecursos {
         System.out.println("\n--> Recursos ordenados por fecha");
         mostrarRecursosFiltrados(ordenados);
     }
-
 }

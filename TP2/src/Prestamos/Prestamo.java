@@ -66,4 +66,9 @@ public class Prestamo {
                 "\n - Activo: " + (activo ? "Sí" : "No");
     }
 
+    public void registrarDevolucion() {
+        this.fechaDevolucion = LocalDate.now();
+        this.activo = false; //Desactivo el prestamo
+    }
+
 }
