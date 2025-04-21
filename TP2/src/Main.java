@@ -215,6 +215,15 @@ public class Main {
                                     opcionBusqueda = consola.leerOpcion();
                                     switch (opcionBusqueda) {
                                         case 1:
+                                            System.out.print("🔎 Ingrese el ID del recurso a buscar: ");
+                                            String idBuscado = consola.leerTexto();
+                                            try {
+                                                gestorRecursos.buscarPorId(idBuscado);
+                                            } catch (RecursoNoDisponibleException e) {
+                                                System.out.println(e.getMessage());
+                                            }
+                                            break;
+                                        case 2:
                                             System.out.print("--> 🔎 Ingrese el título a buscar: ");
                                             String titulo = consola.leerTexto();
                                             try {
@@ -223,7 +232,7 @@ public class Main {
                                                 System.out.println(e.getMessage());
                                             }
                                             break;
-                                        case 2:
+                                        case 3:
                                             System.out.print("--> 🔎 Ingrese categoría (LIBRO, REVISTA, AUDIOLIBRO): ");
                                             String cat = consola.leerTexto().toUpperCase();
                                             try {
@@ -235,13 +244,13 @@ public class Main {
                                                 System.out.println(e.getMessage());
                                             }
                                             break;
-                                        case 3:
+                                        case 4:
                                             System.out.println("↩️ Volviendo al Menú de Recursos...");
                                             break;
                                         default:
                                             System.out.println("⚠️ Opción inválida.");
                                     }
-                                } while (opcionBusqueda != 3);
+                                } while (opcionBusqueda != 4);
                                 break;
 
                             case 4: // ORDENAR

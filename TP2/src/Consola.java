@@ -76,6 +76,7 @@ public class Consola {
 
     public void mostrarMenuBusquedaRecursos() {
         System.out.println("\n===== 🔍 MENÚ DE BÚSQUEDA DE RECURSOS =====");
+        System.out.println("1. Buscar por ID");
         System.out.println("1. Buscar por Título");
         System.out.println("2. Buscar por Categoría");
         System.out.println("3. Volver al Menú de Recursos");

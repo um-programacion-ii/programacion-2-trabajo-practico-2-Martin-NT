@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import Comparadores.ComparadorRecurso;
 import Excepciones.RecursoNoDisponibleException;
+import Excepciones.UsuarioNoEncontradoException;
 import interfaces.RecursoDigital;
 import Enum.CategoriaRecurso;
 /**
@@ -104,6 +105,15 @@ public class GestorRecursos {
                 .collect(Collectors.toList());
         System.out.println("\n--> Recursos filtrados por Revistas");
         mostrarRecursosFiltrados(revistas); // Este metodo imprime los resultados
+    }
+
+    // Metodo para buscar recursos por ID
+    public void buscarPorId(String id) throws RecursoNoDisponibleException {
+        List<RecursoDigital> resultados = recursos.stream()
+                .filter(u -> u.getId().toLowerCase().contains(id.toLowerCase()))
+                .collect(Collectors.toList());
+        System.out.println("\n--> Recurso buscado por id");
+        mostrarRecursosFiltrados(resultados);
     }
 
     // Metodo para buscar recursos por titulo
