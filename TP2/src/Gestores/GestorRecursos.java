@@ -1,12 +1,15 @@
-package classes;
+package Gestores;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import Comparadores.ComparadorRecurso;
 import Excepciones.RecursoNoDisponibleException;
-import Excepciones.UsuarioNoEncontradoException;
 import Interfaces.RecursoDigital;
 import Enums.CategoriaRecurso;
+import Recursos.Audiolibro;
+import Recursos.Libro;
+import Recursos.Revista;
+
 /**
  * Clase responsable de gestionar los recursos digitales.
  */

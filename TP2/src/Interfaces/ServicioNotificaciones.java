@@ -1,5 +1,5 @@
 package Interfaces;
-import classes.Usuario;
+import Usuarios.Usuario;
 /**
  * Interfaz que representa un servicio de notificaciones.
  * Cualquier implementación debe definir cómo enviar una notificación a un usuario.

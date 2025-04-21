@@ -1,4 +1,4 @@
-package classes;
+package Usuarios;
 
 public class Usuario {
     private final String id;

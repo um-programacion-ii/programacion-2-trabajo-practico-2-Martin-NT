@@ -1,5 +1,7 @@
-package classes;
+package Prestamos;
 import Interfaces.RecursoDigital;
+import Usuarios.Usuario;
+
 import java.time.LocalDate;
 
 public class Prestamo {

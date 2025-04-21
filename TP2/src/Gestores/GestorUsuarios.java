@@ -1,6 +1,8 @@
-package classes;
+package Gestores;
 import Comparadores.ComparadorUsuario;
 import Excepciones.UsuarioNoEncontradoException;
+import Usuarios.Usuario;
+
 import java.util.*;
 import java.util.stream.Collectors;
 

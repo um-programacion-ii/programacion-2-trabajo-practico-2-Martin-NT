@@ -1,5 +1,5 @@
 package Interfaces;
-import classes.Usuario;
+import Usuarios.Usuario;
 
 // Interfaz específica para recursos que se pueden prestar
 public interface Prestable {

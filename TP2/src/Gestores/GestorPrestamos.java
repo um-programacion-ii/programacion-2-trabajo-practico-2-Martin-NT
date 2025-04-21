@@ -1,7 +1,9 @@
-package classes;
+package Gestores;
 import Excepciones.RecursoNoDisponibleException;
 import Enums.EstadoRecurso;
 import Interfaces.RecursoDigital;
+import Prestamos.Prestamo;
+import Usuarios.Usuario;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

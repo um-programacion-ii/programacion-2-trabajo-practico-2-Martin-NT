@@ -1,9 +1,16 @@
+package Main;
+
 import Excepciones.RecursoNoDisponibleException;
 import Excepciones.UsuarioNoEncontradoException;
-import classes.*;
+import Gestores.GestorPrestamos;
+import Gestores.GestorRecursos;
+import Gestores.GestorUsuarios;
+import Prestamos.Prestamo;
+import Recursos.*;
 import Interfaces.*;
-import Services.*;
+import Servicios.*;
 import Enums.*;
+import Usuarios.Usuario;
 
 import java.time.LocalDate;
 

@@ -1,11 +1,16 @@
+package Main;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 import Excepciones.RecursoNoDisponibleException;
 import Excepciones.UsuarioNoEncontradoException;
-import classes.*;
+import Gestores.GestorRecursos;
+import Gestores.GestorUsuarios;
+import Recursos.*;
 import Interfaces.*;
 import Enums.*;
+import Usuarios.Usuario;
 
 public class Consola {
     private final Scanner scanner;

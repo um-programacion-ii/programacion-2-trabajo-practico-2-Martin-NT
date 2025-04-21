@@ -1,5 +1,5 @@
-package Services;
-import classes.Usuario;
+package Servicios;
+import Usuarios.Usuario;
 import Interfaces.ServicioNotificaciones;
 
 //Implementación concreta del ServicioNotificaciones para envío de SMS
