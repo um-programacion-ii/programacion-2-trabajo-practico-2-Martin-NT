@@ -1,11 +1,7 @@
 package classes;
-import Excepciones.RecursoNoDisponibleException;
-import interfaces.Prestable;
-import interfaces.Renovable;
-import Enum.EstadoRecurso;
-import Enum.CategoriaRecurso;
+import Enums.EstadoRecurso;
+import Enums.CategoriaRecurso;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 // La clase Libro es un tipo de RecursoDigital con atributos específicos
 public class Libro extends RecursoBase {

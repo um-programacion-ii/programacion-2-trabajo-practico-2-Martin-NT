@@ -1,9 +1,9 @@
 package classes;
-import interfaces.Prestable;
-import interfaces.RecursoDigital;
-import Enum.EstadoRecurso;
-import Enum.CategoriaRecurso;
-import java.time.LocalDateTime;
+import Interfaces.Prestable;
+import Interfaces.RecursoDigital;
+import Enums.EstadoRecurso;
+import Enums.CategoriaRecurso;
+
 import java.time.LocalDate;
 
 public abstract class RecursoBase implements RecursoDigital, Prestable {

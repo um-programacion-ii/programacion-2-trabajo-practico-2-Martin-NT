@@ -1,7 +1,5 @@
-package interfaces;
+package Interfaces;
 import classes.Usuario;
-import java.time.LocalDateTime;
-import Excepciones.RecursoNoDisponibleException;
 
 // Interfaz específica para recursos que se pueden prestar
 public interface Prestable {

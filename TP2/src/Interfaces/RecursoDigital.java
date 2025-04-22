@@ -1,6 +1,6 @@
-package interfaces;
-import Enum.EstadoRecurso;
-import Enum.CategoriaRecurso;
+package Interfaces;
+import Enums.EstadoRecurso;
+import Enums.CategoriaRecurso;
 import java.time.LocalDate;
 /**
    Interfaz que define el contrato para todos los recursos digitales.

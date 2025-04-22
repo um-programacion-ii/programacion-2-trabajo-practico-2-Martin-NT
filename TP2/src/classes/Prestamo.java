@@ -1,8 +1,6 @@
 package classes;
-import Excepciones.RecursoNoDisponibleException;
-import interfaces.RecursoDigital;
+import Interfaces.RecursoDigital;
 import java.time.LocalDate;
-import Enum.EstadoRecurso;
 
 public class Prestamo {
     private Usuario usuario;
@@ -57,36 +55,13 @@ public class Prestamo {
     // Metodo para obtener información del préstamo
     @Override
     public String toString() {
-        return "Préstamo de '" + recurso.getTitulo() + "' a " + usuario.getNombre() + " " + usuario.getApellido() +
+        return "Préstamo de " + recurso.getCategoria() + " (" + recurso.getId() + ")" +
+                "\n - Título Recurso: " + recurso.getTitulo() +
+                "\n - Usuario ID: " + usuario.getId() +
+                "\n - Nombre Completo Usuario: " + usuario.getNombre() + " " + usuario.getApellido() +
                 "\n - Fecha de préstamo: " + fechaPrestamo +
                 "\n - Fecha de devolución: " + fechaDevolucion +
                 "\n - Activo: " + (activo ? "Sí" : "No");
-    }
-
-    // Metodo para validar si el recurso está disponible
-    public boolean validarRecursoDisponible() {
-        return recurso.getEstado() == EstadoRecurso.DISPONIBLE;
-    }
-
-    // Metodo para realizar el préstamo
-    public void realizarPrestamo() throws RecursoNoDisponibleException {
-        if (validarRecursoDisponible()) {
-            recurso.actualizarEstado(EstadoRecurso.PRESTADO);
-            System.out.println("\n--> El recurso '" + recurso.getTitulo() + "' ha sido prestado a " + usuario.getNombre() + " " + usuario.getApellido());
-        } else {
-            throw new RecursoNoDisponibleException("\n--> El recurso '" + recurso.getTitulo() + "' no está disponible para préstamo.");
-        }
-    }
-
-    // Metodo para devolver el recurso
-    public void devolverRecurso() {
-        if (activo) {
-            recurso.actualizarEstado(EstadoRecurso.DISPONIBLE);
-            activo = false;  // El préstamo ya no está activo
-            System.out.println("\n--> El recurso '" + recurso.getTitulo() + "' ha sido devuelto.");
-        } else {
-            System.out.println("\n--> El recurso '" + recurso.getTitulo() + "' ya fue devuelto.");
-        }
     }
 
 }

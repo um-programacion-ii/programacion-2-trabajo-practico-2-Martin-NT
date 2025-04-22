@@ -1,5 +1,5 @@
 package Comparadores;
-import interfaces.RecursoDigital;
+import Interfaces.RecursoDigital;
 import java.util.Comparator;
 // Se aprendio a hacer los comparadores con chatgpt
 
