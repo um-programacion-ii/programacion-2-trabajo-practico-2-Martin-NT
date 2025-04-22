@@ -1,4 +1,4 @@
-package classes;
+package Recursos;
 import Enums.EstadoRecurso;
 import Enums.CategoriaRecurso;
 import java.time.LocalDate;

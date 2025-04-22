@@ -1,8 +1,9 @@
-package classes;
+package Recursos;
 import Interfaces.Prestable;
 import Interfaces.RecursoDigital;
 import Enums.EstadoRecurso;
 import Enums.CategoriaRecurso;
+import Usuarios.Usuario;
 
 import java.time.LocalDate;
 

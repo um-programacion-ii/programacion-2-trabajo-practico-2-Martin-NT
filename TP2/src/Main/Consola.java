@@ -1,11 +1,16 @@
+package Main;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 import Excepciones.RecursoNoDisponibleException;
 import Excepciones.UsuarioNoEncontradoException;
-import classes.*;
+import Gestores.GestorRecursos;
+import Gestores.GestorUsuarios;
+import Recursos.*;
 import Interfaces.*;
 import Enums.*;
+import Usuarios.Usuario;
 
 public class Consola {
     private final Scanner scanner;
@@ -19,8 +24,9 @@ public class Consola {
         System.out.println("1. Usuarios");
         System.out.println("2. Recursos");
         System.out.println("3. Préstamos");
-        System.out.println("4. Pruebas");
-        System.out.println("5. Salir");
+        System.out.println("4. Reservas");
+        System.out.println("5. Pruebas");
+        System.out.println("6. Salir");
         System.out.print("--> Seleccione una opción: ");
     }
 
@@ -258,6 +264,14 @@ public class Consola {
         System.out.print("--> Seleccione una opción: ");
     }
 
+    public void mostrarMenuReservas() {
+        System.out.println("\n===== MENÚ DE RESERVAS =====");
+        System.out.println("1. Reservar recurso");
+        System.out.println("2. Ver reservas pendientes");
+        System.out.println("3. Eliminar reserva");
+        System.out.println("4. Volver al menú principal");
+        System.out.print("--> Seleccione una opción: ");
+    }
 
     public int leerOpcion() {
         try {

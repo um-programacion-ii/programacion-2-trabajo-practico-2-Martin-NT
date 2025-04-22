@@ -1,9 +1,17 @@
+package Main;
+
 import Excepciones.RecursoNoDisponibleException;
 import Excepciones.UsuarioNoEncontradoException;
-import classes.*;
+import Gestores.GestorPrestamos;
+import Gestores.GestorRecursos;
+import Gestores.GestorReservas;
+import Gestores.GestorUsuarios;
+import Prestamos.Prestamo;
+import Recursos.*;
 import Interfaces.*;
-import Services.*;
+import Servicios.*;
 import Enums.*;
+import Usuarios.Usuario;
 
 import java.time.LocalDate;
 
@@ -15,6 +23,8 @@ public class Main {
         GestorRecursos gestorRecursos = new GestorRecursos();
         // Crear gestor de prestamos
         GestorPrestamos gestorPrestamos = new GestorPrestamos();
+        // Crear gestor de reservas
+        GestorReservas gestorReservas = new GestorReservas();
 
         // Crear Usuarios
         Usuario usuario1 = new Usuario("U001", "Martina", "Rizzotti", "martirizzotti@example.com", "martincho15", "2613245789");
@@ -319,8 +329,8 @@ public class Main {
                 case 3:  // Menú de Préstamos
                     int opcionPrestamo;
                     do {
-                        consola.mostrarMenuPrestamos();  // Mostrar el menú de préstamos
-                        opcionPrestamo = consola.leerOpcion();  // Leer la opción seleccionada
+                        consola.mostrarMenuPrestamos();
+                        opcionPrestamo = consola.leerOpcion();
 
                         switch (opcionPrestamo) {
                             case 1: // Realizar un préstamo
@@ -382,6 +392,27 @@ public class Main {
                                     break;
                                 }
 
+                                // Solicitar el recurso a devolver
+                                System.out.print("Ingrese el ID del recurso que desea devolver: ");
+                                String idRecursoDev = consola.leerTexto();
+
+                                // Intentamos obtener el recurso desde el gestor
+                                RecursoDigital recursoDev = null;
+                                try {
+                                    recursoDev = gestorRecursos.obtenerRecursoPorId(idRecursoDev);
+                                } catch (RecursoNoDisponibleException e) {
+                                    System.out.println("❌ " + e.getMessage());
+                                    break;
+                                }
+
+                                // Llamar al metodo de devolver recurso
+                                try {
+                                    gestorPrestamos.devolverRecurso(usuarioDev, recursoDev);
+                                } catch (IllegalStateException e) {
+                                    System.out.println("❌ Error al devolver el recurso: " + e.getMessage());
+                                }
+                                break;
+
                             case 4:
                                 System.out.println("↩️ Volviendo al Menú Principal...");
                                 break;
@@ -390,11 +421,75 @@ public class Main {
                                 System.out.println("⚠️ Opción inválida.");
 
                         }
-                    } while (opcionPrestamo != 4);  // Continuar mostrando el menú hasta que el usuario elija salir
+                    } while (opcionPrestamo != 4);
                     break;
 
+                case 4:
+                    int opcionReserva;
+                    String idRecurso = ""; // Declarar  fuera del bucle o switch
+                    do {
+                        consola.mostrarMenuReservas();
+                        opcionReserva = consola.leerOpcion();
 
-                case 4: // PRUEBAS
+                        switch (opcionReserva) {
+                            case 1: // Reservar recurso
+                                // Solicitar el ID del usuario
+                                System.out.print("Ingrese el ID del usuario que desea realizar la reserva: ");
+                                String idUsuario = consola.leerTexto();
+
+                                // Solicitar el ID del recurso
+                                System.out.print("Ingrese el ID del recurso que desea reservar: ");
+                                idRecurso = consola.leerTexto();
+
+                                try {
+                                    // Buscar el usuario por ID
+                                    Usuario usuario = gestorUsuarios.obtenerUsuarioPorId(idUsuario); // Obtiene el usuario
+
+                                    // Buscar el recurso por ID
+                                    RecursoDigital recurso = gestorRecursos.obtenerRecursoPorId(idRecurso);
+
+                                    // Verificar si el recurso está disponible
+                                    if (gestorPrestamos.validarRecursoDisponible(recurso)) {
+                                        // Agregar la reserva
+                                        gestorReservas.agregarReserva(usuario, recurso);
+                                    } else {
+                                        System.out.println("⚠️ El recurso no está disponible en este momento. ¡Por favor, espere!");
+                                    }
+
+                                } catch (UsuarioNoEncontradoException e) {
+                                    // Si el usuario no se encuentra
+                                    System.out.println(e.getMessage());
+                                } catch (RecursoNoDisponibleException e) {
+                                    // Si el recurso no está disponible
+                                    System.out.println(e.getMessage());
+                                } catch (Exception e) {
+                                    // En caso de cualquier otra excepción no controlada
+                                    System.out.println("Error inesperado: " + e.getMessage());
+                                }
+                                break;
+
+                            case 2: // Ver reservas pendientes
+                                // Muestra las reservas pendientes en la cola de reservas
+                                gestorReservas.mostrarReservas();
+                                break;
+
+                            case 3: // Eliminar reserva
+                                System.out.print("--> Ingrese el ID del recurso que desea eliminar: ");
+                                idRecurso = consola.leerTexto();
+                                gestorReservas.eliminarReserva(idRecurso);
+                                break;
+
+                            case 4:
+                                System.out.println("↩️ Volviendo al Menú Principal...");
+                                break;
+
+                            default:
+                                System.out.println("⚠️ Opción inválida.");
+                        }
+                    } while (opcionReserva != 4);
+                    break;
+
+                case 5: // PRUEBAS
                     System.out.println("\n==== PRUEBAS DE NOTIFICACIONES ====");
                     try {
                         System.out.println("\n- Prueba del servicio email");
@@ -407,13 +502,13 @@ public class Main {
                     }
                     break;
 
-                case 5:
+                case 6:
                     System.out.println("Saliendo del programa...");
                     break;
 
                 default:
                     System.out.println("⚠️ Opción inválida.");
             }
-        } while (opcionPrincipal != 5);
+        } while (opcionPrincipal != 6);
     }
 }

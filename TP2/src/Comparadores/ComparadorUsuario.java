@@ -1,5 +1,5 @@
 package Comparadores;
-import classes.Usuario;
+import Usuarios.Usuario;
 import java.util.Comparator;
 // Se aprendio a hacer los comparadores con chatgpt
 

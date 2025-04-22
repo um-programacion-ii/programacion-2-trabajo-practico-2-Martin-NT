@@ -1,5 +1,7 @@
-package classes;
+package Prestamos;
 import Interfaces.RecursoDigital;
+import Usuarios.Usuario;
+
 import java.time.LocalDate;
 
 public class Prestamo {
@@ -62,6 +64,11 @@ public class Prestamo {
                 "\n - Fecha de préstamo: " + fechaPrestamo +
                 "\n - Fecha de devolución: " + fechaDevolucion +
                 "\n - Activo: " + (activo ? "Sí" : "No");
+    }
+
+    public void registrarDevolucion() {
+        this.fechaDevolucion = LocalDate.now();
+        this.activo = false; //Desactivo el prestamo
     }
 
 }
