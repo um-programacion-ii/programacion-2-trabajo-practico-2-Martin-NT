@@ -260,7 +260,27 @@ public class Consola {
         System.out.println("1. Realizar préstamo");
         System.out.println("2. Ver préstamos activos");
         System.out.println("3. Devolver recurso");
-        System.out.println("4. Volver al menú principal");
+        System.out.println("4. Buscar préstamos");
+        System.out.println("5. Ordenar préstamos");
+        System.out.println("6. Volver al menú principal");
+        System.out.print("--> Seleccione una opción: ");
+    }
+
+    public void mostrarMenuBuscarPrestamos() {
+        System.out.println("\n===== MENÚ DE BÚSQUEDA DE PRÉSTAMOS =====");
+        System.out.println("1. Buscar por ID de usuario");
+        System.out.println("2. Buscar por ID de recurso");
+        System.out.println("3. Buscar por fecha de préstamo");
+        System.out.println("4. Volver al menú anterior");
+        System.out.print("--> Seleccione una opción: ");
+    }
+
+    public void mostrarMenuOrdenarPrestamos() {
+        System.out.println("\n===== MENÚ DE ORDENAR PRÉSTAMOS =====");
+        System.out.println("1. Ordenar por ID de usuario");
+        System.out.println("2. Ordenar por fecha de préstamo");
+        System.out.println("3. Ordenar por ID de recurso");
+        System.out.println("4. Volver al menú anterior");
         System.out.print("--> Seleccione una opción: ");
     }
 
@@ -269,7 +289,28 @@ public class Consola {
         System.out.println("1. Reservar recurso");
         System.out.println("2. Ver reservas pendientes");
         System.out.println("3. Eliminar reserva");
-        System.out.println("4. Volver al menú principal");
+        System.out.println("4. Buscar reservas");
+        System.out.println("5. Ordenar reservas");
+        System.out.println("6. Volver al menú principal");
+        System.out.print("--> Seleccione una opción: ");
+    }
+
+    public void mostrarMenuBuscarReservas() {
+        System.out.println("\n===== MENÚ DE BÚSQUEDA DE RESERVAS =====");
+        System.out.println("1. Buscar por id de usuario");
+        System.out.println("2. Buscar por id de recurso");
+        System.out.println("3. Buscar por prioridad");
+        System.out.println("4. Buscar por fecha");
+        System.out.println("5. Volver al menú anterior");
+        System.out.print("--> Seleccione una opción: ");
+    }
+
+    public void mostrarMenuOrdenarReservas() {
+        System.out.println("\n===== MENÚ DE ORDENAR RESERVAS =====");
+        System.out.println("1. Ordenar por prioridad");
+        System.out.println("2. Ordenar por fecha");
+        System.out.println("3. Ordenar por id de usuario");
+        System.out.println("4. Volver al menú anterior");
         System.out.print("--> Seleccione una opción: ");
     }
 

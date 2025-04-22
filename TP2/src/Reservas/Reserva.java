@@ -3,18 +3,20 @@ import Interfaces.RecursoDigital;
 import Usuarios.Usuario;
 import java.time.LocalDate;
 
-public class Reserva {
+public class Reserva implements Comparable<Reserva>{
     private Usuario usuario;
     private RecursoDigital recurso;
     private LocalDate fechaReserva;
+    private int prioridad;
 
     // Constructor
-    public Reserva(Usuario usuario, RecursoDigital recurso) {
+    public Reserva(Usuario usuario, RecursoDigital recurso, int prioridad) {
         this.usuario = usuario;
         this.recurso = recurso;
-        this.fechaReserva = LocalDate.now();
+        this.fechaReserva = LocalDate.now(); // Fecha actual por defecto
+        this.prioridad = prioridad;
     }
-
+    
     // Getters
     public Usuario getUsuario() {
         return usuario;
@@ -24,6 +26,9 @@ public class Reserva {
     }
     public LocalDate getFechaReserva() {
         return fechaReserva;
+    }
+    public int getPrioridad() {
+        return prioridad;
     }
 
     // Setters
@@ -36,6 +41,9 @@ public class Reserva {
     public void setFechaReserva(LocalDate fechaReserva) {
         this.fechaReserva = fechaReserva;
     }
+    public void setPrioridad(int prioridad) {
+        this.prioridad = prioridad;
+    }
 
     @Override
     public String toString() {
@@ -43,6 +51,12 @@ public class Reserva {
                 "\n - Titulo Recurso: " + recurso.getTitulo() +
                 "\n - Usuario ID: " + usuario.getId() +
                 "\n - Nombre Completo Usuario: " + usuario.getNombre() + " " + usuario.getApellido() +
-                "\n - Fecha: " + fechaReserva;
+                "\n - Fecha: " + fechaReserva +
+                "\n - Prioridad: " + prioridad;
+    }
+
+    @Override
+    public int compareTo(Reserva otraReserva) {
+        return Integer.compare(this.prioridad, otraReserva.prioridad);
     }
 }
