@@ -1,5 +1,4 @@
 package Main;
-import Alertas.AlertaVencimiento;
 import Gestores.*;
 import Simulaciones.*;
 import java.util.Scanner;
@@ -46,25 +45,34 @@ public class Main {
                     do {
                         System.out.println("\n===== 🧪 MENÚ DE PRUEBAS =====");
                         System.out.println("- Importante Probar en Orden");
-                        System.out.println("1. Simular y Verificar Alertas");
-                        System.out.println("2. Simular Concurrencia");
-                        System.out.println("3. Ejecutar Reportes");
-                        System.out.println("4. Probar servicios de Notificación");
-                        System.out.println("5. Volver al menú principal");
+                        System.out.println("1. Simular y Verificar Alerta Vencimiento");
+                        System.out.println("2. Simular y Verificar Alerta Disponibilidad");
+                        System.out.println("3. Simular Concurrencia");
+                        System.out.println("4. Ejecutar Reportes");
+                        System.out.println("5. Probar servicios de Notificación");
+                        System.out.println("6. Volver al menú principal");
                         System.out.print("Seleccione una opción: ");
                         opcion = scanner.nextInt();
                         scanner.nextLine(); // limpiar buffer
 
                         switch (opcion) {
-                            case 1: // Alertas de Notifiacion
+                            case 1: // Alertas Vencimiento
                                 // Simular préstamo por vencer (se agrega manualmente)
-                                SimuladorAlertas.generarPrestamoPorVencer(gestores.getGestorPrestamos());
+                                SimuladorAlertasVencimiento.generarPrestamoPorVencer(gestores.getGestorPrestamos());
 
                                 // Verificar alertas (esto debería disparar la alerta y ofrecer renovación)
-                                SimuladorAlertas.verificarAlertas(gestores.getGestorPrestamos());
+                                SimuladorAlertasVencimiento.verificarAlertas(gestores.getGestorPrestamos());
                                 break;
 
-                            case 2: // Concurrencia
+                            case 2: // Alertas Disponibilidad
+                                // Generar reserva de prueba
+                                SimuladorAlertasDisponibilidad.generarReservaDePrueba();
+
+                                // Verificar alertas de disponibilidad
+                                SimuladorAlertasDisponibilidad.verificarAlertasDisponibilidad();
+                                break;
+
+                            case 3: // Concurrencia
                                 // Pruebas de concurrencia (para testear)
                                 SimuladorConcurrencia.simularConcurrencia(
                                         gestores.getGestorRecursos(),
@@ -74,7 +82,7 @@ public class Main {
                                 );
                                 break;
 
-                            case 3: // Reportes
+                            case 4: // Reportes
                                 // 🔥 NUEVO Paso intermedio: Simular préstamos
                                 SimuladorUsuarios.cargarUsuarios(gestores.getGestorUsuarios());
                                 SimuladorRecursos.cargarRecursos(gestores.getGestorRecursos());
@@ -88,7 +96,7 @@ public class Main {
                                 SimuladorReportes.ejecutarReportes(gestores);
                                 break;
 
-                            case 4: // Notificaciones
+                            case 5: // Notificaciones
                                 // Probar servicios de notificación
                                 SimuladorNotificaciones.probarServicios(
                                         gestores.getServicioEmail(),
@@ -97,7 +105,7 @@ public class Main {
                                 );
                                 break;
 
-                            case 5:
+                            case 6:
                                 System.out.println("Volviendo al menú principal...");
                                 break;
 
@@ -105,7 +113,7 @@ public class Main {
                                 System.out.println("⚠️ Opción inválida. Intente nuevamente.");
                         }
 
-                    } while (opcion != 5);
+                    } while (opcion != 6);
 
                 case 7:
                     System.out.println("Saliendo del programa...");

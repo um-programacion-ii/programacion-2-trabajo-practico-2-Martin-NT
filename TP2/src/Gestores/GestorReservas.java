@@ -3,6 +3,7 @@ import Interfaces.RecursoDigital;
 import Reservas.Reserva;
 import Usuarios.Usuario;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.PriorityBlockingQueue;
@@ -23,6 +24,11 @@ public class GestorReservas {
     // Getter: Devuelve la cola de reservas completa
     public PriorityBlockingQueue<Reserva> getColaReservas() {
         return colaReservas;
+    }
+
+    // Metodo público para obtener todas las reservas como lista
+    public List<Reserva> getReservas() {
+        return new ArrayList<>(colaReservas);
     }
 
     // Agrega una reserva a la cola si el usuario aún no ha reservado ese recurso
@@ -47,7 +53,6 @@ public class GestorReservas {
 
 
     }
-
 
     // Metodo para eliminar una reserva basada en el ID del recurso
     public void eliminarReserva(String idRecurso) {
