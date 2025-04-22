@@ -612,7 +612,7 @@ public class Main {
                     SimuladorNotificaciones.probarServicios(servicioEmail, servicioSMS, gestorUsuarios);
 
                     // Llamar al simulador de concurrencia para probar la ejecución concurrente
-                    SimuladorConcurrencia.simularConcurrencia(gestorRecursos, gestorUsuarios, gestorPrestamos);
+                    SimuladorConcurrencia.simularConcurrencia(gestorRecursos, gestorUsuarios, gestorPrestamos, gestorNotificaciones);
                     break;
 
                 case 6:
