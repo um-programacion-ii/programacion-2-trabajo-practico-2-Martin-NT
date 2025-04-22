@@ -110,7 +110,7 @@ public class Consola {
         System.out.print("Seleccione el tipo de recurso: ");
     }
 
-    public void crearRecurso(int tipoSeleccionado, GestorRecursos gestor) {
+    public void crearRecursoMenu(int tipoSeleccionado, GestorRecursos gestor) {
         System.out.print("🆔 Ingrese el ID: ");
         String id = scanner.nextLine();
 
@@ -209,7 +209,7 @@ public class Consola {
         }
     }
 
-    public void crearUsuario(GestorUsuarios gestor) {
+    public void crearUsuarioMenu(GestorUsuarios gestor) {
         System.out.println("\n===== ➕ CREAR NUEVO USUARIO =====");
 
         System.out.print("🆔 Ingrese el ID del usuario: ");
@@ -242,7 +242,7 @@ public class Consola {
         System.out.println("✅ Usuario creado exitosamente.");
     }
 
-    public void eliminarUsuario(GestorUsuarios gestor) {
+    public void eliminarUsuarioMenu(GestorUsuarios gestor) {
         System.out.println("\n===== 🗑️ ELIMINAR USUARIO =====");
         System.out.print("🆔 Ingrese el ID del usuario que desea eliminar: ");
         String id = scanner.nextLine();

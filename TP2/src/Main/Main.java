@@ -3,7 +3,6 @@ import Excepciones.RecursoNoDisponibleException;
 import Excepciones.UsuarioNoEncontradoException;
 import Gestores.*;
 import Prestamos.Prestamo;
-import Recursos.*;
 import Interfaces.*;
 import Reservas.Reserva;
 import Servicios.*;
@@ -128,11 +127,11 @@ public class Main {
                                 break;
 
                             case 4: // CREAR
-                                consola.crearUsuario(gestorUsuarios);
+                                consola.crearUsuarioMenu(gestorUsuarios);
                                 break;
 
                             case 5: // ELIMINAR
-                                consola.eliminarUsuario(gestorUsuarios);
+                                consola.eliminarUsuarioMenu(gestorUsuarios);
                                 break;
 
                             case 6:
@@ -274,7 +273,7 @@ public class Main {
                                 consola.mostrarMenuCrearRecurso();
                                 int tipoRecurso = consola.leerOpcion();
                                 if (tipoRecurso >= 1 && tipoRecurso <= 3) {
-                                    consola.crearRecurso(tipoRecurso, gestorRecursos);
+                                    consola.crearRecursoMenu(tipoRecurso, gestorRecursos);
                                 } else if (tipoRecurso == 4) {
                                     System.out.println("↩️ Volviendo al menú de recursos...");
                                 } else {
