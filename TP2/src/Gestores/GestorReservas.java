@@ -26,7 +26,7 @@ public class GestorReservas {
     }
 
     // Agrega una reserva a la cola si el usuario aún no ha reservado ese recurso
-    public void agregarReserva(Usuario usuario, RecursoDigital recurso, int prioridad) {
+    public synchronized void agregarReserva(Usuario usuario, RecursoDigital recurso, int prioridad) {
         // Verifica si el usuario ya tiene una reserva para este recurso
         boolean yaReservado = colaReservas.stream().anyMatch(
                 reserva -> reserva.getUsuario().getId().equals(usuario.getId())
@@ -43,14 +43,11 @@ public class GestorReservas {
 
         // Enviar la notificación de reserva exitosa
         String mensaje = "¡Reserva exitosa! Has reservado el recurso: " + recurso.getTitulo();
-        gestorNotificaciones.enviarNotificacionPorSMS(mensaje, usuario);  // Usar el gestor de notificaciones
-
-
+        gestorNotificaciones.enviarNotificacionPorSMS(mensaje, usuario);
     }
 
-
     // Metodo para eliminar una reserva basada en el ID del recurso
-    public void eliminarReserva(String idRecurso) {
+    public synchronized void eliminarReserva(String idRecurso) {
         // Buscar la reserva antes de eliminarla
         Reserva reservaAEliminar = colaReservas.stream()
                 .filter(reserva -> reserva.getRecurso().getId().equals(idRecurso))

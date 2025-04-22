@@ -29,30 +29,31 @@ public class GestorPrestamos {
 
     // Metodo para realizar el préstamo
     public void realizarPrestamo(Usuario usuario, RecursoDigital recurso) throws RecursoNoDisponibleException {
-        // Eliminar la reserva si existe usando el gestor inyectado
-        gestorReservas.eliminarReserva(recurso.getId());
+            //Si dos hilos intentan prestar el mismo recurso, se bloquean correctamente.
+            //Si dos hilos intentan prestar recursos diferentes, no se bloquean entre sí
+            synchronized (recurso) {
+                System.out.println("\n[" + Thread.currentThread().getName() + "] 🔄 Intentando prestar: " + recurso.getTitulo());
 
-        LocalDate fechaPrestamo = LocalDate.now();
-        LocalDate fechaDevolucion = fechaPrestamo.plusDays(14); // Suponiendo 14 días de préstamo
-        boolean activo = true;
+                LocalDate fechaPrestamo = LocalDate.now();
+                LocalDate fechaDevolucion = fechaPrestamo.plusDays(14);
+                boolean activo = true;
 
-        if (validarRecursoDisponible(recurso)) {
-            Prestamo nuevoPrestamo = new Prestamo(usuario, recurso, fechaPrestamo, fechaDevolucion, activo);
-            prestamos.add(nuevoPrestamo);
-            recurso.setEstado(EstadoRecurso.PRESTADO);
-            // Notificación (opcional, si también inyectaste GestorNotificaciones)
-            String mensaje = "📚 Se ha realizado el préstamo del recurso '" + recurso.getTitulo()
-                    + "' hasta el " + fechaDevolucion + ".";
-            gestorNotificaciones.enviarNotificacionPorEmail(mensaje, usuario);
+                if (validarRecursoDisponible(recurso)) {
+                    gestorReservas.eliminarReserva(recurso.getId());
+                    Prestamo nuevoPrestamo = new Prestamo(usuario, recurso, fechaPrestamo, fechaDevolucion, activo);
+                    prestamos.add(nuevoPrestamo);
+                    recurso.setEstado(EstadoRecurso.PRESTADO);
 
-            System.out.println("\nEl " + recurso.getCategoria() + " '" + recurso.getTitulo() + "' (" + recurso.getId() + ") ha sido prestado a " + usuario.getNombre() + " " + usuario.getApellido() + " (" + usuario.getId() + ")");
+                    String mensaje = "📚 Se ha realizado el préstamo del recurso '" + recurso.getTitulo() + "' hasta el " + fechaDevolucion + ".";
+                    gestorNotificaciones.enviarNotificacionPorEmail(mensaje, usuario);
 
-
-        } else {
-            throw new RecursoNoDisponibleException("\nEl " + recurso.getCategoria() + " '" + recurso.getTitulo() + "' (" + recurso.getId() + ") no está disponible para préstamo.");
+                    System.out.println("\n[" + Thread.currentThread().getName() + "] ✅ Préstamo exitoso: " + recurso.getTitulo());
+                } else {
+                    System.out.println("\n[" + Thread.currentThread().getName() + "] ❌ Recurso no disponible: " + recurso.getTitulo());
+                    throw new RecursoNoDisponibleException("El recurso '" + recurso.getTitulo() + "' no está disponible.");
+                }
+            }
         }
-    }
-
 
     // Metodo para devolver el recurso
     public void devolverRecurso(Usuario usuario, RecursoDigital recurso) {
@@ -73,21 +74,22 @@ public class GestorPrestamos {
 
             // Enviar notificación al usuario
             String mensaje = "📥 Has devuelto el recurso '" + recurso.getTitulo() + "' correctamente. ¡Gracias!";
-            gestorNotificaciones.enviarNotificacionPorEmail(mensaje, usuario); // o SMS, como prefieras
+            gestorNotificaciones.enviarNotificacionPorEmail(mensaje, usuario);
         } else {
             System.out.println("\nEl " + recurso.getCategoria() + " '" + recurso.getTitulo() + "' (" + recurso.getId() + ") ya fue devuelto.");
         }
     }
 
-
     // Metodo para mostrar los prestamos activos
     public void mostrarPrestamosActivos() {
         System.out.println("\n==== Préstamos Activos ====");
         boolean hayActivos = false;
-        for (Prestamo p : prestamos) {
-            if (p.isActivo()) {
-                System.out.println("\n" + p);
-                hayActivos = true;
+        synchronized (this) {
+            for (Prestamo p : prestamos) {
+                if (p.isActivo()) {
+                    System.out.println("\n" + p);
+                    hayActivos = true;
+                }
             }
         }
         if (!hayActivos) {
@@ -103,17 +105,18 @@ public class GestorPrestamos {
             System.out.println("\n==== Préstamos Encontrados ====");
             for (Prestamo prestamo : prestamos) {
                 System.out.println("\n" + prestamo);
-
             }
         }
     }
 
     // Metodo para buscar un préstamo activo de un usuario y recurso
     public Prestamo buscarPrestamoActivo(Usuario usuario, RecursoDigital recurso) {
-        return prestamos.stream()
-                .filter(p -> p.getRecurso().equals(recurso) && p.getUsuario().equals(usuario) && p.isActivo())
-                .findFirst()
-                .orElse(null);
+        synchronized (this) {
+            return prestamos.stream()
+                    .filter(p -> p.getRecurso().equals(recurso) && p.getUsuario().equals(usuario) && p.isActivo())
+                    .findFirst()
+                    .orElse(null);
+        }
     }
 
     public void buscarPorIdUsuario(String idUsuario) {

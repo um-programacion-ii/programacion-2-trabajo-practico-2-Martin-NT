@@ -8,52 +8,31 @@ import Interfaces.*;
 import Reservas.Reserva;
 import Servicios.*;
 import Enums.*;
+import Simulaciones.SimuladorConcurrencia;
+import Simulaciones.SimuladorNotificaciones;
+import Simulaciones.SimuladorRecursos;
+import Simulaciones.SimuladorUsuarios;
 import Usuarios.Usuario;
 import java.time.LocalDate;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        // Crear gestor de usuarios
-        GestorUsuarios gestorUsuarios = new GestorUsuarios();
-        // Crear gestor de recursos
-        GestorRecursos gestorRecursos = new GestorRecursos();
-        // Crear servicios de notificación
+        // Crear instancias de los servicios de notificación
         ServicioNotificaciones servicioEmail = new ServicioNotificacionesEmail();
         ServicioNotificaciones servicioSMS = new ServicioNotificacionesSMS();
-        // Crear la instancia de GestorNotificaciones, pasando los servicios como dependencia
+
+        // Crear gestores
         GestorNotificaciones gestorNotificaciones = new GestorNotificaciones(servicioEmail, servicioSMS);
-        // Crear la instancia de GestorReservas, pasando GestorNotificaciones como dependencia
         GestorReservas gestorReservas = new GestorReservas(gestorNotificaciones);
-        // Crear el GestorPrestamos, pasando GestorNotificaciones y GestorReservas como dependencias
         GestorPrestamos gestorPrestamos = new GestorPrestamos(gestorNotificaciones, gestorReservas);
+        GestorRecursos gestorRecursos = new GestorRecursos();
+        GestorUsuarios gestorUsuarios = new GestorUsuarios();
 
-        // Crear Usuarios
-        Usuario usuario1 = new Usuario("U001", "Martina", "Rizzotti", "martirizzotti@example.com", "martincho15", "2613245789");
-        Usuario usuario2 = new Usuario("U002", "Valentina", "Rosales", "valerosales@example.com", "valero1911", "2634257895");
-        Usuario usuario3 = new Usuario("U003", "Facundo", "San Roman", "facundo@example.com", "sanroman44", "2634257895");
-        Usuario usuario4 = new Usuario("U004", "Valentino", "Rizzotti", "valenrizzotti@example.com", "bianquita10", "2613467543");
+        // Cargar usuarios y recursos con los simuladores
+        SimuladorUsuarios.cargarUsuarios(gestorUsuarios);
+        SimuladorRecursos.cargarRecursos(gestorRecursos);
 
-        // Crear recursos
-        Libro libro1 = new Libro("L001", "Harry Potter y la piedra filosofal", "J.K. Rowling",
-                LocalDate.of(1997, 6, 26), EstadoRecurso.DISPONIBLE, CategoriaRecurso.LIBRO, 256, "Fantasía", "Salamandra");
-
-        Revista revista1 = new Revista("R001", "National Geographic", "Varios",
-                LocalDate.of(2025, 4, 10), EstadoRecurso.DISPONIBLE, CategoriaRecurso.REVISTA, 100, "Mensual", "Ciencia y naturaleza", "National Geographic Society");
-
-        Audiolibro audiolibro1 = new Audiolibro("A001", "El Principito", "Antoine de Saint-Exupéry",
-                LocalDate.of(1943, 4, 6), EstadoRecurso.DISPONIBLE, CategoriaRecurso.AUDIOLIBRO, 92, "Dangello Medina", "Español");
-
-        // Agregar Usuarios al Gestor
-        gestorUsuarios.agregarUsuario(usuario1);
-        gestorUsuarios.agregarUsuario(usuario2);
-        gestorUsuarios.agregarUsuario(usuario3);
-        gestorUsuarios.agregarUsuario(usuario4);
-
-        // Agregar Recursos al Gestor
-        gestorRecursos.agregarRecurso(libro1);
-        gestorRecursos.agregarRecurso(revista1);
-        gestorRecursos.agregarRecurso(audiolibro1);
 
         Consola consola = new Consola();
         int opcionPrincipal;
@@ -629,16 +608,11 @@ public class Main {
                     break;
 
                 case 5: // PRUEBAS
-                    System.out.println("\n==== PRUEBAS DE NOTIFICACIONES ====");
-                    try {
-                        System.out.println("\n- Prueba del servicio email");
-                        servicioEmail.enviarNotificacion("--> ¡Tienes un nuevo mensaje!", gestorUsuarios.obtenerUsuarioPorId("U001"));
+                    // Probar notificaciones
+                    SimuladorNotificaciones.probarServicios(servicioEmail, servicioSMS, gestorUsuarios);
 
-                        System.out.println("\n- Prueba del servicio SMS");
-                        servicioSMS.enviarNotificacion("--> ¡Tienes un nuevo mensaje!", gestorUsuarios.obtenerUsuarioPorId("U002"));
-                    } catch (UsuarioNoEncontradoException e) {
-                        System.out.println("❌ Error al enviar notificación: " + e.getMessage());
-                    }
+                    // Llamar al simulador de concurrencia para probar la ejecución concurrente
+                    SimuladorConcurrencia.simularConcurrencia(gestorRecursos, gestorUsuarios, gestorPrestamos);
                     break;
 
                 case 6:
