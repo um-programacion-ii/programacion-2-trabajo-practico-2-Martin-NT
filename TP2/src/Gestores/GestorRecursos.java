@@ -25,7 +25,7 @@ public class GestorRecursos {
     // Getter: Devuelve la lista completa de recursos
     public List<RecursoDigital> getRecursos() {
         return recursos;
-    }  ////modificar
+    }
 
     // Metodo que agrega un recurso a la lista
     public void agregarRecurso(RecursoDigital recurso) {

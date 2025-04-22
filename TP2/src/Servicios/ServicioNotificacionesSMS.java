@@ -7,7 +7,7 @@ public class ServicioNotificacionesSMS implements ServicioNotificaciones {
 
     @Override
     public void enviarNotificacion(String mensaje, Usuario usuario) {
-        System.out.println("\nEnviando SMS a: " + usuario.getNombre() + " al número: " + usuario.getTelefono());
+        System.out.println("\nEnviando SMS a " + usuario.getNombre() + usuario.getApellido() + " al número: " + usuario.getTelefono());
         System.out.println("Contenido del mensaje: " + mensaje);
     }
 

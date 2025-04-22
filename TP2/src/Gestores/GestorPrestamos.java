@@ -22,6 +22,10 @@ public class GestorPrestamos {
         this.gestorReservas = gestorReservas;
     }
 
+    public List<Prestamo> getPrestamos() {
+        return prestamos;
+    }
+
     // Metodo para validar si el recurso está disponible
     public boolean validarRecursoDisponible(RecursoDigital recurso) {
         return recurso.getEstado() == EstadoRecurso.DISPONIBLE;
