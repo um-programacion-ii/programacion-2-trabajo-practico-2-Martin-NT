@@ -6,7 +6,9 @@ import Prestamos.Prestamo;
 import Usuarios.Usuario;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GestorPrestamos {
     private List<Prestamo> prestamos = new ArrayList<>();
@@ -79,6 +81,19 @@ public class GestorPrestamos {
         }
     }
 
+    // Metodo para mostrar los préstamos filtrados
+    public void mostrarPrestamosFiltrados(List<Prestamo> prestamos) {
+        if (prestamos.isEmpty()) {
+            System.out.println("⚠️ No se encontraron préstamos con esos criterios.");
+        } else {
+            System.out.println("\n==== Préstamos Encontrados ====");
+            for (Prestamo prestamo : prestamos) {
+                System.out.println("\n" + prestamo);
+
+            }
+        }
+    }
+
     // Metodo para buscar un préstamo activo de un usuario y recurso
     public Prestamo buscarPrestamoActivo(Usuario usuario, RecursoDigital recurso) {
         return prestamos.stream()
@@ -86,6 +101,68 @@ public class GestorPrestamos {
                 .findFirst()
                 .orElse(null);
     }
+
+    public void buscarPorIdUsuario(String idUsuario) {
+        List<Prestamo> resultados = prestamos.stream()
+                .filter(prestamo -> prestamo.getUsuario().getId().equals(idUsuario))
+                .collect(Collectors.toList());
+
+        System.out.println("\n--> Préstamos encontrados para el usuario con ID: " + idUsuario);
+        if (resultados.isEmpty()) {
+            System.out.println("📭 No se encontraron préstamos para este usuario.");
+        } else {
+            mostrarPrestamosFiltrados(resultados);
+        }
+    }
+
+    public void buscarPorIdRecurso(String idRecurso) {
+        List<Prestamo> resultados = prestamos.stream()
+                .filter(prestamo -> prestamo.getRecurso().getId().equals(idRecurso))
+                .collect(Collectors.toList());
+
+        System.out.println("\n--> Préstamos encontrados para el recurso con ID: " + idRecurso);
+        if (resultados.isEmpty()) {
+            System.out.println("📭 No se encontraron préstamos para este recurso.");
+        } else {
+            mostrarPrestamosFiltrados(resultados);
+        }
+    }
+
+    public void buscarPorFecha(LocalDate fecha) {
+        List<Prestamo> resultados = prestamos.stream()
+                .filter(prestamo -> prestamo.getFechaPrestamo().equals(fecha))
+                .collect(Collectors.toList());
+
+        System.out.println("\n--> Préstamos encontrados para la fecha: " + fecha);
+        if (resultados.isEmpty()) {
+            System.out.println("📭 No se encontraron préstamos para esta fecha.");
+        } else {
+            mostrarPrestamosFiltrados(resultados);
+        }
+    }
+
+    public List<Prestamo> ordenarPrestamosPorIdUsuario() {
+        return prestamos.stream()
+                .sorted(Comparator.comparing(p -> p.getUsuario().getId()))
+                .collect(Collectors.toList());
+    }
+
+    public List<Prestamo> ordenarPrestamosPorIdRecurso() {
+        return prestamos.stream()
+                .sorted(Comparator.comparing(p -> p.getRecurso().getId()))  // Ordena por ID de recurso
+                .collect(Collectors.toList());
+    }
+
+    public List<Prestamo> ordenarPrestamosPorFecha() {
+        return prestamos.stream()
+                .sorted(Comparator.comparing(Prestamo::getFechaPrestamo))
+                .collect(Collectors.toList());
+    }
+
+
+
+
+
 
 
 }

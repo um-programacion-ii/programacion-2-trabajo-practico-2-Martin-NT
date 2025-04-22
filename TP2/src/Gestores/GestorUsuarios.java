@@ -67,8 +67,7 @@ public class GestorUsuarios {
         } else {
             System.out.println("\n👤 Usuarios encontrados:");
             for (Usuario usuario : usuariosFiltrados) {
-                System.out.println(usuario);
-                System.out.println("----------------------------------");
+                System.out.println("\n" + usuario);
             }
         }
     }

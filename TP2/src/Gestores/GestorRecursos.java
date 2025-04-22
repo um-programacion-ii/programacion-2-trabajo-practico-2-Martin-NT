@@ -84,8 +84,7 @@ public class GestorRecursos {
         } else {
             System.out.println("\n📚 Recursos encontrados:");
             for (RecursoDigital recurso : recursos) {
-                System.out.println(recurso);
-                System.out.println("----------------------------------");
+                System.out.println("\n" + recurso);
             }
         }
     }

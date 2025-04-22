@@ -9,11 +9,12 @@ import Gestores.GestorUsuarios;
 import Prestamos.Prestamo;
 import Recursos.*;
 import Interfaces.*;
+import Reservas.Reserva;
 import Servicios.*;
 import Enums.*;
 import Usuarios.Usuario;
-
 import java.time.LocalDate;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -56,12 +57,6 @@ public class Main {
         // Crear instancias de los servicios de notificación
         ServicioNotificaciones servicioEmail = new ServicioNotificacionesEmail();
         ServicioNotificaciones servicioSMS = new ServicioNotificacionesSMS();
-
-        // Crear Prestamos
-        LocalDate fechaPrestamo = LocalDate.now();
-        LocalDate fechaDevolucion = fechaPrestamo.plusDays(14); // Suponiendo que el préstamo tiene una duración de 14 días
-        boolean activo = true;
-        Prestamo prestamo1 = new Prestamo(usuario1, libro1, fechaPrestamo, fechaDevolucion, activo);
 
         Consola consola = new Consola();
         int opcionPrincipal;
@@ -413,7 +408,75 @@ public class Main {
                                 }
                                 break;
 
-                            case 4:
+                            case 4: // Buscar préstamos
+                                int opcionBusquedaPrestamos;
+                                do {
+                                    consola.mostrarMenuBuscarPrestamos();
+                                    opcionBusquedaPrestamos = consola.leerOpcion();
+
+                                    switch (opcionBusquedaPrestamos) {
+                                        case 1: // Buscar por ID de usuario
+                                            System.out.print("--> Ingrese el ID del usuario: ");
+                                            idUsuario = consola.leerTexto();
+                                            gestorPrestamos.buscarPorIdUsuario(idUsuario);
+                                            break;
+
+                                        case 2: // Buscar por ID de recurso
+                                            System.out.print("--> Ingrese el ID del recurso: ");
+                                            idRecurso = consola.leerTexto();
+                                            gestorPrestamos.buscarPorIdRecurso(idRecurso);
+                                            break;
+
+                                        case 3: // Buscar por fecha de préstamo
+                                            System.out.print("--> Ingrese la fecha de préstamo (formato: YYYY-MM-DD): ");
+                                            String fechaStr = consola.leerTexto();
+                                            LocalDate fechaPrestamo = LocalDate.parse(fechaStr);
+                                            gestorPrestamos.buscarPorFecha(fechaPrestamo);
+                                            break;
+
+                                        case 4: // Volver al menú anterior
+                                            System.out.println("↩️ Volviendo al Menú de Préstamos...");
+                                            break;
+
+                                        default:
+                                            System.out.println("⚠️ Opción inválida.");
+                                    }
+                                } while (opcionBusquedaPrestamos != 4);
+                                break;
+
+                            case 5: // Ordenar préstamos
+                                int opcionOrdenPrestamo;
+                                do {
+                                    consola.mostrarMenuOrdenarPrestamos();  // Mostrar menú de ordenación
+                                    opcionOrdenPrestamo = consola.leerOpcion();  // Leer la opción de ordenación
+
+                                    switch (opcionOrdenPrestamo) {
+                                        case 1: // Ordenar por ID de usuario
+                                            List<Prestamo> ordenadosPorIdUsuario = gestorPrestamos.ordenarPrestamosPorIdUsuario();
+                                            gestorPrestamos.mostrarPrestamosFiltrados(ordenadosPorIdUsuario);
+                                            break;
+
+                                        case 2: // Ordenar por fecha de préstamo
+                                            List<Prestamo> ordenadosPorFecha = gestorPrestamos.ordenarPrestamosPorFecha();
+                                            gestorPrestamos.mostrarPrestamosFiltrados(ordenadosPorFecha);
+                                            break;
+
+                                        case 3: // Ordenar por ID de recurso
+                                            List<Prestamo> ordenadosPorIdRecurso = gestorPrestamos.ordenarPrestamosPorIdRecurso();
+                                            gestorPrestamos.mostrarPrestamosFiltrados(ordenadosPorIdRecurso);
+                                            break;
+
+                                        case 4: // Volver al menú anterior
+                                            System.out.println("↩️ Volviendo al Menú de Préstamos...");
+                                            break;
+
+                                        default:
+                                            System.out.println("⚠️ Opción inválida.");
+                                    }
+                                } while (opcionOrdenPrestamo != 4);
+                                break;
+
+                            case 6:
                                 System.out.println("↩️ Volviendo al Menú Principal...");
                                 break;
 
@@ -421,12 +484,14 @@ public class Main {
                                 System.out.println("⚠️ Opción inválida.");
 
                         }
-                    } while (opcionPrestamo != 4);
+                    } while (opcionPrestamo != 6);
                     break;
 
                 case 4:
                     int opcionReserva;
-                    String idRecurso = ""; // Declarar  fuera del bucle o switch
+                    // Declarar  fuera del bucle o switch
+                    String idRecurso = "";
+                    String idUsuario = "";
                     do {
                         consola.mostrarMenuReservas();
                         opcionReserva = consola.leerOpcion();
@@ -434,24 +499,27 @@ public class Main {
                         switch (opcionReserva) {
                             case 1: // Reservar recurso
                                 // Solicitar el ID del usuario
-                                System.out.print("Ingrese el ID del usuario que desea realizar la reserva: ");
-                                String idUsuario = consola.leerTexto();
+                                System.out.print("--> Ingrese el ID del usuario que desea realizar la reserva: ");
+                                idUsuario = consola.leerTexto();
 
                                 // Solicitar el ID del recurso
-                                System.out.print("Ingrese el ID del recurso que desea reservar: ");
+                                System.out.print("--> Ingrese el ID del recurso que desea reservar: ");
                                 idRecurso = consola.leerTexto();
 
                                 try {
                                     // Buscar el usuario por ID
-                                    Usuario usuario = gestorUsuarios.obtenerUsuarioPorId(idUsuario); // Obtiene el usuario
+                                    Usuario usuario = gestorUsuarios.obtenerUsuarioPorId(idUsuario);
 
                                     // Buscar el recurso por ID
                                     RecursoDigital recurso = gestorRecursos.obtenerRecursoPorId(idRecurso);
 
                                     // Verificar si el recurso está disponible
                                     if (gestorPrestamos.validarRecursoDisponible(recurso)) {
+                                        // Pedir prioridad
+                                        System.out.println("--> Ingrese la prioridad de la reserva (menor número = mayor prioridad): ");
+                                        int prioridad = consola.leerOpcion();
                                         // Agregar la reserva
-                                        gestorReservas.agregarReserva(usuario, recurso);
+                                        gestorReservas.agregarReserva(usuario, recurso, prioridad);
                                     } else {
                                         System.out.println("⚠️ El recurso no está disponible en este momento. ¡Por favor, espere!");
                                     }
@@ -479,14 +547,88 @@ public class Main {
                                 gestorReservas.eliminarReserva(idRecurso);
                                 break;
 
-                            case 4:
+                            case 4: // Buscar reservas
+                                int opcionBusqueda;
+                                do {
+                                    consola.mostrarMenuBuscarReservas();
+                                    opcionBusqueda = consola.leerOpcion();
+
+                                    switch (opcionBusqueda) {
+                                        case 1: // Buscar por ID de usuario
+                                            System.out.print("--> Ingrese el ID del usuario: ");
+                                            idUsuario = consola.leerTexto();
+                                            gestorReservas.buscarPorIDUsuario(idUsuario);
+                                            break;
+
+                                        case 2: // Buscar por ID de recurso
+                                            System.out.print("--> Ingrese el ID del recurso: ");
+                                            idRecurso = consola.leerTexto();
+                                            gestorReservas.buscarPorIDRecurso(idRecurso);
+                                            break;
+
+                                        case 3: // Buscar por prioridad
+                                            System.out.print("--> Ingrese la prioridad: ");
+                                            int prioridad = consola.leerOpcion();
+                                            gestorReservas.buscarPorPrioridad(prioridad);
+                                            break;
+
+                                        case 4: // Buscar por fecha
+                                            System.out.print("--> Ingrese la fecha de la reserva (formato: YYYY-MM-DD): ");
+                                            String fechaStr = consola.leerTexto();
+                                            LocalDate fecha = LocalDate.parse(fechaStr);
+                                            gestorReservas.buscarPorFecha(fecha);
+                                            break;
+
+                                        case 5: // Volver al menú anterior
+                                            System.out.println("↩️ Volviendo al Menú de Reservas...");
+                                            break;
+
+                                        default:
+                                            System.out.println("⚠️ Opción inválida.");
+                                    }
+                                } while (opcionBusqueda != 5);
+                                break;
+
+                            case 5: // Ordenar reservas
+                                int opcionOrden;
+                                do {
+                                    consola.mostrarMenuOrdenarReservas();
+                                    opcionOrden = consola.leerOpcion();
+
+                                    switch (opcionOrden) {
+                                        case 1: // Ordenar por prioridad
+                                            List<Reserva> reservasOrdenadasPorPrioridad = gestorReservas.ordenarReservasPorPrioridad();
+                                            gestorReservas.mostrarReservasFiltradas(reservasOrdenadasPorPrioridad);
+                                            break;
+
+                                        case 2: // Ordenar por fecha
+                                            List<Reserva> reservasOrdenadasPorFecha = gestorReservas.ordenarReservasPorFecha();
+                                            gestorReservas.mostrarReservasFiltradas(reservasOrdenadasPorFecha);
+                                            break;
+
+                                        case 3: // Ordenar por ID de usuario
+                                            List<Reserva> reservasOrdenadasPorIdUsuario = gestorReservas.ordenarReservasPorIdUsuario();
+                                            gestorReservas.mostrarReservasFiltradas(reservasOrdenadasPorIdUsuario);
+                                            break;
+
+                                        case 4: // Volver al menú anterior
+                                            System.out.println("↩️ Volviendo al Menú de Reservas...");
+                                            break;
+
+                                        default:
+                                            System.out.println("⚠️ Opción inválida.");
+                                    }
+                                } while (opcionOrden != 4);
+                                break;
+
+                            case 6:
                                 System.out.println("↩️ Volviendo al Menú Principal...");
                                 break;
 
                             default:
                                 System.out.println("⚠️ Opción inválida.");
                         }
-                    } while (opcionReserva != 4);
+                    } while (opcionReserva != 6);
                     break;
 
                 case 5: // PRUEBAS

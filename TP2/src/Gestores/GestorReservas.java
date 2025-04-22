@@ -2,42 +2,43 @@ package Gestores;
 import Interfaces.RecursoDigital;
 import Reservas.Reserva;
 import Usuarios.Usuario;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.time.LocalDate;
+import java.util.Comparator;
+import java.util.List;
+import java.util.concurrent.PriorityBlockingQueue;
+import java.util.stream.Collectors;
 
 public class GestorReservas {
-    // Cola de reservas que respeta el orden de llegada (FIFO)
-    private BlockingQueue<Reserva> colaReservas;
+    // Cola de reservas ordenada por prioridad (menor número = mayor prioridad)
+    private PriorityBlockingQueue<Reserva> colaReservas;
 
     // Constructor: inicializa la cola de reservas como una LinkedBlockingQueue
     public GestorReservas() {
-        colaReservas = new LinkedBlockingQueue<>();
+        colaReservas = new PriorityBlockingQueue<>();
     }
 
     // Getter: Devuelve la cola de reservas completa
-    public BlockingQueue<Reserva> getColaReservas() {
+    public PriorityBlockingQueue<Reserva> getColaReservas() {
         return colaReservas;
     }
 
     // Agrega una reserva a la cola si el usuario aún no ha reservado ese recurso
-    public void agregarReserva(Usuario usuario, RecursoDigital recurso) {
-        // Verifica si el usuario ya tiene una reserva para ese mismo recurso
+    public void agregarReserva(Usuario usuario, RecursoDigital recurso, int prioridad) {
         boolean yaReservado = colaReservas.stream().anyMatch(
                 reserva -> reserva.getUsuario().getId().equals(usuario.getId())
                         && reserva.getRecurso().getId().equals(recurso.getId())
         );
 
-        // Si ya existe una reserva igual, se informa y no se agrega
         if (yaReservado) {
             System.out.println("⚠️ El usuario ya tiene una reserva para este recurso.");
             return;
         }
 
-        // Si no hay duplicado, se crea y agrega la nueva reserva con la fecha actual
-        Reserva nuevaReserva = new Reserva(usuario, recurso);
+        Reserva nuevaReserva = new Reserva(usuario, recurso, prioridad);
         colaReservas.add(nuevaReserva);
-        System.out.println("✅ Reserva añadida correctamente.");
+        System.out.println("✅ Reserva añadida correctamente con prioridad " + prioridad + ".");
     }
+
 
     // Metodo para eliminar una reserva basada en el ID del recurso
     public void eliminarReserva(String idRecurso) {
@@ -51,16 +52,109 @@ public class GestorReservas {
         }
     }
 
-    // Muestra todas las reservas en la cola
+    // Metodo para mostrar las reservas ordenadas por prioridad
     public void mostrarReservas() {
         if (colaReservas.isEmpty()) {
             System.out.println("📭 No hay reservas registradas.");
         } else {
-            System.out.println("\n==== Reservas Pendientes ====");
-            for (Reserva reserva : colaReservas) {
-                System.out.println("\n" + reserva);
+            // Llamamos al metodo de ordenar reservas por prioridad
+            List<Reserva> ordenadas = ordenarReservasPorPrioridad();  // Ordena por prioridad
 
+            // Mostrar las reservas ordenadas
+            System.out.println("\n==== Reservas Pendientes (Ordenadas por Prioridad) ====");
+            for (Reserva reserva : ordenadas) {
+                System.out.println("\n" + reserva);
             }
         }
     }
+
+    // Metodo para mostrar las reservas filtradas
+    public void mostrarReservasFiltradas(List<Reserva> reservas) {
+        if (reservas.isEmpty()) {
+            System.out.println("⚠️ No se encontraron reservas con esos criterios.");
+        } else {
+            System.out.println("\n==== Reservas Encontradas ====");
+            for (Reserva reserva : reservas) {
+                System.out.println("\n" + reserva);
+            }
+        }
+    }
+
+    // Metodo para ordenar las reservas por prioridad
+    public List<Reserva> ordenarReservasPorPrioridad() {
+        // Convertir la cola a una lista, ordenar por prioridad y devolver la lista ordenada
+        return colaReservas.stream()
+                .sorted(Comparator.comparingInt(Reserva::getPrioridad))  // Ordena por prioridad
+                .collect(Collectors.toList());  // Convierte el stream a lista
+    }
+
+    // Metodo para ordenar las reservas por fecha de reserva
+    public List<Reserva> ordenarReservasPorFecha() {
+        return colaReservas.stream()
+                .sorted(Comparator.comparing(Reserva::getFechaReserva))  // Ordena por fecha
+                .collect(Collectors.toList());
+    }
+
+    // Metodo para ordenar las reservas por ID de usuario
+    public List<Reserva> ordenarReservasPorIdUsuario() {
+        return colaReservas.stream()
+                .sorted(Comparator.comparing(reserva -> reserva.getUsuario().getId()))  // Ordena por ID del usuario
+                .collect(Collectors.toList());
+    }
+
+    // Metodo para buscar reservas por prioridad
+    public void buscarPorPrioridad(int prioridad) {
+        // Filtramos las reservas que tengan la misma prioridad
+        List<Reserva> resultados = colaReservas.stream()
+                .filter(reserva -> reserva.getPrioridad() == prioridad)
+                .collect(Collectors.toList());  // Convierte el stream a lista
+
+        System.out.println("\n--> Reservas encontradas con prioridad: " + prioridad);
+        if (resultados.isEmpty()) {
+            System.out.println("📭 No se encontraron reservas con la prioridad " + prioridad);
+        } else {
+            mostrarReservasFiltradas(resultados);
+        }
+    }
+
+    public void buscarPorIDUsuario(String idUsuario) {
+        List<Reserva> resultados = colaReservas.stream()
+                .filter(reserva -> reserva.getUsuario().getId().equals(idUsuario))
+                .collect(Collectors.toList());
+
+        System.out.println("\n--> Reservas encontradas para el usuario ID: " + idUsuario);
+        if (resultados.isEmpty()) {
+            System.out.println("📭 No se encontraron reservas para este usuario.");
+        } else {
+            mostrarReservasFiltradas(resultados);
+        }
+    }
+
+    public void buscarPorIDRecurso(String idRecurso) {
+        List<Reserva> resultados = colaReservas.stream()
+                .filter(reserva -> reserva.getRecurso().getId().equals(idRecurso))
+                .collect(Collectors.toList());
+
+        System.out.println("\n--> Reservas encontradas para el recurso ID: " + idRecurso);
+        if (resultados.isEmpty()) {
+            System.out.println("📭 No se encontraron reservas para este recurso.");
+        } else {
+            mostrarReservasFiltradas(resultados);
+        }
+    }
+
+    public void buscarPorFecha(LocalDate fecha) {
+            List<Reserva> resultados = colaReservas.stream()
+                    .filter(r -> r.getFechaReserva().equals(fecha))
+                    .collect(Collectors.toList());
+            mostrarReservasFiltradas(resultados);
+
+        System.out.println("\n--> Reservas encontradas para la fecha: " + fecha);
+        if (resultados.isEmpty()) {
+            System.out.println("📭 No se encontraron reservas para esta fecha.");
+        } else {
+            mostrarReservasFiltradas(resultados);
+        }
+    }
+
 }
