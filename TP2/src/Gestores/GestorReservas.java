@@ -162,10 +162,10 @@ public class GestorReservas {
     }
 
     public void buscarPorFecha(LocalDate fecha) {
-            List<Reserva> resultados = colaReservas.stream()
-                    .filter(r -> r.getFechaReserva().equals(fecha))
-                    .collect(Collectors.toList());
-            mostrarReservasFiltradas(resultados);
+        List<Reserva> resultados = colaReservas.stream()
+                .filter(r -> r.getFechaReserva().equals(fecha))
+                .collect(Collectors.toList());
+        mostrarReservasFiltradas(resultados);
 
         System.out.println("\n--> Reservas encontradas para la fecha: " + fecha);
         if (resultados.isEmpty()) {
