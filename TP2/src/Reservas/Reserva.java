@@ -16,7 +16,7 @@ public class Reserva implements Comparable<Reserva>{
         this.fechaReserva = LocalDate.now(); // Fecha actual por defecto
         this.prioridad = prioridad;
     }
-    
+
     // Getters
     public Usuario getUsuario() {
         return usuario;

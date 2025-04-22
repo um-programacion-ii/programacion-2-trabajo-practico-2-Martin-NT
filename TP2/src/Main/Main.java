@@ -1,11 +1,7 @@
 package Main;
-
 import Excepciones.RecursoNoDisponibleException;
 import Excepciones.UsuarioNoEncontradoException;
-import Gestores.GestorPrestamos;
-import Gestores.GestorRecursos;
-import Gestores.GestorReservas;
-import Gestores.GestorUsuarios;
+import Gestores.*;
 import Prestamos.Prestamo;
 import Recursos.*;
 import Interfaces.*;
@@ -22,10 +18,15 @@ public class Main {
         GestorUsuarios gestorUsuarios = new GestorUsuarios();
         // Crear gestor de recursos
         GestorRecursos gestorRecursos = new GestorRecursos();
-        // Crear gestor de prestamos
-        GestorPrestamos gestorPrestamos = new GestorPrestamos();
-        // Crear gestor de reservas
-        GestorReservas gestorReservas = new GestorReservas();
+        // Crear servicios de notificación
+        ServicioNotificaciones servicioEmail = new ServicioNotificacionesEmail();
+        ServicioNotificaciones servicioSMS = new ServicioNotificacionesSMS();
+        // Crear la instancia de GestorNotificaciones, pasando los servicios como dependencia
+        GestorNotificaciones gestorNotificaciones = new GestorNotificaciones(servicioEmail, servicioSMS);
+        // Crear la instancia de GestorReservas, pasando GestorNotificaciones como dependencia
+        GestorReservas gestorReservas = new GestorReservas(gestorNotificaciones);
+        // Crear el GestorPrestamos, pasando GestorNotificaciones y GestorReservas como dependencias
+        GestorPrestamos gestorPrestamos = new GestorPrestamos(gestorNotificaciones, gestorReservas);
 
         // Crear Usuarios
         Usuario usuario1 = new Usuario("U001", "Martina", "Rizzotti", "martirizzotti@example.com", "martincho15", "2613245789");
@@ -53,10 +54,6 @@ public class Main {
         gestorRecursos.agregarRecurso(libro1);
         gestorRecursos.agregarRecurso(revista1);
         gestorRecursos.agregarRecurso(audiolibro1);
-
-        // Crear instancias de los servicios de notificación
-        ServicioNotificaciones servicioEmail = new ServicioNotificacionesEmail();
-        ServicioNotificaciones servicioSMS = new ServicioNotificacionesSMS();
 
         Consola consola = new Consola();
         int opcionPrincipal;

@@ -11,10 +11,13 @@ import java.util.stream.Collectors;
 public class GestorReservas {
     // Cola de reservas ordenada por prioridad (menor número = mayor prioridad)
     private PriorityBlockingQueue<Reserva> colaReservas;
+    // Dependencia de GestorNotificaciones
+    private GestorNotificaciones gestorNotificaciones;
 
-    // Constructor: inicializa la cola de reservas como una LinkedBlockingQueue
-    public GestorReservas() {
-        colaReservas = new PriorityBlockingQueue<>();
+    // Constructor: inicializa la cola de reservas y el gestor de notificaciones
+    public GestorReservas(GestorNotificaciones gestorNotificaciones) {
+        this.colaReservas = new PriorityBlockingQueue<>();
+        this.gestorNotificaciones = gestorNotificaciones;  // Asignar la dependencia
     }
 
     // Getter: Devuelve la cola de reservas completa
@@ -24,33 +27,48 @@ public class GestorReservas {
 
     // Agrega una reserva a la cola si el usuario aún no ha reservado ese recurso
     public void agregarReserva(Usuario usuario, RecursoDigital recurso, int prioridad) {
+        // Verifica si el usuario ya tiene una reserva para este recurso
         boolean yaReservado = colaReservas.stream().anyMatch(
                 reserva -> reserva.getUsuario().getId().equals(usuario.getId())
                         && reserva.getRecurso().getId().equals(recurso.getId())
         );
-
         if (yaReservado) {
             System.out.println("⚠️ El usuario ya tiene una reserva para este recurso.");
             return;
         }
-
+        // Crear la nueva reserva
         Reserva nuevaReserva = new Reserva(usuario, recurso, prioridad);
         colaReservas.add(nuevaReserva);
         System.out.println("✅ Reserva añadida correctamente con prioridad " + prioridad + ".");
+
+        // Enviar la notificación de reserva exitosa
+        String mensaje = "¡Reserva exitosa! Has reservado el recurso: " + recurso.getTitulo();
+        gestorNotificaciones.enviarNotificacionPorSMS(mensaje, usuario);  // Usar el gestor de notificaciones
+
+
     }
 
 
     // Metodo para eliminar una reserva basada en el ID del recurso
     public void eliminarReserva(String idRecurso) {
-        // Buscar y eliminar la reserva
-        boolean reservaEliminada = colaReservas.removeIf(reserva -> reserva.getRecurso().getId().equals(idRecurso));
+        // Buscar la reserva antes de eliminarla
+        Reserva reservaAEliminar = colaReservas.stream()
+                .filter(reserva -> reserva.getRecurso().getId().equals(idRecurso))
+                .findFirst()
+                .orElse(null);
 
-        if (reservaEliminada) {
+        if (reservaAEliminar != null) {
+            colaReservas.remove(reservaAEliminar);
             System.out.println("✅ Reserva eliminada correctamente.");
+
+            // Enviar notificación al usuario
+            String mensaje = "📌 Tu reserva del recurso '" + reservaAEliminar.getRecurso().getTitulo() + "' ha sido cancelada.";
+            gestorNotificaciones.enviarNotificacionPorSMS(mensaje, reservaAEliminar.getUsuario());
         } else {
-            System.out.println("⚠️ No se encontró una reserva para el recurso con ID: " + idRecurso);
+            System.out.println("⚠️ No hay una reserva activa para el recurso con ID: " + idRecurso);
         }
     }
+
 
     // Metodo para mostrar las reservas ordenadas por prioridad
     public void mostrarReservas() {

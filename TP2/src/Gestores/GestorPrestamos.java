@@ -11,7 +11,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class GestorPrestamos {
-    private List<Prestamo> prestamos = new ArrayList<>();
+    private List<Prestamo> prestamos;
+    private GestorNotificaciones gestorNotificaciones;
+    private GestorReservas gestorReservas;
+
+    // Constructor con inyección de dependencias
+    public GestorPrestamos(GestorNotificaciones gestorNotificaciones, GestorReservas gestorReservas) {
+        this.prestamos = new ArrayList<>();
+        this.gestorNotificaciones = gestorNotificaciones;
+        this.gestorReservas = gestorReservas;
+    }
 
     // Metodo para validar si el recurso está disponible
     public boolean validarRecursoDisponible(RecursoDigital recurso) {
@@ -20,51 +29,56 @@ public class GestorPrestamos {
 
     // Metodo para realizar el préstamo
     public void realizarPrestamo(Usuario usuario, RecursoDigital recurso) throws RecursoNoDisponibleException {
-        // Crear una instancia de GestorReservas
-        GestorReservas gestorReservas = new GestorReservas();
-
-        // Eliminar la reserva del recurso si existe
-        gestorReservas.eliminarReserva(recurso.getId());  // Elimina la reserva antes de proceder con el préstamo
+        // Eliminar la reserva si existe usando el gestor inyectado
+        gestorReservas.eliminarReserva(recurso.getId());
 
         LocalDate fechaPrestamo = LocalDate.now();
-        LocalDate fechaDevolucion = fechaPrestamo.plusDays(14); // Suponiendo que el préstamo tiene una duración de 14 días
+        LocalDate fechaDevolucion = fechaPrestamo.plusDays(14); // Suponiendo 14 días de préstamo
         boolean activo = true;
 
-        // Validar si el recurso está disponible
         if (validarRecursoDisponible(recurso)) {
-            // Si está disponible, se realiza el préstamo
             Prestamo nuevoPrestamo = new Prestamo(usuario, recurso, fechaPrestamo, fechaDevolucion, activo);
-            prestamos.add(nuevoPrestamo); // Agregar el préstamo a la lista
-            recurso.setEstado(EstadoRecurso.PRESTADO); // Cambiar el estado del recurso a PRESTADO
+            prestamos.add(nuevoPrestamo);
+            recurso.setEstado(EstadoRecurso.PRESTADO);
+            // Notificación (opcional, si también inyectaste GestorNotificaciones)
+            String mensaje = "📚 Se ha realizado el préstamo del recurso '" + recurso.getTitulo()
+                    + "' hasta el " + fechaDevolucion + ".";
+            gestorNotificaciones.enviarNotificacionPorEmail(mensaje, usuario);
+
             System.out.println("\nEl " + recurso.getCategoria() + " '" + recurso.getTitulo() + "' (" + recurso.getId() + ") ha sido prestado a " + usuario.getNombre() + " " + usuario.getApellido() + " (" + usuario.getId() + ")");
+
+
         } else {
-            // Si el recurso no está disponible, lanzar una excepción
             throw new RecursoNoDisponibleException("\nEl " + recurso.getCategoria() + " '" + recurso.getTitulo() + "' (" + recurso.getId() + ") no está disponible para préstamo.");
         }
     }
+
 
     // Metodo para devolver el recurso
     public void devolverRecurso(Usuario usuario, RecursoDigital recurso) {
         // Buscar el préstamo activo para este recurso y usuario
         Prestamo prestamo = buscarPrestamoActivo(usuario, recurso);
 
-        // Si no se encuentra el préstamo activo, lanzamos una excepción
         if (prestamo == null) {
             throw new IllegalStateException("No se encontró un préstamo activo para el " + recurso.getCategoria() + " '" + recurso.getTitulo() + "' (" + recurso.getId() + ") con el usuario '" + usuario.getNombre() + " " + usuario.getApellido() + " (" + usuario.getId() + ")");
         }
 
-        // Si el préstamo está activo, lo marcamos como devuelto
         if (prestamo.isActivo()) {
-            // Registramos la devolución del préstamo
+            // Registrar devolución
             prestamo.registrarDevolucion();
-
-            // Actualizamos el estado del recurso a DISPONIBLE
             recurso.setEstado(EstadoRecurso.DISPONIBLE);
+
+            // Mensaje por consola
             System.out.println("\nEl " + recurso.getCategoria() + " '" + recurso.getTitulo() + "' (" + recurso.getId() + ") ha sido devuelto correctamente.");
+
+            // Enviar notificación al usuario
+            String mensaje = "📥 Has devuelto el recurso '" + recurso.getTitulo() + "' correctamente. ¡Gracias!";
+            gestorNotificaciones.enviarNotificacionPorEmail(mensaje, usuario); // o SMS, como prefieras
         } else {
             System.out.println("\nEl " + recurso.getCategoria() + " '" + recurso.getTitulo() + "' (" + recurso.getId() + ") ya fue devuelto.");
         }
     }
+
 
     // Metodo para mostrar los prestamos activos
     public void mostrarPrestamosActivos() {
@@ -158,11 +172,5 @@ public class GestorPrestamos {
                 .sorted(Comparator.comparing(Prestamo::getFechaPrestamo))
                 .collect(Collectors.toList());
     }
-
-
-
-
-
-
 
 }
