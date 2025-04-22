@@ -18,7 +18,8 @@ public class Consola {
         System.out.println("\n===== MENÚ PRINCIPAL =====");
         System.out.println("1. Usuarios");
         System.out.println("2. Recursos");
-        System.out.println("3. Salir");
+        System.out.println("3. Pruebas");
+        System.out.println("4. Salir");
         System.out.print("--> Seleccione una opción: ");
     }
 
@@ -136,7 +137,7 @@ public class Consola {
                 System.out.print("🏢 Ingrese la editorial: ");
                 String editorial = scanner.nextLine();
 
-                recurso = new Libro(id, titulo, autor, fechaPublicacion, estado, fechaDevolucion,
+                recurso = new Libro(id, titulo, autor, fechaPublicacion, estado,
                         CategoriaRecurso.LIBRO, paginas, genero, editorial);
                 break;
 
@@ -151,7 +152,7 @@ public class Consola {
                 System.out.print("🌍 Ingrese el idioma: ");
                 String idioma = scanner.nextLine();
 
-                recurso = new Audiolibro(id, titulo, autor, fechaPublicacion, estado, fechaDevolucion,
+                recurso = new Audiolibro(id, titulo, autor, fechaPublicacion, estado,
                         CategoriaRecurso.AUDIOLIBRO, duracion, narrador, idioma);
                 break;
 
@@ -169,7 +170,7 @@ public class Consola {
                 System.out.print("🏢 Ingrese la editorial: ");
                 String editorialRevista = scanner.nextLine();
 
-                recurso = new Revista(id, titulo, autor, fechaPublicacion, estado, fechaDevolucion,
+                recurso = new Revista(id, titulo, autor, fechaPublicacion, estado,
                         CategoriaRecurso.REVISTA, edicion, periodicidad, seccion, editorialRevista);
                 break;
 
@@ -245,15 +246,6 @@ public class Consola {
         } catch (UsuarioNoEncontradoException e) {
             System.out.println(e.getMessage()); // Mensaje amigable
         }
-        /**
-         if (gestor.existeUsuario(id)) {
-         gestor.eliminarUsuario(id);
-         System.out.println("✅ Usuario eliminado exitosamente.");
-         } else {
-         System.out.println("❌ No se encontró un usuario con ese ID.");
-         }
-         */
-
     }
 
     public int leerOpcion() {

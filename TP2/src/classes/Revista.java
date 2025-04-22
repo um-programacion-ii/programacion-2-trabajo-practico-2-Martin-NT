@@ -6,7 +6,7 @@ import Enum.CategoriaRecurso;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class Revista extends RecursoBase implements Prestable {
+public class Revista extends RecursoBase {
     private int numeroEdicion;
     private String periodicidad;
     private String seccionPrincipal;
@@ -14,10 +14,9 @@ public class Revista extends RecursoBase implements Prestable {
 
     //Constructor
     public Revista(String id, String titulo, String autor, LocalDate fechaPublicacion,
-                   EstadoRecurso estado, LocalDateTime fechaDevolucion, CategoriaRecurso categoria,
-                   int numeroEdicion, String periodicidad, String seccionPrincipal,
-                   String editorial) {
-        super(id, titulo, autor, fechaPublicacion, estado, fechaDevolucion, categoria);
+                   EstadoRecurso estado, CategoriaRecurso categoria, int numeroEdicion,
+                   String periodicidad, String seccionPrincipal, String editorial) {
+        super(id, titulo, autor, fechaPublicacion, estado, categoria);
         this.numeroEdicion = numeroEdicion;
         this.periodicidad = periodicidad;
         this.seccionPrincipal = seccionPrincipal;
@@ -61,23 +60,4 @@ public class Revista extends RecursoBase implements Prestable {
                 " - Editorial: " + editorial + "\n";
     }
 
-    // Implementación del metodo estaDisponible() desde Prestable
-    @Override
-    public boolean estaDisponible() {
-        // La revista está disponible si su estado es DISPONIBLE
-        return getEstado() == EstadoRecurso.DISPONIBLE;
-    }
-
-    // Implementación del metodo prestar() desde Prestable
-    @Override
-    public void prestar(Usuario usuario) throws RecursoNoDisponibleException {
-        if (estaDisponible()) {
-            // Si la revista está disponible, se cambia el estado a PRESTADO
-            setEstado(EstadoRecurso.PRESTADO);
-            System.out.println("La revista '" + getTitulo() + "' ha sido prestado a " + usuario.getNombre());
-        } else {
-            // Si no está disponible, lanzamos la excepción
-            throw new RecursoNoDisponibleException("❌ La revista '" + getTitulo() + "' no está disponible para préstamo.");
-        }
-    }
 }

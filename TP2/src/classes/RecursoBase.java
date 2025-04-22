@@ -12,19 +12,16 @@ public abstract class RecursoBase implements RecursoDigital, Prestable {
     private String autor;
     private LocalDate fechaPublicacion;
     private EstadoRecurso estado;
-    private LocalDateTime fechaDevolucion;
     private CategoriaRecurso categoria;
 
     // Constructor
     public RecursoBase(String id, String titulo, String autor,
-                       LocalDate fechaPublicacion, EstadoRecurso estado,
-                       LocalDateTime fechaDevolucion, CategoriaRecurso categoria) {
+                       LocalDate fechaPublicacion, EstadoRecurso estado, CategoriaRecurso categoria) {
         this.id = id;
         this.titulo = titulo;
         this.autor = autor;
         this.fechaPublicacion = fechaPublicacion;
         this.estado = estado;
-        this.fechaDevolucion = fechaDevolucion;
         this.categoria = categoria;
     }
 
@@ -50,10 +47,6 @@ public abstract class RecursoBase implements RecursoDigital, Prestable {
         return estado;
     }
     @Override
-    public LocalDateTime getFechaDevolucion() {
-        return fechaDevolucion;
-    }
-    @Override
     public CategoriaRecurso getCategoria() {
         return categoria;
     }
@@ -73,9 +66,6 @@ public abstract class RecursoBase implements RecursoDigital, Prestable {
     @Override
     public void setEstado(EstadoRecurso estado) {
         this.estado = estado;
-    }
-    public void setFechaDevolucion(LocalDateTime fechaDevolucion) {
-        this.fechaDevolucion = fechaDevolucion;
     }
     @Override
     public void setCategoria(CategoriaRecurso categoria) {
@@ -97,4 +87,18 @@ public abstract class RecursoBase implements RecursoDigital, Prestable {
     public void actualizarEstado(EstadoRecurso estado) {
         this.estado = estado;
     }
+
+    // Implementación del metodo estaDisponible() desde Prestable
+    @Override
+    public boolean estaDisponible() {
+        return estado == EstadoRecurso.DISPONIBLE;
+    }
+
+    // Implementación del metodo prestar() desde Renovable
+    @Override
+    public void prestar(Usuario usuario) {
+        setEstado(EstadoRecurso.PRESTADO);
+    }
+
+
 }
