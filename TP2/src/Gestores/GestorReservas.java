@@ -64,9 +64,9 @@ public class GestorReservas {
             // Enviar notificación al usuario
             String mensaje = "📌 Tu reserva del recurso '" + reservaAEliminar.getRecurso().getTitulo() + "' ha sido cancelada.";
             gestorNotificaciones.enviarNotificacionPorSMS(mensaje, reservaAEliminar.getUsuario());
-        } else {
-            System.out.println("⚠️ No hay una reserva activa para el recurso con ID: " + idRecurso);
-        }
+        } //else {
+            //System.out.println("⚠️ No hay una reserva activa para el recurso con ID: " + idRecurso);
+        //}
     }
 
 

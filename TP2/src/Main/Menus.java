@@ -100,7 +100,8 @@ public class Menus {
         System.out.println("3. Devolver recurso");
         System.out.println("4. Buscar préstamos");
         System.out.println("5. Ordenar préstamos");
-        System.out.println("6. Volver al menú principal");
+        System.out.println("6. Ver alertas de vencimiento");  // Opción para ver alertas de vencimiento
+        System.out.println("7. Volver al menú principal");
         System.out.print("--> Seleccione una opción: ");
     }
 

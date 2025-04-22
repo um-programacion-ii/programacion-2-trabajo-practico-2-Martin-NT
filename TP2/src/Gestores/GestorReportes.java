@@ -23,7 +23,7 @@ public class GestorReportes {
         this.gestorRecursos = gestorRecursos;
     }
 
-    // Muestra en consola los recursos más prestados.
+    // Mostrar recursos más prestados
     public void mostrarRecursosMasPrestados() {
         System.out.println("\n📚 Recursos más prestados:");
 
@@ -31,15 +31,14 @@ public class GestorReportes {
         Map<String, Long> conteo = gestorPrestamos.getPrestamos().stream()
                 .collect(Collectors.groupingBy(p -> p.getRecurso().getId(), Collectors.counting()));
 
-        // Ordena de mayor a menor y muestra los 5 más prestados
+        // Ordena de mayor a menor y muestra todos los recursos prestados
         conteo.entrySet().stream()
                 .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
-                .limit(5)
                 .forEach(entry -> {
                     try {
                         RecursoDigital recurso = gestorRecursos.obtenerRecursoPorId(entry.getKey());
                         if (recurso != null) {
-                            System.out.println("🔸 " + recurso.getTitulo() + " - " + entry.getValue() + " préstamos");
+                            System.out.println("🔸 " + recurso.getTitulo() + " - " + entry.getValue() + " préstamo(s) - Categoría: " + recurso.getCategoria().name());
                         }
                     } catch (RecursoNoDisponibleException e) {
                         System.out.println("Error al obtener recurso con ID " + entry.getKey() + ": " + e.getMessage());

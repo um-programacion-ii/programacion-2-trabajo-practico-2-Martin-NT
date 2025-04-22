@@ -1,4 +1,5 @@
 package Gestores;
+import Alertas.AlertaVencimiento;
 import Interfaces.ServicioNotificaciones;
 import Servicios.ServicioNotificacionesEmail;
 import Servicios.ServicioNotificacionesSMS;
@@ -17,6 +18,9 @@ public class Gestores {
     GestorRecursos gestorRecursos = new GestorRecursos();
     GestorUsuarios gestorUsuarios = new GestorUsuarios();
     GestorReportes gestorReportes = new GestorReportes(gestorPrestamos, gestorUsuarios, gestorRecursos);
+
+    // Crear la instancia de la clase de alertas
+    AlertaVencimiento alertaVencimiento = new AlertaVencimiento(gestorPrestamos);
 
     // Constructor
     public Gestores() {
@@ -49,5 +53,8 @@ public class Gestores {
     }
     public GestorReportes getGestorReportes() {
         return gestorReportes;
+    }
+    public AlertaVencimiento getAlertaVencimiento() {
+        return alertaVencimiento;
     }
 }
