@@ -139,7 +139,7 @@ La estructura del sistema está organizada de la siguiente manera:
 3. Compilar Proyecto
    ```bash
    find src -name "*.java" > sources.txt
-javac -d out @sources.txt
+   javac -d out @sources.txt
    
 4. Ejecutar la aplicación principal: 
    ```bash
