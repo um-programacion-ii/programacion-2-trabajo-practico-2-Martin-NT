@@ -33,31 +33,31 @@ public class GestorPrestamos {
 
     // Metodo para realizar el préstamo
     public void realizarPrestamo(Usuario usuario, RecursoDigital recurso) throws RecursoNoDisponibleException {
-            //Si dos hilos intentan prestar el mismo recurso, se bloquean correctamente.
-            //Si dos hilos intentan prestar recursos diferentes, no se bloquean entre sí
-            synchronized (recurso) {
-                System.out.println("\n[" + Thread.currentThread().getName() + "] 🔄 Intentando prestar: " + recurso.getTitulo());
+        // Si dos hilos intentan prestar el mismo recurso, se bloquean correctamente.
+        synchronized (recurso) {
+            System.out.println("\n[" + Thread.currentThread().getName() + "] 🔄 Intentando prestar: " + recurso.getTitulo());
 
-                LocalDate fechaPrestamo = LocalDate.now();
-                LocalDate fechaDevolucion = fechaPrestamo.plusDays(14);
-                boolean activo = true;
+            LocalDate fechaPrestamo = LocalDate.now();
+            LocalDate fechaDevolucion = fechaPrestamo.plusDays(14);
+            boolean activo = true;
 
-                if (validarRecursoDisponible(recurso)) {
-                    gestorReservas.eliminarReserva(recurso.getId());
-                    Prestamo nuevoPrestamo = new Prestamo(usuario, recurso, fechaPrestamo, fechaDevolucion, activo);
-                    prestamos.add(nuevoPrestamo);
-                    recurso.setEstado(EstadoRecurso.PRESTADO);
+            if (validarRecursoDisponible(recurso)) {
+                gestorReservas.eliminarReserva(recurso.getId());
+                Prestamo nuevoPrestamo = new Prestamo(usuario, recurso, fechaPrestamo, fechaDevolucion, activo);
+                prestamos.add(nuevoPrestamo);
+                recurso.setEstado(EstadoRecurso.PRESTADO);
 
-                    String mensaje = "📚 Se ha realizado el préstamo del recurso '" + recurso.getTitulo() + "' hasta el " + fechaDevolucion + ".";
-                    gestorNotificaciones.enviarNotificacionPorEmail(mensaje, usuario);
+                String mensaje = "📚 Se ha realizado el préstamo del recurso '" + recurso.getTitulo() + "' hasta el " + fechaDevolucion + ".";
+                gestorNotificaciones.enviarNotificacionPorEmail(mensaje, usuario);
 
-                    System.out.println("\n[" + Thread.currentThread().getName() + "] ✅ Préstamo exitoso: " + recurso.getTitulo());
-                } else {
-                    System.out.println("\n[" + Thread.currentThread().getName() + "] ❌ Recurso no disponible: " + recurso.getTitulo());
-                    throw new RecursoNoDisponibleException("El recurso '" + recurso.getTitulo() + "' no está disponible.");
-                }
+                System.out.println("\n[" + Thread.currentThread().getName() + "] ✅ Préstamo exitoso: " + recurso.getTitulo());
+            } else {
+                System.out.println("\n[" + Thread.currentThread().getName() + "] ❌ Recurso no disponible: " + recurso.getTitulo());
+                throw new RecursoNoDisponibleException("El recurso '" + recurso.getTitulo() + "' no está disponible.");
             }
         }
+    }
+
 
     // Metodo para devolver el recurso
     public void devolverRecurso(Usuario usuario, RecursoDigital recurso) {
@@ -105,18 +105,23 @@ public class GestorPrestamos {
     public void mostrarPrestamosActivos() {
         System.out.println("\n==== Préstamos Activos ====");
         boolean hayActivos = false;
+
+        // Iterar sobre los préstamos activos
         synchronized (this) {
             for (Prestamo p : prestamos) {
                 if (p.isActivo()) {
-                    System.out.println("\n" + p);
+                    // Mostrar detalles del préstamo utilizando toString() de la clase Prestamo
+                    System.out.println(p);
                     hayActivos = true;
                 }
             }
         }
+
         if (!hayActivos) {
             System.out.println("⚠️ No hay préstamos activos actualmente.");
         }
     }
+
 
     // Metodo para mostrar los préstamos filtrados
     public void mostrarPrestamosFiltrados(List<Prestamo> prestamos) {

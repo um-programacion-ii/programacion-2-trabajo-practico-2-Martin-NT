@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
 
+import Alertas.AlertaDisponibilidad;
 import Alertas.AlertaVencimiento;
 import Excepciones.RecursoNoDisponibleException;
 import Excepciones.UsuarioNoEncontradoException;
@@ -24,6 +25,7 @@ public class Consola {
     private final Menus menus;
     private final Gestores gestores;
     private AlertaVencimiento alertaVencimiento;
+    private AlertaDisponibilidad alertaDisponibilidad;
 
     public Consola() {
         scanner = new Scanner(System.in);
@@ -564,12 +566,20 @@ public class Consola {
             //break;  // Salir del case 1 si el recurso no se encuentra
         }
 
-        // Llamar al metodo realizarPrestamo del GestorPrestamos
-        try {
-            gestores.getGestorPrestamos().realizarPrestamo(usuarioPrestamo, recursoPrestamo);
-        } catch (RecursoNoDisponibleException e) {
-            System.out.println("❌ " + e.getMessage());
+        // Llamar al metodo verificarYRealizarPrestamo del GestorPrestamos
+
+        if (recursoPrestamo instanceof RecursoBase) {
+            try {
+                alertaDisponibilidad.verificarYRealizarPrestamo(usuarioPrestamo, (RecursoBase) recursoPrestamo);
+            } catch (RecursoNoDisponibleException e) {
+                System.out.println("❌ " + e.getMessage());
+            }
+        } else {
+            System.out.println("❌ El recurso no es de tipo RecursoBase.");
         }
+
+
+
     }
 
     public void mostrarMenuVerPrestamosActivos() {
@@ -696,13 +706,25 @@ public class Consola {
                 case 5: // Ordenar reservas
                     mostrarMenuOrdenarReservas();
                     break;
-                case 6:
+                case 6: // Ver alertas de disponibilidad
+                    System.out.println("📢 Verificando alertas de disponibilidad...");
+                    // Crear la instancia de AlertaDisponibilidad
+                    AlertaDisponibilidad alertaDisponibilidad = new AlertaDisponibilidad(
+                            gestores.getGestorReservas(),
+                            gestores.getGestorRecursos(),
+                            gestores.getGestorPrestamos()
+                    );
+
+                    // Llamar al metodo de verificarDisponibilidad para mostrar las alertas
+                    alertaDisponibilidad.verificarDisponibilidad();
+                    break;
+                case 7:
                     System.out.println("↩️ Volviendo al Menú Principal...");
                     break;
                 default:
                     System.out.println("⚠️ Opción inválida.");
             }
-        } while (opcionReserva != 6);
+        } while (opcionReserva != 7);
     }
 
     public void mostrarMenuReservar() {
@@ -721,15 +743,20 @@ public class Consola {
             // Buscar el recurso por ID
             RecursoDigital recurso = gestores.getGestorRecursos().obtenerRecursoPorId(idRecurso);
 
-            // Verificar si el recurso está disponible
-            if (gestores.getGestorPrestamos().validarRecursoDisponible(recurso)) {
-                // Pedir prioridad
-                System.out.println("--> Ingrese la prioridad de la reserva (menor número = mayor prioridad): ");
-                int prioridad = leerOpcion();
-                // Agregar la reserva
-                gestores.getGestorReservas().agregarReserva(usuario, recurso, prioridad);
+            // Verificar si el recurso está disponible (casting a RecursoBase)
+            if (recurso instanceof RecursoBase) {
+                RecursoBase recursoBase = (RecursoBase) recurso;
+                if (recursoBase.estaDisponible()) {
+                    // Pedir prioridad
+                    System.out.println("--> Ingrese la prioridad de la reserva (menor número = mayor prioridad): ");
+                    int prioridad = leerOpcion();
+                    // Agregar la reserva
+                    gestores.getGestorReservas().agregarReserva(usuario, recurso, prioridad);
+                } else {
+                    System.out.println("⚠️ El recurso no está disponible en este momento. ¡Por favor, espere!");
+                }
             } else {
-                System.out.println("⚠️ El recurso no está disponible en este momento. ¡Por favor, espere!");
+                System.out.println("⚠️ El recurso no es del tipo esperado para verificar disponibilidad.");
             }
 
         } catch (UsuarioNoEncontradoException e) {

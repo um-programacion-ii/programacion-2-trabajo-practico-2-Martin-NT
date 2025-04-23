@@ -1,12 +1,9 @@
 package Simulaciones;
-
 import Gestores.Gestores;
 import Interfaces.RecursoDigital;
 import Usuarios.Usuario;
-import Gestores.GestorReservas;
 import Alertas.AlertaDisponibilidad;
-import Reservas.Reserva;
-import java.time.LocalDate;
+
 
 public class SimuladorAlertasDisponibilidad {
     // Hacer gestores estáticos para poder ser utilizados en un contexto estático
@@ -31,6 +28,10 @@ public class SimuladorAlertasDisponibilidad {
 
                 // Imprimir mensaje de éxito
                 System.out.println("🔔 Se ha generado una reserva para el recurso.");
+
+                // Llamar a la verificación de alertas de disponibilidad
+                verificarAlertasDisponibilidad();
+
             } else {
                 System.out.println("⚠️ No se pudo crear la reserva de prueba: Usuario o Recurso no encontrados.");
             }
@@ -38,6 +39,7 @@ public class SimuladorAlertasDisponibilidad {
             System.out.println("⚠️ Ocurrió un error inesperado: " + e.getMessage());
         }
     }
+
 
     // Metodo para verificar las alertas de disponibilidad
     public static void verificarAlertasDisponibilidad() {
@@ -50,8 +52,9 @@ public class SimuladorAlertasDisponibilidad {
                 gestores.getGestorPrestamos()
         );
 
-        // Llamamos al metodo para verificar las alertas de disponibilidad
+        // Ejecutar el metodo que verifica la disponibilidad
         alertaDisponibilidad.verificarDisponibilidad();
     }
+
 }
 

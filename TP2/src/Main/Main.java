@@ -28,12 +28,12 @@ public class Main {
                     consola.mostrarMenuRecursos();
                     break;
 
-                case 3:  // Menu Prestamos
-                    consola.mostrarMenuPrestamos();
+                case 3: // Menu Reservas
+                    consola.mostrarMenuReservas();
                     break;
 
-                case 4: // Menu Reservas
-                    consola.mostrarMenuReservas();
+                case 4:  // Menu Prestamos
+                    consola.mostrarMenuPrestamos();
                     break;
 
                 case 5: // Menu Reportes
