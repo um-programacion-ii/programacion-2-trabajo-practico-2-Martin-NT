@@ -53,9 +53,6 @@ public class AlertaDisponibilidad {
                     recursosDisponibles.add(recurso);  // Añadimos el recurso disponible a la lista
                     hayAlertas = true;
 
-                    // Cambiamos el estado del recurso a RESERVADO
-                    recurso.setEstado(EstadoRecurso.RESERVADO);
-
                     // Mostrar alerta visual en consola
                     System.out.println("\n📢 \033[1;33mALERTA DE DISPONIBILIDAD\033[0m");
                     System.out.println("📘 Recurso: " + recurso.getTitulo() + " (ID: " + recurso.getId() + ")");
@@ -103,8 +100,11 @@ public class AlertaDisponibilidad {
 
                 if (recursoSeleccionado != null) {
                     try {
-                        // Ahora tenemos al usuario correcto, podemos realizar el préstamo
+                        // Realizar el préstamo solo si el recurso está disponible
                         gestorPrestamos.realizarPrestamo(usuarioReserva, recursoSeleccionado);
+
+                        // Una vez realizado el préstamo, marcamos el recurso como RESERVADO
+                        recursoSeleccionado.setEstado(EstadoRecurso.RESERVADO);
                     } catch (RecursoNoDisponibleException e) {
                         System.out.println("⚠️ No se puede realizar el préstamo. El recurso no está disponible.");
                     }
@@ -119,6 +119,7 @@ public class AlertaDisponibilidad {
             System.out.println("✅ No hay recursos reservados disponibles actualmente.");
         }
     }
+
 
     // Metodo para verificar disponibilidad y realizar préstamo (desde las alertas)
     public void verificarYRealizarPrestamo(Usuario usuario, RecursoBase recurso) throws RecursoNoDisponibleException {
