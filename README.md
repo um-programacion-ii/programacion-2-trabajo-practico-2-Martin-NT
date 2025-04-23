@@ -8,6 +8,406 @@ Desarrollar un sistema de gestión de biblioteca digital que implemente los cinc
 ## 👨‍🎓 Información del Alumno
 - **Nombre y Apellido**: Martin Navarro Teixidor
 
+## Documentación
+
+### Descripción General del Sistema
+Este sistema está diseñado para gestionar recursos digitales, usuarios, préstamos, reservas y notificaciones dentro de una biblioteca digital, siguiendo los principios SOLID.
+
+## Arquitectura del Sistema
+# Estructura General
+La estructura del sistema está organizada de la siguiente manera:
+- Alertas: Gestión de notificaciones y recordatorios del sistema.
+- Comparadores: Clases utilizadas para ordenar o comparar objetos, como usuarios y recursos.
+- Enums: Definiciones de valores constantes para categorías, estados y otros tipos.
+- Excepciones: Clases personalizadas para manejar errores específicos en el sistema.
+- Gestores: Clases encargadas de la lógica de negocio, como la gestión de recursos, usuarios, préstamos, etc.
+- Interfaces: Contratos que definen los métodos que las clases deben implementar.
+- Main: Punto de entrada del sistema, donde se inicializan y gestionan las operaciones (Main, Consola, Menus).
+- Prestamos: Lógica relacionada con la gestión de préstamos de recursos.
+- Recursos: Clases que representan los recursos disponibles en la biblioteca digital.
+- Reservas: Lógica de gestión de reservas de recursos por los usuarios.
+- Servicios: Servicios de notificación que interactúan con el sistema.
+- Simulaciones: Clases utilizadas para probar la funcionalidad del sistema en un entorno controlado.
+- Usuarios: Gestión y almacenamiento de la información de los usuarios del sistema.
+
+# Principios SOLID
+- Single Responsibility Principle: Cada clase tiene una única responsabilidad. Por ejemplo, la clase GestorUsuarios solo maneja las operaciones relacionadas con los usuarios.
+
+- Open/Closed Principle: El sistema está abierto a la extensión (se pueden agregar nuevas funcionalidades) pero cerrado a la modificación (no es necesario modificar las clases existentes para agregar nuevas características).
+
+- Liskov Substitution Principle: Se garantiza que las clases derivadas puedan ser sustituidas por sus clases base sin afectar el comportamiento del sistema.
+
+- Interface Segregation Principle: Las interfaces están diseñadas para ser específicas y no forzar a las clases a implementar métodos que no utilizan.
+
+- Dependency Inversion Principle: Las dependencias se gestionan a través de interfaces, permitiendo una mayor flexibilidad y facilidad de prueba.
+
+## 🔄 Flujo de trabajo del sistema
+
+1. **Menú Principal:**
+   - El sistema inicia mostrando el menú principal con las siguientes opciones:
+     1. Gestión de usuarios.
+     2. Gestión de recursos.
+     3. Gestión de reservas.
+     4. Gestión de préstamos.
+     5. Reportes.
+     6. Historial de recordatorios.
+     7. Pruebas.
+     8. Salir.
+
+2. **Gestión de Usuarios:**
+   - Desde el **Menú de Usuarios**, se puede:
+     1. Listar usuarios.
+     2. Buscar usuarios por ID, nombre o apellido.
+     3. Ordenar usuarios por nombre o apellido.
+     4. Crear nuevos usuarios.
+     5. Eliminar usuarios.
+     6. Volver al menú principal.
+   
+   El sistema permite gestionar completamente a los usuarios registrados.
+
+3. **Gestión de Recursos:**
+   - Desde el **Menú de Recursos**, el usuario puede:
+     1. Listar recursos disponibles.
+     2. Mostrar las categorías de recursos.
+     3. Buscar un recurso por ID, título o categoría.
+     4. Ordenar los recursos por título o fecha de publicación.
+     5. Crear nuevos recursos (libros, audiolibros, revistas).
+     6. Eliminar recursos existentes.
+     7. Volver al menú principal.
+
+   Se puede buscar y gestionar recursos digitales en función de las necesidades del usuario.
+
+4. **Gestión de Reservas:**
+   - Desde el **Menú de Reservas**, los usuarios pueden:
+     1. Realizar reservas para recursos no disponibles.
+     2. Ver las reservas pendientes.
+     3. Eliminar una reserva.
+     4. Buscar reservas por ID de usuario, ID de recurso, prioridad o fecha.
+     5. Ordenar reservas por prioridad, fecha o ID de usuario.
+     6. Ver alertas de disponibilidad (cuando el recurso reservado se libera).
+     7. Volver al menú principal.
+
+   Las reservas permiten a los usuarios asegurar recursos no disponibles, y el sistema maneja la cola de reservas.
+
+5. **Gestión de Préstamos:**
+   - Desde el **Menú de Préstamos**, los usuarios pueden:
+     1. Realizar un préstamo de un recurso disponible.
+     2. Ver los préstamos activos.
+     3. Devolver recursos prestados.
+     4. Buscar préstamos por ID de usuario, ID de recurso o fecha.
+     5. Ordenar los préstamos por ID de usuario, fecha de préstamo o ID de recurso.
+     6. Ver alertas de vencimiento (notificación de la fecha límite de devolución).
+     7. Volver al menú principal.
+
+   Los préstamos permiten que los usuarios tomen recursos prestados bajo ciertas condiciones y los devuelvan al sistema.
+
+6. **Reportes:**
+   - Desde el **Menú de Reportes**, se puede ver informes detallados, como:
+     1. Los recursos más prestados.
+     2. Los usuarios más activos.
+     3. Estadísticas por categoría.
+     4. Volver al menú principal.
+
+   Los reportes proporcionan una visión general de la actividad dentro del sistema.
+
+7. **Notificaciones y Alertas:**
+   - El sistema envía notificaciones automáticas para confirmación de acciones realizadas (registro, préstamo, reserva, devolución, etc.).
+   - Además, se generan alertas sobre vencimientos de préstamos y disponibilidad de recursos reservados.
+
+8. **Interacción continua:**
+   - Los usuarios pueden navegar entre las opciones del menú principal, realizar operaciones de gestión, consultar reportes o salir del sistema en cualquier momento.
+
+## 🚀 Poner en funcionamiento
+
+# 🛠️ Requisitos Previos
+- Java 17 o superior instalado.
+- IDE recomendado: IntelliJ, Eclipse o Visual Studio Code.
+- Git instalado
+- Opcional: Herramienta de compilación (Maven o Gradle).
+
+# 🚀 Instrucciones para Compilar y Ejecutar
+1. Clonar el repositorio:
+   ```bash
+   git clone git@github.com:um-programacion-ii/programacion-2-trabajo-practico-2-Martin-NT.git
+   cd programacion-2-trabajo-practico-2-Martin-NT
+   
+2. Descargar el compilador de Java (javac)
+   ```bash
+   sudo apt install default-jdk
+   
+2. Navegar al directorio del proyecto
+   ```bash
+   cd TP2
+   
+3. Compilar Proyecto
+   ```bash
+   find src -name "*.java" > sources.txt
+javac -d out @sources.txt
+   
+4. Ejecutar la aplicación principal: 
+   ```bash
+   java -cp out app.Main
+   
+O desde tu IDE, ejecutar la clase app.Main.
+
+## Funcionalidades implementadas
+
+Usuarios
+- Registrar nuevo usuario
+- Visualizar usuarios registrados desde el menú
+- Buscar y Ordenar usuarios
+- Eliminar Usuario
+
+Recursos
+- Registrar libros, revistas o audiolibros.
+- Listar todos los recursos-
+- Mostrar categorias y listar recursos por categoria.
+- Buscar y Ordenar recursos.
+- Eliminar recursos.
+
+Reservas y Prestamos
+- Reservar un recurso.
+- Ver reservas pendientes.
+- Ver alertas de disponibilidad y poder realizar prestamo de recurso desde alerta.
+- Eliminar reserva.
+- Buscar y Ordenar reservas.
+- 
+- Ver alertas de vencmiento
+- Realizar prestamos.
+- Ver prestamos activos.
+- Devolver recurso.
+- Buscar y Ordenar prestamos.
+
+Reportes
+- Recursos más prestados.
+- Usuarios más activos.
+- Estadísticas por categoría
+- Generación asincrónica usando ExecutorService.
+
+Recordatorios 
+- Historial disponible desde el menú principal.
+- Alertas por préstamos cercanos al vencimiento (24h antes y el día exacto).
+
+Pruebas
+- Simular y Verificar Alerta Vencimiento.
+- Simular y Verificar Alerta Disponibilidad.
+- Simular Concurrencia.
+- Ejecutar Reportes.
+- Probar servicios de Notificación.
+- Recordatorios.
+---
+
+## Ejemplos de Flujo Completo
+1. Podemos ver usuarios y recursos que ya estan registrados con la opcion 1 de sus respectivos menús.
+📋 Lista de usuarios:
+
+📘 Usuario ID: U004
+ - Nombre: Valentino
+ - Apellido: Rizzotti
+ - Email: valenrizzotti@example.com
+ - Telefono: 2613467543
+ - Frecuencia de Notificación: semanal
+
+📘 Usuario ID: U003
+ - Nombre: Facundo
+ - Apellido: San Roman
+ - Email: facundo@example.com
+ - Telefono: 2634257895
+ - Frecuencia de Notificación: semanal
+
+📘 Usuario ID: U002
+ - Nombre: Valentina
+ - Apellido: Rosales
+ - Email: valerosales@example.com
+ - Telefono: 2634257895
+ - Frecuencia de Notificación: diaria
+
+📘 Usuario ID: U001
+ - Nombre: Martina
+ - Apellido: Rizzotti
+ - Email: martirizzotti@example.com
+ - Telefono: 2613245789
+ - Frecuencia de Notificación: diaria
+
+===== 📚 RECURSOS DISPONIBLES =====
+
+[📚 LIBRO]
+ - Recurso ID: L001
+ - Título: Harry Potter y la piedra filosofal
+ - Autor: J.K. Rowling
+ - Fecha de Publicación: 1997-06-26
+ - Estado: DISPONIBLE
+ - Categoria: LIBRO
+ - Páginas: 256
+ - Género: Fantasía
+ - Editorial: Salamandra
+
+
+[📰 REVISTA]
+ - Recurso ID: R001
+ - Título: National Geographic
+ - Autor: Varios
+ - Fecha de Publicación: 2025-04-10
+ - Estado: DISPONIBLE
+ - Categoria: REVISTA
+ - Número de Edición: 100
+ - Periodicidad: Mensual
+ - Sección Principal: Ciencia y naturaleza
+ - Editorial: National Geographic Society
+
+
+[🎧 AUDIOLIBRO]
+ - Recurso ID: A001
+ - Título: El Principito
+ - Autor: Antoine de Saint-Exupéry
+ - Fecha de Publicación: 1943-04-06
+ - Estado: DISPONIBLE
+ - Categoria: AUDIOLIBRO
+ - Duración en minutos: 92
+ - Narrador: Dangello Medina
+ - Idioma: Español
+
+1.1 Podemos crear si usuarios y recursos nuevos (Opción 4 de sus respectivos menús) y Eliminar a los nuevos y ya creados recursos y usuarios (Opción 5 de sus respectivos menús).
+
+2. Reserva y Prestamo
+- Seleccionamos la Opción 3 del menu principal (Reservas)
+- Reservamos recurso (Opción 1) por ejemplo con ID Usuario: U001, ID Recurso: L001, Prioridad: 1
+- Vemos que la reserva está pendiente (Seleccionando opción 2)
+- Seleccionamos Ver alertas de disponibilidad (Opción 6), vemos la alerta de disponibilidad y podemos realizar el prestamo del recurso desde la alerta, Ejemplo:
+   ```bash
+   ===== MENÚ DE RESERVAS =====
+1. Reservar recurso
+2. Ver reservas pendientes
+3. Eliminar reserva
+4. Buscar reservas
+5. Ordenar reservas
+6. Ver alertas de disponibilidad
+7. Volver al menú principal
+--> Seleccione una opción: 6
+📢 Verificando alertas de disponibilidad...
+
+📢 ALERTA DE DISPONIBILIDAD
+📘 Recurso: Harry Potter y la piedra filosofal (ID: L001)
+👤 Reservado por: Martina Rizzotti
+📩 Se notificó a Martina por correo y SMS.
+
+Enviando correo a Martina Rizzotti al correo: martirizzotti@example.com
+Contenido del mensaje: 📘 Tu recurso 'Harry Potter y la piedra filosofal' está disponible para retirar.
+
+Enviando SMS a Martina Rizzotti al número: 2613245789
+Contenido del mensaje: 📘 Tu recurso 'Harry Potter y la piedra filosofal' está disponible para retirar.
+
+Lista de recursos disponibles para retiro:
+- Harry Potter y la piedra filosofal (ID: L001)
+
+¿Quieres realizar un préstamo de algún recurso disponible? (SI/NO): 
+SI
+Ingresa el ID del recurso que deseas prestar:
+L001
+
+[main] 🔄 Intentando prestar: Harry Potter y la piedra filosofal
+✅ Reserva eliminada correctamente.
+
+Enviando SMS a Martina Rizzotti al número: 2613245789
+Contenido del mensaje: 📌 Tu reserva del recurso 'Harry Potter y la piedra filosofal' ha sido cancelada.
+Creando préstamo: Harry Potter y la piedra filosofal con estado activo: true
+
+Enviando correo a Martina Rizzotti al correo: martirizzotti@example.com
+Contenido del mensaje: 📚 Se ha realizado el préstamo del recurso 'Harry Potter y la piedra filosofal' hasta el 2025-05-07.
+
+RECORDATORIO WARNING: El préstamo del recurso 'Harry Potter y la piedra filosofal' vence el 2025-05-07.
+
+[main] ✅ Préstamo exitoso: Harry Potter y la piedra filosofal
+
+
+3. Seleccionamos 7. Volver al menú principal, luego 4. Préstamos
+4. Seleccionamos 2. Ver préstamos activos y vemos que el prestamo se ha realizado
+5. En 6. Ver alertas de vencimiento nos saldra cuando la opcion este a 1 dia de vencer, sino no mostrara prestamos vencidos
+6. Devolvemos el prestamo (Opción 3)
+   ```bash
+   ===== MENÚ DE PRÉSTAMOS =====
+1. Realizar préstamo
+2. Ver préstamos activos
+3. Devolver recurso
+4. Buscar préstamos
+5. Ordenar préstamos
+6. Ver alertas de vencimiento
+7. Volver al menú principal
+--> Seleccione una opción: 3
+--> Ingrese el ID del usuario que devuelve el recurso: U001
+Ingrese el ID del recurso que desea devolver: L001
+Devolución registrada para: Harry Potter y la piedra filosofal
+
+El LIBRO 'Harry Potter y la piedra filosofal' (L001) ha sido devuelto correctamente.
+
+Enviando correo a Martina Rizzotti al correo: martirizzotti@example.com
+Contenido del mensaje: 📥 Has devuelto el recurso 'Harry Potter y la piedra filosofal' correctamente. ¡Gracias!
+
+8. Si se desea podemos ver los Reportes por ejemplo de recursos prestados:
+   ```bash
+   --> Seleccione una opción: 1
+⏳ El reporte se está generando en segundo plano...
+🔁 Podés seguir navegando por el sistema.
+
+
+===== 📊 REPORTES DISPONIBLES =====
+1. Recursos más prestados
+2. Usuarios más activos
+3. Estadísticas por categoría
+4. Volver al menú principal
+
+🛠️ Generando reporte: prestados
+--> Seleccione una opción: ⏳ Progreso: [███░░░░░░░] 33%
+⏳ Progreso: [██████░░░░] 66%
+⏳ Progreso: [██████████] 100%
+
+📚 Recursos más prestados:
+🔸 Harry Potter y la piedra filosofal - 1 préstamo(s) - Categoría: LIBRO
+🕒 Generado en: 2025-04-23T13:54:13.629400329
+
+✅ Reporte 'prestados' generado con éxito.
+
+--> Seleccione una opción del menú:
+
+9. Como no hay prestamos por vencer si nos dirigimos al menu de pruebas y seleccionamos la opcion 1. Simular y Verificar Alerta Vencimiento, podemos ver como funcionaria el sistema de alerta vencmiento:
+   ```bash
+   ===== 📊 INICIO DE GENERAR PRESTAMO POR VENCER DE PRUEBA =====
+Creando préstamo: Harry Potter y la piedra filosofal con estado activo: true
+✅ Reserva añadida correctamente con prioridad 1.
+
+Enviando SMS a Martina Rizzotti al número: 2613245789
+Contenido del mensaje: ¡Reserva exitosa! Has reservado el recurso: Harry Potter y la piedra filosofal
+
+[main] 🔄 Intentando prestar: Harry Potter y la piedra filosofal
+Creando préstamo: Harry Potter y la piedra filosofal con estado activo: true
+
+Enviando correo a Martina Rizzotti al correo: martirizzotti@example.com
+Contenido del mensaje: 📚 Se ha realizado el préstamo del recurso 'Harry Potter y la piedra filosofal' hasta el 2025-05-07.
+
+RECORDATORIO WARNING: El préstamo del recurso 'Harry Potter y la piedra filosofal' vence el 2025-05-07.
+
+[main] ✅ Préstamo exitoso: Harry Potter y la piedra filosofal
+🔔 Se ha generado un préstamo que vence mañana para pruebas de alertas.
+
+===== 📊 INICIO DE VERIFICAR ALERTAS VENCIMIENTO DE PRUEBA =====
+*** ALERTA *** ¡ALERTA! El préstamo vence hoy. Recurso: Harry Potter y la piedra filosofal (Vence el: 2025-04-23)
+¿Desea renovar este préstamo? (SI/NO): 
+SI
+El préstamo del recurso 'Harry Potter y la piedra filosofal' ha sido renovado hasta el 2025-05-07
+
+Enviando correo a Martina Rizzotti al correo: martirizzotti@example.com
+Contenido del mensaje: 📅 Tu préstamo del recurso 'Harry Potter y la piedra filosofal' ha sido renovado hasta el 2025-05-07.
+¡Préstamo renovado exitosamente!
+
+10. Por ultimo se dejaron opciones por si se desea probar lo siguiente:
+    - 2. Simular y Verificar Alerta Disponibilidad
+    - 3. Simular Concurrencia
+    - 4. Ejecutar Reportes
+    - 5. Probar servicios de Notificación
+    - 6. Recordatorios
+    
+11. Finalizamos el programa con 8. Salir
+
 ## 📋 Requisitos Adicionales
 
 ### Documentación del Sistema
