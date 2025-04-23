@@ -30,9 +30,6 @@ public class Gestores {
             gestorNotificaciones
     );
 
-
-
-
     // Constructor
     public Gestores() {
         // Cargar usuarios y recursos con los simuladores

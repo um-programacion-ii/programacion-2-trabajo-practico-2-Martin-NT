@@ -1,4 +1,4 @@
-package Main;
+package app;
 import Gestores.*;
 import Simulaciones.*;
 import java.util.Scanner;
@@ -48,6 +48,7 @@ public class Main {
                     break;
 
                 case 7: // PRUEBAS
+
                     int opcion;
                     do {
                         System.out.println("\n===== 🧪 MENÚ DE PRUEBAS =====");
@@ -91,7 +92,7 @@ public class Main {
                                 break;
 
                             case 4: // Reportes
-                                // 🔥 NUEVO Paso intermedio: Simular préstamos
+                                // Simular préstamos
                                 SimuladorUsuarios.cargarUsuarios(gestores.getGestorUsuarios());
                                 SimuladorRecursos.cargarRecursos(gestores.getGestorRecursos());
                                 SimuladorPrestamos.cargarPrestamos(
@@ -100,7 +101,7 @@ public class Main {
                                         gestores.getGestorRecursos()
                                 );
 
-                                // Paso 3: Ejecutar reportes para ver el estado actual
+                                // Ejecutar reportes para ver el estado actual
                                 SimuladorReportes.ejecutarReportes(gestores);
                                 break;
 
