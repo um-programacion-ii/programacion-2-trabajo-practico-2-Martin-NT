@@ -8,8 +8,9 @@ public class Menus {
         System.out.println("3. Reservas");
         System.out.println("4. Préstamos");
         System.out.println("5. Reportes");
-        System.out.println("6. Pruebas");
-        System.out.println("7. Salir");
+        System.out.println("6. Ver Historial Recordatorios");
+        System.out.println("7. Pruebas");
+        System.out.println("8. Salir");
         System.out.print("--> Seleccione una opción: ");
     }
 

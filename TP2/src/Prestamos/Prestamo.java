@@ -18,6 +18,9 @@ public class Prestamo {
         this.fechaPrestamo = fechaPrestamo;
         this.fechaDevolucion = fechaPrestamo.plusDays(14);
         this.activo = activo;
+        // En el constructor, para depuración
+        System.out.println("Creando préstamo: " + recurso.getTitulo() + " con estado activo: " + activo);
+
     }
 
     // Getters
@@ -69,6 +72,8 @@ public class Prestamo {
     public void registrarDevolucion() {
         this.fechaDevolucion = LocalDate.now();
         this.activo = false; //Desactivo el prestamo
+        System.out.println("Devolución registrada para: " + recurso.getTitulo());
+
     }
 
 }

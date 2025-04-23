@@ -49,7 +49,9 @@ public class SimuladorAlertasDisponibilidad {
         AlertaDisponibilidad alertaDisponibilidad = new AlertaDisponibilidad(
                 gestores.getGestorReservas(),
                 gestores.getGestorRecursos(),
-                gestores.getGestorPrestamos()
+                gestores.getGestorPrestamos(),
+                gestores.getGestorNotificaciones()
+
         );
 
         // Ejecutar el metodo que verifica la disponibilidad

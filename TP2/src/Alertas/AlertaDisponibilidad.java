@@ -5,17 +5,13 @@ import Gestores.GestorNotificaciones;
 import Gestores.GestorReservas;
 import Gestores.GestorRecursos;
 import Gestores.GestorPrestamos;
-import Interfaces.RecursoDigital;
 import Enums.EstadoRecurso;
 import Interfaces.ServicioNotificaciones;
-import Prestamos.Prestamo;
 import Recursos.RecursoBase;
 import Reservas.Reserva;
 import Servicios.ServicioNotificacionesEmail;
 import Servicios.ServicioNotificacionesSMS;
 import Usuarios.Usuario;
-
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -29,11 +25,13 @@ public class AlertaDisponibilidad {
     private ServicioNotificaciones servicioEmail = new ServicioNotificacionesEmail();
     private ServicioNotificaciones servicioSMS = new ServicioNotificacionesSMS();
 
-    public AlertaDisponibilidad(GestorReservas gestorReservas, GestorRecursos gestorRecursos, GestorPrestamos gestorPrestamos) {
+    public AlertaDisponibilidad(GestorReservas gestorReservas, GestorRecursos gestorRecursos, GestorPrestamos gestorPrestamos, GestorNotificaciones gestorNotificaciones) {
         this.gestorReservas = gestorReservas;
         this.gestorRecursos = gestorRecursos;
         this.gestorPrestamos = gestorPrestamos;
+        this.gestorNotificaciones = gestorNotificaciones;
     }
+
 
     public void verificarDisponibilidad() {
         List<Reserva> reservas = gestorReservas.getReservas();
@@ -128,11 +126,11 @@ public class AlertaDisponibilidad {
             gestorPrestamos.realizarPrestamo(usuario, recurso);
 
             // Si el préstamo es exitoso, se envían notificaciones
-            String mensaje = "📚 El recurso '" + recurso.getTitulo() + "' ha sido prestado con éxito a " + usuario.getNombre() + " " + usuario.getApellido();
+            String mensaje = "ALERTA:📚 El recurso '" + recurso.getTitulo() + "' ha sido prestado con éxito a " + usuario.getNombre() + " " + usuario.getApellido();
             gestorNotificaciones.enviarNotificacionPorEmail(mensaje, usuario);
         } else {
             // Manejar el caso en que el recurso no esté disponible
-            System.out.println("⚠️ El recurso no está disponible para préstamo.");
+            System.out.println("ALERTA: ⚠️ El recurso no está disponible para préstamo.");
         }
     }
 

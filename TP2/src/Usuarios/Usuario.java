@@ -1,5 +1,7 @@
 package Usuarios;
 
+import Enums.NivelUrgencia;
+
 public class Usuario {
     private final String id;
     private String nombre;
@@ -7,15 +9,19 @@ public class Usuario {
     private String email;
     private String password;
     private String telefono;
+    private NivelUrgencia nivelPreferido = NivelUrgencia.INFO;
+    private String frecuenciaNotificaciones;
+
 
     //Constructor
-    public Usuario(String id, String nombre, String apellido, String email, String password, String telefono) {
+    public Usuario(String id, String nombre, String apellido, String email, String password, String telefono, String frecuenciaNotificaciones) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
         this.password = password;
         this.telefono = telefono;
+        this.frecuenciaNotificaciones = frecuenciaNotificaciones;
     }
 
     //Getters
@@ -37,6 +43,8 @@ public class Usuario {
     public String getTelefono() {
         return telefono;
     }
+    public NivelUrgencia getNivelPreferido() {return nivelPreferido;}
+    public String getFrecuenciaNotificaciones() {return frecuenciaNotificaciones;}
 
     // Setters
     public void setNombre(String nombre) {
@@ -54,6 +62,10 @@ public class Usuario {
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
+    public void setNivelPreferido(NivelUrgencia nivelPreferido) {this.nivelPreferido = nivelPreferido;}
+    public void setFrecuenciaNotificaciones(String frecuenciaNotificaciones) {
+        this.frecuenciaNotificaciones = frecuenciaNotificaciones;
+    }
 
     // Metodo para representar al usuario como string
     @Override
@@ -62,7 +74,8 @@ public class Usuario {
                 " - Nombre: " + nombre + "\n" +
                 " - Apellido: " + apellido + "\n" +
                 " - Email: " + email + "\n" +
-                " - Telefono: " + telefono;
+                " - Telefono: " + telefono + "\n" +
+                " - Frecuencia de Notificación: " + frecuenciaNotificaciones;
     }
 
 }

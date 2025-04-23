@@ -13,6 +13,9 @@ public class Main {
 
         // Importante para conectar la alerta a la consola
         consola.setAlertaVencimiento(gestores.getAlertaVencimiento());
+        consola.setAlertaDisponibilidad(gestores.getAlertaDisponibilidad());
+
+
 
         int opcionPrincipal;
         do {
@@ -40,7 +43,11 @@ public class Main {
                     consola.mostrarMenuReportes();
                     break;
 
-                case 6: // PRUEBAS
+                case 6: // Recordatorios
+                    gestores.getGestorRecordatorio().mostrarHistorial();
+                    break;
+
+                case 7: // PRUEBAS
                     int opcion;
                     do {
                         System.out.println("\n===== 🧪 MENÚ DE PRUEBAS =====");
@@ -50,7 +57,8 @@ public class Main {
                         System.out.println("3. Simular Concurrencia");
                         System.out.println("4. Ejecutar Reportes");
                         System.out.println("5. Probar servicios de Notificación");
-                        System.out.println("6. Volver al menú principal");
+                        System.out.println("6. Recordatorios");
+                        System.out.println("7. Volver al menú principal");
                         System.out.print("Seleccione una opción: ");
                         opcion = scanner.nextInt();
                         scanner.nextLine(); // limpiar buffer
@@ -105,7 +113,10 @@ public class Main {
                                 );
                                 break;
 
-                            case 6:
+                            case 6: // Recordatorio
+                                SimuladorRecordatorio.main(null);
+                                break;
+                            case 7:
                                 System.out.println("Volviendo al menú principal...");
                                 break;
 
@@ -113,15 +124,15 @@ public class Main {
                                 System.out.println("⚠️ Opción inválida. Intente nuevamente.");
                         }
 
-                    } while (opcion != 6);
+                    } while (opcion != 7);
 
-                case 7:
+                case 8:
                     System.out.println("Saliendo del programa...");
                     break;
 
                 default:
                     System.out.println("⚠️ Opción inválida.");
             }
-        } while (opcionPrincipal != 7);
+        } while (opcionPrincipal != 8);
     }
 }

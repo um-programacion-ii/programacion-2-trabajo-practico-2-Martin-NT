@@ -9,17 +9,20 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+import Enums.NivelUrgencia;
 
 public class GestorPrestamos {
     private List<Prestamo> prestamos;
     private GestorNotificaciones gestorNotificaciones;
     private GestorReservas gestorReservas;
+    private GestorRecordatorio gestorRecordatorio;
 
     // Constructor con inyección de dependencias
-    public GestorPrestamos(GestorNotificaciones gestorNotificaciones, GestorReservas gestorReservas) {
+    public GestorPrestamos(GestorNotificaciones gestorNotificaciones, GestorReservas gestorReservas, GestorRecordatorio gestorRecordatorio) {
         this.prestamos = new ArrayList<>();
         this.gestorNotificaciones = gestorNotificaciones;
         this.gestorReservas = gestorReservas;
+        this.gestorRecordatorio = gestorRecordatorio;
     }
 
     public List<Prestamo> getPrestamos() {
@@ -42,13 +45,24 @@ public class GestorPrestamos {
             boolean activo = true;
 
             if (validarRecursoDisponible(recurso)) {
+                // Eliminar reserva si existe
                 gestorReservas.eliminarReserva(recurso.getId());
+
+                // Crear el préstamo
                 Prestamo nuevoPrestamo = new Prestamo(usuario, recurso, fechaPrestamo, fechaDevolucion, activo);
                 prestamos.add(nuevoPrestamo);
+
+                // Cambiar el estado del recurso a prestado
                 recurso.setEstado(EstadoRecurso.PRESTADO);
 
+                // Crear el mensaje para la notificación
                 String mensaje = "📚 Se ha realizado el préstamo del recurso '" + recurso.getTitulo() + "' hasta el " + fechaDevolucion + ".";
                 gestorNotificaciones.enviarNotificacionPorEmail(mensaje, usuario);
+
+                // Crear el recordatorio de vencimiento
+                // [1;33mALERTA DE DISPONIBILIDAD[0m
+                String recordatorioMensaje = "El préstamo del recurso '" + recurso.getTitulo() + "' vence el " + fechaDevolucion + ".";
+                gestorRecordatorio.enviarRecordatorio(recordatorioMensaje, NivelUrgencia.WARNING, usuario, recurso);
 
                 System.out.println("\n[" + Thread.currentThread().getName() + "] ✅ Préstamo exitoso: " + recurso.getTitulo());
             } else {
@@ -57,6 +71,7 @@ public class GestorPrestamos {
             }
         }
     }
+
 
 
     // Metodo para devolver el recurso
@@ -107,18 +122,17 @@ public class GestorPrestamos {
         boolean hayActivos = false;
 
         // Iterar sobre los préstamos activos
-        synchronized (this) {
-            for (Prestamo p : prestamos) {
+        //synchronized (this) {
+        for (Prestamo p : prestamos) {
                 if (p.isActivo()) {
                     // Mostrar detalles del préstamo utilizando toString() de la clase Prestamo
                     System.out.println(p);
                     hayActivos = true;
                 }
-            }
+            //}
         }
-
         if (!hayActivos) {
-            System.out.println("⚠️ No hay préstamos activos actualmente.");
+            System.out.println("MOSTRAR⚠️ No hay préstamos activos actualmente.");
         }
     }
 
