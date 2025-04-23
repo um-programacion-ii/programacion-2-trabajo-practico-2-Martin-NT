@@ -3,6 +3,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
+
+import Alertas.AlertaVencimiento;
 import Excepciones.RecursoNoDisponibleException;
 import Excepciones.UsuarioNoEncontradoException;
 import Gestores.GestorRecursos;
@@ -19,13 +21,19 @@ import Main.Menus;
 
 public class Consola {
     private final Scanner scanner;
-    private final Menus menus;  // Instancia de Menus
-    private final Gestores gestores; //Instancia Gestores
+    private final Menus menus;
+    private final Gestores gestores;
+    private AlertaVencimiento alertaVencimiento;
 
     public Consola() {
         scanner = new Scanner(System.in);
         menus = new Menus();  // Inicializa la instancia de Menus
         gestores = new Gestores();  // Inicializa la clase Gestores
+    }
+
+    //Setter
+    public void setAlertaVencimiento(AlertaVencimiento alertaVencimiento) {
+        this.alertaVencimiento = alertaVencimiento;
     }
 
     public void mostrarMenuUsuarios() {
@@ -511,13 +519,17 @@ public class Consola {
                 case 5: // Ordenar préstamos
                     mostrarMenuOrdenarPrestamos();
                     break;
-                case 6:
+                case 6: // Alertas de vencimiento
+                    System.out.println("🕒 Verificando alertas de vencimiento...");
+                    alertaVencimiento.monitorearVencimientos();
+                    break;
+                case 7:
                     System.out.println("↩️ Volviendo al Menú Principal...");
                     break;
                 default:
                     System.out.println("⚠️ Opción inválida.");
             }
-        } while (opcionPrestamo != 6);
+        } while (opcionPrestamo != 7);
     }
 
     public void mostrarMenuCrearPrestamos() {
@@ -669,30 +681,24 @@ public class Consola {
                 case 1: // Reservar recurso
                     mostrarMenuReservar();
                     break;
-
                 case 2: // Ver reservas pendientes
                     // Muestra las reservas pendientes en la cola de reservas
                     gestores.getGestorReservas().mostrarReservas();
                     break;
-
                 case 3: // Eliminar reserva
                     System.out.print("--> Ingrese el ID del recurso que desea eliminar: ");
                     idRecurso = leerTexto();
                     gestores.getGestorReservas().eliminarReserva(idRecurso);
                     break;
-
                 case 4: // Buscar reservas
                     mostrarMenuBuscarReservas();
                     break;
-
                 case 5: // Ordenar reservas
                     mostrarMenuOrdenarReservas();
                     break;
-
                 case 6:
                     System.out.println("↩️ Volviendo al Menú Principal...");
                     break;
-
                 default:
                     System.out.println("⚠️ Opción inválida.");
             }

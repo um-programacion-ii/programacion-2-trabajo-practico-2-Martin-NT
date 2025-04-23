@@ -10,7 +10,7 @@ public class ServicioNotificacionesEmail implements ServicioNotificaciones {
 
     @Override
     public void enviarNotificacion(String mensaje, Usuario usuario) {
-        System.out.println("\nEnviando correo a " + usuario.getNombre() + usuario.getApellido() + " al correo: " + usuario.getEmail());
+        System.out.println("\nEnviando correo a " + usuario.getNombre() + " " + usuario.getApellido() + " al correo: " + usuario.getEmail());
         System.out.println("Contenido del mensaje: " + mensaje);
     }
 }

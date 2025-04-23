@@ -84,6 +84,23 @@ public class GestorPrestamos {
         }
     }
 
+    // Metodo para renovar el préstamo
+    public void renovarPrestamo(Prestamo prestamo) {
+        // Validar si el préstamo aún es activo
+        if (prestamo.isActivo()) {
+            LocalDate nuevaFechaDevolucion = prestamo.getFechaDevolucion().plusDays(14);  // Renovamos 14 días más
+            prestamo.setFechaDevolucion(nuevaFechaDevolucion);
+
+            System.out.println("El préstamo del recurso '" + prestamo.getRecurso().getTitulo() + "' ha sido renovado hasta el " + nuevaFechaDevolucion);
+
+            // Enviar notificación al usuario
+            String mensaje = "📅 Tu préstamo del recurso '" + prestamo.getRecurso().getTitulo() + "' ha sido renovado hasta el " + nuevaFechaDevolucion + ".";
+            gestorNotificaciones.enviarNotificacionPorEmail(mensaje, prestamo.getUsuario());
+        } else {
+            System.out.println("No se puede renovar el préstamo porque ya está cerrado.");
+        }
+    }
+
     // Metodo para mostrar los prestamos activos
     public void mostrarPrestamosActivos() {
         System.out.println("\n==== Préstamos Activos ====");
