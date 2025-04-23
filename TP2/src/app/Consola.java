@@ -1,4 +1,4 @@
-package Main;
+package app;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -9,7 +9,6 @@ import Alertas.AlertaVencimiento;
 import Excepciones.RecursoNoDisponibleException;
 import Excepciones.UsuarioNoEncontradoException;
 import Gestores.GestorRecursos;
-import Gestores.GestorReportes;
 import Gestores.GestorUsuarios;
 import Gestores.Gestores;
 import Prestamos.Prestamo;
@@ -18,7 +17,6 @@ import Interfaces.*;
 import Enums.*;
 import Reservas.Reserva;
 import Usuarios.Usuario;
-import Main.Menus;
 
 public class Consola {
     private final Scanner scanner;
@@ -858,19 +856,18 @@ public class Consola {
     public void mostrarMenuReportes() {
         int opcionReporte;
         do {
-            // Llamamos al metodo para mostrar el menú de reportes desde la clase Menu
             menus.MenuReportes();
-            opcionReporte = leerOpcion(); // Usamos el metodo de leer la opción
+            opcionReporte = leerOpcion();
 
             switch (opcionReporte) {
                 case 1:
-                    gestores.getGestorReportes().mostrarRecursosMasPrestados();
+                    gestores.getGestorReportes().mostrarRecursosMasPrestadosAsync();
                     break;
                 case 2:
-                    gestores.getGestorReportes().mostrarUsuariosMasActivos();
+                    gestores.getGestorReportes().mostrarUsuariosMasActivosAsync();
                     break;
                 case 3:
-                    gestores.getGestorReportes().mostrarEstadisticasPorCategoria();
+                    gestores.getGestorReportes().mostrarEstadisticasPorCategoriaAsync();
                     break;
                 case 4:
                     System.out.println("🔙 Volviendo al menú principal...");
@@ -878,8 +875,17 @@ public class Consola {
                 default:
                     System.out.println("⚠️ Opción inválida. Intente de nuevo.");
             }
+
+            // IMPORTANTE: Si querés darle tiempo al hilo para terminar antes de seguir mostrando el menú,
+            // podés agregar un pequeño delay o esperar una tecla si querés que sea más amigable.
+            if (opcionReporte >= 1 && opcionReporte <= 3) {
+                System.out.println("⏳ El reporte se está generando en segundo plano...");
+                System.out.println("🔁 Podés seguir navegando por el sistema.\n");
+            }
+
         } while (opcionReporte != 4);
     }
+
 
     public int leerOpcion() {
         try {

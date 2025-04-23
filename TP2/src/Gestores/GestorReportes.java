@@ -1,82 +1,122 @@
 package Gestores;
+
 import Excepciones.RecursoNoDisponibleException;
 import Interfaces.RecursoDigital;
 import Prestamos.Prestamo;
 import Usuarios.Usuario;
-import java.util.List;
-import java.util.Map;
+
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
-/**
- * Clase responsable de generar reportes y estadísticas
- * a partir de los datos de préstamos, usuarios y recursos.
- */
+
 public class GestorReportes {
-    // Dependencias de los gestores
+    private final ExecutorService executor = Executors.newFixedThreadPool(2);
     private final GestorPrestamos gestorPrestamos;
     private final GestorUsuarios gestorUsuarios;
     private final GestorRecursos gestorRecursos;
 
-    //Constructor que recibe las colecciones necesarias para generar reportes.
     public GestorReportes(GestorPrestamos gestorPrestamos, GestorUsuarios gestorUsuarios, GestorRecursos gestorRecursos) {
         this.gestorPrestamos = gestorPrestamos;
         this.gestorUsuarios = gestorUsuarios;
         this.gestorRecursos = gestorRecursos;
+
+        // Hook para cerrar hilos al salir
+        Runtime.getRuntime().addShutdownHook(new Thread(this::apagar));
     }
 
-    // Mostrar recursos más prestados
-    public void mostrarRecursosMasPrestados() {
-        System.out.println("\n📚 Recursos más prestados:");
+    public void apagar() {
+        executor.shutdown();
+    }
 
-        // Agrupa los préstamos por ID de recurso y los cuenta
-        Map<String, Long> conteo = gestorPrestamos.getPrestamos().stream()
-                .collect(Collectors.groupingBy(p -> p.getRecurso().getId(), Collectors.counting()));
+    public void mostrarRecursosMasPrestadosAsync() {
+        executor.submit(() -> {
+            System.out.println("\n🛠️ Generando reporte: prestados");
+            simularProgreso();
 
-        // Ordena de mayor a menor y muestra todos los recursos prestados
-        conteo.entrySet().stream()
-                .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
-                .forEach(entry -> {
-                    try {
-                        RecursoDigital recurso = gestorRecursos.obtenerRecursoPorId(entry.getKey());
-                        if (recurso != null) {
-                            System.out.println("🔸 " + recurso.getTitulo() + " - " + entry.getValue() + " préstamo(s) - Categoría: " + recurso.getCategoria().name());
+            System.out.println("\n📚 Recursos más prestados:");
+            Map<String, Long> conteo = gestorPrestamos.getPrestamos().stream()
+                    .collect(Collectors.groupingBy(p -> p.getRecurso().getId(), Collectors.counting()));
+
+            conteo.entrySet().stream()
+                    .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                    .forEach(entry -> {
+                        try {
+                            RecursoDigital recurso = gestorRecursos.obtenerRecursoPorId(entry.getKey());
+                            if (recurso != null) {
+                                System.out.println("🔸 " + recurso.getTitulo() + " - " + entry.getValue() + " préstamo(s) - Categoría: " + recurso.getCategoria().name());
+                            }
+                        } catch (RecursoNoDisponibleException e) {
+                            System.err.println("\u001B[31m❌ Error al obtener recurso con ID " + entry.getKey() + ": " + e.getMessage() + "\u001B[0m");
                         }
-                    } catch (RecursoNoDisponibleException e) {
-                        System.out.println("Error al obtener recurso con ID " + entry.getKey() + ": " + e.getMessage());
-                    }
-                });
+                    });
+
+            System.out.println("🕒 Generado en: " + LocalDateTime.now());
+            System.out.println("\n✅ Reporte 'prestados' generado con éxito.\n");
+            System.out.print("--> Seleccione una opción del menú: ");
+        });
     }
 
-    // Muestra los usuarios más activos (los que más préstamos realizaron)
-    public void mostrarUsuariosMasActivos() {
-        System.out.println("\n👥 Usuarios más activos:");
+    public void mostrarUsuariosMasActivosAsync() {
+        executor.submit(() -> {
+            System.out.println("\n🛠️ Generando reporte: usuarios activos");
+            simularProgreso();
 
-        // Agrupa los préstamos por ID de usuario y los cuenta
-        Map<String, Long> conteo = gestorPrestamos.getPrestamos().stream()
-                .collect(Collectors.groupingBy(p -> p.getUsuario().getId(), Collectors.counting()));
+            System.out.println("\n👥 Usuarios más activos:");
+            Map<String, Long> conteo = gestorPrestamos.getPrestamos().stream()
+                    .collect(Collectors.groupingBy(p -> p.getUsuario().getId(), Collectors.counting()));
 
-        // Ordena de mayor a menor y muestra los 5 más activos
-        conteo.entrySet().stream()
-                .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
-                .limit(5)
-                .forEach(entry -> {
-                    Usuario usuario = gestorUsuarios.getUsuarios().get(entry.getKey());
-                    if (usuario != null) {
-                        System.out.println("👤 " + usuario.getNombre() + " " + usuario.getApellido() + " - " + entry.getValue() + " préstamos");
-                    }
-                });
+            conteo.entrySet().stream()
+                    .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                    .limit(5)
+                    .forEach(entry -> {
+                        Usuario usuario = gestorUsuarios.getUsuarios().get(entry.getKey());
+                        if (usuario != null) {
+                            System.out.println("👤 " + usuario.getNombre() + " " + usuario.getApellido() + " - " + entry.getValue() + " préstamos");
+                        }
+                    });
+
+            System.out.println("🕒 Generado en: " + LocalDateTime.now());
+            System.out.println("\n✅ Reporte 'usuarios activos' generado con éxito.\n");
+            System.out.print("--> Seleccione una opción del menú: ");
+        });
     }
 
-    // Muestra estadísticas de préstamos agrupadas por categoría del recurso.
-    public void mostrarEstadisticasPorCategoria() {
-        System.out.println("\n📈 Estadísticas por categoría de recurso:");
+    public void mostrarEstadisticasPorCategoriaAsync() {
+        executor.submit(() -> {
+            System.out.println("\n🛠️ Generando reporte: categorías");
+            simularProgreso();
 
-        // Agrupa los préstamos por categoría de recurso y los cuenta
-        Map<String, Long> conteo = gestorPrestamos.getPrestamos().stream()
-                .collect(Collectors.groupingBy(p -> p.getRecurso().getCategoria().name(), Collectors.counting()));
+            System.out.println("\n📈 Estadísticas por categoría de recurso:");
+            Map<String, Long> conteo = gestorPrestamos.getPrestamos().stream()
+                    .collect(Collectors.groupingBy(p -> p.getRecurso().getCategoria().name(), Collectors.counting()));
 
-        // Muestra las estadísticas de préstamos por categoría
-        conteo.forEach((categoria, cantidad) ->
-                System.out.println("📌 " + categoria + ": " + cantidad + " préstamos"));
+            conteo.forEach((categoria, cantidad) ->
+                    System.out.println("📌 " + categoria + ": " + cantidad + " préstamos"));
+
+            System.out.println("🕒 Generado en: " + LocalDateTime.now());
+            System.out.println("\n✅ Reporte 'categorías' generado con éxito.\n");
+            System.out.print("--> Seleccione una opción del menú: ");
+        });
+    }
+
+    // Simula progreso con barra visual
+    private void simularProgreso() {
+        try {
+            int total = 3;
+            for (int i = 1; i <= total; i++) {
+                Thread.sleep(500);
+                int porcentaje = i * 100 / total;
+                String barra = generarBarraProgreso(porcentaje);
+                System.out.println("⏳ Progreso: " + barra + " " + porcentaje + "%");
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    private String generarBarraProgreso(int porcentaje) {
+        int bloques = porcentaje / 10;
+        return "[" + "█".repeat(bloques) + "░".repeat(10 - bloques) + "]";
     }
 }
-

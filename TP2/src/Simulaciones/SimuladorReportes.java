@@ -11,13 +11,13 @@ public class SimuladorReportes {
         GestorReportes gestorReportes = gestores.getGestorReportes();
 
         // Mostrar recursos más prestados
-        gestorReportes.mostrarRecursosMasPrestados();
+        gestorReportes.mostrarRecursosMasPrestadosAsync();
 
         // Mostrar usuarios más activos
-        gestorReportes.mostrarUsuariosMasActivos();
+        gestorReportes.mostrarUsuariosMasActivosAsync();
 
         // Mostrar estadísticas por categoría
-        gestorReportes.mostrarEstadisticasPorCategoria();
+        gestorReportes.mostrarEstadisticasPorCategoriaAsync();
 
         System.out.println("\n===== ✅ FIN DE REPORTES DE PRUEBA =====\n");
     }
