@@ -10,7 +10,7 @@ import Excepciones.RecursoNoDisponibleException;
 import Alertas.AlertaVencimiento;
 import java.time.LocalDate;
 
-public class SimuladorAlertas {
+public class SimuladorAlertasVencimiento {
     // Hacer gestores estático para que pueda ser utilizado en un contexto estático
     private static final Gestores gestores = new Gestores();  // Inicializa la clase Gestores
 

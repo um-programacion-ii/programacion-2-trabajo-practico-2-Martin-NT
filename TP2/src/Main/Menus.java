@@ -5,8 +5,8 @@ public class Menus {
         System.out.println("\n===== MENÚ PRINCIPAL =====");
         System.out.println("1. Usuarios");
         System.out.println("2. Recursos");
-        System.out.println("3. Préstamos");
-        System.out.println("4. Reservas");
+        System.out.println("3. Reservas");
+        System.out.println("4. Préstamos");
         System.out.println("5. Reportes");
         System.out.println("6. Pruebas");
         System.out.println("7. Salir");
@@ -130,7 +130,8 @@ public class Menus {
         System.out.println("3. Eliminar reserva");
         System.out.println("4. Buscar reservas");
         System.out.println("5. Ordenar reservas");
-        System.out.println("6. Volver al menú principal");
+        System.out.println("6. Ver alertas de disponibilidad");
+        System.out.println("7. Volver al menú principal");
         System.out.print("--> Seleccione una opción: ");
     }
 

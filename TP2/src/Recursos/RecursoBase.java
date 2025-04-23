@@ -92,7 +92,7 @@ public abstract class RecursoBase implements RecursoDigital, Prestable {
     // Implementación del metodo estaDisponible() desde Prestable
     @Override
     public boolean estaDisponible() {
-        return estado == EstadoRecurso.DISPONIBLE;
+        return this.estado == EstadoRecurso.DISPONIBLE;
     }
 
     // Implementación del metodo prestar() desde Renovable

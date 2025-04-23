@@ -1,14 +1,17 @@
 package Gestores;
+import Alertas.AlertaDisponibilidad;
 import Interfaces.RecursoDigital;
 import Reservas.Reserva;
 import Usuarios.Usuario;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.stream.Collectors;
 
 public class GestorReservas {
+    private static final Gestores gestores = new Gestores();
     // Cola de reservas ordenada por prioridad (menor número = mayor prioridad)
     private PriorityBlockingQueue<Reserva> colaReservas;
     // Dependencia de GestorNotificaciones
@@ -25,7 +28,11 @@ public class GestorReservas {
         return colaReservas;
     }
 
-    // Agrega una reserva a la cola si el usuario aún no ha reservado ese recurso
+    // Metodo público para obtener todas las reservas como lista
+    public List<Reserva> getReservas() {
+        return new ArrayList<>(colaReservas);
+    }
+
     public void agregarReserva(Usuario usuario, RecursoDigital recurso, int prioridad) {
         // Verifica si el usuario ya tiene una reserva para este recurso
         boolean yaReservado = colaReservas.stream().anyMatch(
@@ -43,10 +50,17 @@ public class GestorReservas {
 
         // Enviar la notificación de reserva exitosa
         String mensaje = "¡Reserva exitosa! Has reservado el recurso: " + recurso.getTitulo();
-        gestorNotificaciones.enviarNotificacionPorSMS(mensaje, usuario);  // Usar el gestor de notificaciones
+        gestorNotificaciones.enviarNotificacionPorSMS(mensaje, usuario);
 
-
+        // Llamar a la verificación de disponibilidad después de realizar la reserva
+        AlertaDisponibilidad alertaDisponibilidad = new AlertaDisponibilidad(
+                gestores.getGestorReservas(),
+                gestores.getGestorRecursos(),
+                gestores.getGestorPrestamos()
+        );
+        //alertaDisponibilidad.verificarDisponibilidad(); // Activar la alerta de disponibilidad
     }
+
 
 
     // Metodo para eliminar una reserva basada en el ID del recurso
