@@ -395,13 +395,12 @@ Pruebas
         ¡Préstamo renovado exitosamente!
 
 10. Por ultimo se dejaron más opciones por si se desea probar lo siguiente:
-   ```bash
         2. Simular y Verificar Alerta Disponibilidad
         3. Simular Concurrencia
         4. Ejecutar Reportes
         5. Probar servicios de Notificación
         6. Recordatorios
-    
+
 11. Finalizamos el programa con 8. Salir
 
 ## 📋 Requisitos Adicionales
