@@ -56,7 +56,8 @@ public class GestorReservas {
         AlertaDisponibilidad alertaDisponibilidad = new AlertaDisponibilidad(
                 gestores.getGestorReservas(),
                 gestores.getGestorRecursos(),
-                gestores.getGestorPrestamos()
+                gestores.getGestorPrestamos(),
+                gestores.getGestorNotificaciones()
         );
         //alertaDisponibilidad.verificarDisponibilidad(); // Activar la alerta de disponibilidad
     }

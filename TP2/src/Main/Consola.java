@@ -37,6 +37,9 @@ public class Consola {
     public void setAlertaVencimiento(AlertaVencimiento alertaVencimiento) {
         this.alertaVencimiento = alertaVencimiento;
     }
+    public void setAlertaDisponibilidad(AlertaDisponibilidad alertaDisponibilidad) {
+        this.alertaDisponibilidad = alertaDisponibilidad;
+    }
 
     public void mostrarMenuUsuarios() {
         int opcionUsuarios;
@@ -187,10 +190,20 @@ public class Consola {
         String password = scanner.nextLine();
         System.out.print("--> 📞 Ingrese el número de teléfono: ");
         String telefono = scanner.nextLine();
-        Usuario nuevoUsuario = new Usuario(id, nombre, apellido, email, password, telefono);
+
+        // Solicitar frecuencia de notificación
+        System.out.print("--> ⏰ Ingrese la frecuencia de notificación (diaria, semanal, mensual): ");
+        String frecuenciaNotificaciones = scanner.nextLine();
+
+        // Crear un nuevo usuario con todos los datos
+        Usuario nuevoUsuario = new Usuario(id, nombre, apellido, email, password, telefono, frecuenciaNotificaciones);
+
+        // Agregar el nuevo usuario al gestor
         gestorUsuarios.agregarUsuario(nuevoUsuario);
+
         System.out.println("✅ Usuario creado exitosamente.");
     }
+
 
     public void mostrarMenuEliminarUsuarios(GestorUsuarios gestorUsuarios) {
         System.out.println("\n===== 🗑️ ELIMINAR USUARIO =====");
@@ -712,7 +725,8 @@ public class Consola {
                     AlertaDisponibilidad alertaDisponibilidad = new AlertaDisponibilidad(
                             gestores.getGestorReservas(),
                             gestores.getGestorRecursos(),
-                            gestores.getGestorPrestamos()
+                            gestores.getGestorPrestamos(),
+                            gestores.getGestorNotificaciones()
                     );
 
                     // Llamar al metodo de verificarDisponibilidad para mostrar las alertas
